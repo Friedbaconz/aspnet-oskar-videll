@@ -14,23 +14,60 @@
 
     <div class="wrapper">
         <header class="header-wrapper">
-            <div>
-    <a>
-        Fitness Center
-    </a>
-    <a>
-        Mememberships
-    </a>
-    <a>
-        Training
-    </a>
-    <a>
-        Customer Service
-    </a>
-    <a>
-        Store
-    </a>
-            </div>
+
+                <div class="end-header">
+                    <h1>CoreFitness</h1>
+                </div>
+                <div class="middle-header">
+                <ul class="mb1">
+                    <li class="mb1">
+                        <a class="mb1" asp-area="" asp-controller="" asp-action="">
+                           Fitness Centers
+                        </a>
+                   </li>
+                </ul>
+                <ul class="mb1">
+                    <li class="mb1">
+                        <a class="mb1" asp-area="" asp-controller="" asp-action="">
+                            Memberships
+                        </a>
+                    </li>
+                </ul>
+                <ul class="mb1">
+                    <li class="mb1">
+                        <a class="mb1" asp-area="" asp-controller="" asp-action="">
+                            Training
+                        </a>
+                    </li>
+                </ul>
+                <ul class="mb1">
+                    <li class="mb1">
+                        <a class="mb1" asp-area="" asp-controller="" asp-action="">
+                            Costumer Service
+                        </a>
+                    </li>
+                </ul>
+                <ul class ="mb1">
+                    <li class="mb1">
+                        <a class="mb1" asp-area="" asp-controller="" asp-action="">
+                            Store
+                        </a>
+                    </li>
+                </ul>
+                </div>
+                <div class="start-header">
+                    <a class="mb1">
+                        Become Member
+                    </a>
+                <ul class="mb2">
+                    <li class="mb2container">
+                        <a class="mb2text" asp-area="" asp-controller="Auth" asp-action="SignUp">
+                             Sign In
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
         </header>
         <main>
             @RenderBody()

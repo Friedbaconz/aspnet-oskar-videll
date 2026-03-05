@@ -23,18 +23,79 @@ html, body {
     display: gird;
 }
 
-.header-wrapper {
-    display: gird;
-    grid-template-rows: auto 1fr auto;
-    height: 5dvh;
-    margin: 10px 5px 5px 5px;
-    color: var(--white-font);
-    background-color: var(--purple-tint);
-    border-radius: 5px;
-}
-
 .wrapper {
     display: gird;
     grid-template-rows: auto 1fr auto;
     height: 100dvh;
+    margin: 10px;
+}
+
+.header-wrapper {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    height: 10dvh;
+    width: 100%;
+    color: var(--white-font);
+    background-color: var(--purple-tint);
+    border-radius: 20px;
+    align-content: center;
+    align-items: center;
+}
+.end-header {
+    display:flex;
+    margin-left: 30px;
+    justify-self: start;
+}
+
+.middle-header {
+    display: flex;
+    justify-self: center;
+
+    :hover {
+        color: var(--yellow-green);
+        cursor: pointer;
+    }
+}
+
+.start-header {
+    display: flex;
+    justify-self: end;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.mb1 {
+    margin-right: 30px;
+    display:flex;
+    text-decoration:none;
+    color: var(--white-font);
+    :hover {
+        color: var(--yellow-green);
+        cursor: pointer;
+    }
+}
+
+
+.mb2 {
+    display: block;
+    background-color: var(--yellow-green);
+    border-radius: 25px;
+
+    :hover {
+        cursor: pointer;
+        background-color: var(--white-bg);
+        border-radius: 25px;
+    }
+
+    .mb2container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .mb2text {
+            text-decoration: none;
+            color: var(--dark-font);
+            font-family: 'Sans Serif Collection';
+        }
+    }
 }
