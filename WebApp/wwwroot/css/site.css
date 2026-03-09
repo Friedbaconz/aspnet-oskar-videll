@@ -62,10 +62,10 @@ html, body {
     justify-self: end;
     align-items: center;
     margin-right: 30px;
+    margin-left: 20px;
 }
 
 .mb1 {
-    margin-right: 30px;
     display:flex;
     text-decoration:none;
     color: var(--white-font);
@@ -78,24 +78,27 @@ html, body {
 
 .mb2 {
     display: block;
-    background-color: var(--yellow-green);
-    border-radius: 25px;
-
-    :hover {
-        cursor: pointer;
-        background-color: var(--white-bg);
-        border-radius: 25px;
-    }
+    text-align: center;
 
     .mb2container {
-        display: flex;
         justify-content: center;
         align-items: center;
+        list-style-type: none;
+        padding: 5px 0px;
+        background-color: var(--yellow-green);
+        border-radius: 25px;
 
         .mb2text {
             text-decoration: none;
             color: var(--dark-font);
+            padding: 5px 32px;
             font-family: 'Sans Serif Collection';
+        }
+
+        :hover {
+            cursor: pointer;
+            background-color: var(--white-bg);
+            border-radius: 25px;
         }
     }
 }
