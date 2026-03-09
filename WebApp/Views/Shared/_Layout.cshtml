@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
@@ -17,7 +18,9 @@
         <header class="header-wrapper">
 
                 <div class="end-header">
-                    <img src="~/Images/logotype.svg" alt="Logotyp Fitness Core"/>
+                <a class="mb1" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/Images/logotype.svg" alt="Logotyp Fitness Core" />
+                    </a>
                 </div>
                 <div class="middle-header">
                 <ul class="mb1">
@@ -36,12 +39,31 @@
                 </ul>
                 <ul class="mb1">
                     <li class="mb1">
-                        <a class="mb1" asp-area="" asp-controller="" asp-action="">
-                            Training
-                            <div>
-                                <i class="bi bi-chevron-down" id="icon-img"></i>
+                            <div class="accordion">
+
+                                    <button id="accordionBtn" class="accordion-button" onclick="toggleAccordion(0)">
+                                        Training
+                                        <i class="bi bi-chevron-down" id="icon-img"></i>
+                                    </button>
+
+                                <div class=" content-container">
+                                            <div class="accordion-content">
+                                                <a class="content-text" asp-area="" asp-controller="" asp-action="">
+                                                    <i class="bi bi-dot"></i> Personal Training
+                                                </a>
+                                            </div>
+                                            <div class="accordion-content">
+                                                <a class="content-text" asp-area="" asp-controller="" asp-action="">
+                                                    <i class="bi bi-dot"></i>Group Training
+                                                </a>
+                                            </div>
+                                            <div class="accordion-content">
+                                                <a class="content-text" asp-area="" asp-controller="" asp-action="">
+                                                    <i class="bi bi-dot"></i>Padel
+                                                </a>
+                                            </div>
+                                </div>
                             </div>
-                        </a>
                     </li>
                 </ul>
                 <ul class="mb1">
@@ -83,7 +105,22 @@
         </main>
         <footer>Footer</footer>
     </div>
+    <script>
+        function toggleAccordion() {
 
+            const sections = document.querySelectorAll(".accordion-content");
+            const button = document.getElementById("accordionBtn");
+
+            const isOpen = Array.from(sections).some(s => s.style.display === "block");
+
+                            sections.forEach(section => {
+                    section.style.display = isOpen ? "none" : "block";
+                }); 
+
+            button.classList.toggle("active", !isOpen);
+
+        }
+    </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

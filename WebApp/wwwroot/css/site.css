@@ -10,13 +10,14 @@
     --dark-font: #27252F;
     --grey: #575757;
     --black: #000000;
+    --font-family: 'Sans Serif Collection';
 }
 
 html, body {
     font-size: 16px;
     font-weight: 400;
     font-style: normal;
-    font-family: 'Sans Serif Collection';
+    font-family: var(--font-family);
     color: var(--black);
     background-color: var(--white-bg);
     margin: 0;
@@ -33,10 +34,13 @@ html, body {
 .header-wrapper {
     display: grid;
     grid-template-columns: auto auto auto;
-    height: 10dvh;
+    height: auto;
     width: 100%;
     color: var(--white-font);
+    background: url('../Images/dark-section-img.svg');
     background-color: var(--purple-tint);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     border-radius: 20px;
     align-content: center;
     align-items: center;
@@ -79,8 +83,6 @@ html, body {
 
 #icon-img {
     margin-left:5px;
-
-
 }
 
 .img-logo{
@@ -106,7 +108,7 @@ html, body {
             text-decoration: none;
             color: var(--dark-font);
             padding: 5px 32px;
-            font-family: 'Sans Serif Collection';
+            font-family: var(--font-family);
         }
 
         :hover {
@@ -114,5 +116,55 @@ html, body {
             background-color: var(--white-bg);
             border-radius: 25px;
         }
+    }
+}
+
+.accordion-button {
+    display: flex;
+    justify-content: center;
+    background: none;
+    text-decoration: none;
+    color: var(--white-font);
+    align-items: center;
+    transition: background-color 0.3s;
+    font-family: var(--font-family);
+    font-size:16px;
+    border: none;
+
+    :hover {
+        color: var(--yellow-green);
+        cursor: pointer;
+    }
+}
+
+.accordion-button.active {
+    color: var(--yellow-green);
+}
+
+.content-container {
+    position: absolute;
+    margin-top: 4px;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+    background-color: var(--yellow-green);
+}
+
+.accordion-content {
+    display: none;
+    padding: 0px 5px 5px 10px;
+
+    :hover {
+        color: var(--white-font);
+    }
+}
+
+.content-text {
+    text-decoration: none;
+    color: var(--dark-font);
+
+    :hover {
+        cursor: pointer;
     }
 }
