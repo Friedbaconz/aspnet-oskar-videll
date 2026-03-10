@@ -15,6 +15,11 @@ public class AuthController : Controller
         return View();
     }
 
+    public IActionResult SetPassword()
+    {
+        return View();
+    }
+
     public IActionResult SignIn()
     {
         return View();

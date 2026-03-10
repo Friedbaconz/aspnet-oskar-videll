@@ -20,18 +20,27 @@ html, body {
     font-family: var(--font-family);
     color: var(--black);
     background-color: var(--white-bg);
-    margin: 0;
     display: gird;
 }
 
+main {
+    margin-top: 100px;
+}
 .wrapper {
     display: gird;
     grid-template-rows: auto 1fr auto;
     height: 100dvh;
-    margin: 10px;
 }
 
 .header-wrapper {
+    position: fixed;
+    top:0px;
+    left:0px;
+    width:100%;
+    padding: 10px;
+}
+
+.header-container {
     display: grid;
     grid-template-columns: auto auto auto;
     height: auto;
@@ -45,8 +54,9 @@ html, body {
     align-content: center;
     align-items: center;
 }
+
 .end-header {
-    display:flex;
+    display: flex;
     margin-left: 30px;
     justify-self: start;
 }
@@ -57,7 +67,6 @@ html, body {
 
     :hover {
         color: var(--yellow-green);
-        cursor: pointer;
     }
 }
 
@@ -70,6 +79,14 @@ html, body {
 
 .mb1 {
     display: flex;
+    justify-content: center;
+    text-decoration: none;
+    align-items: center;
+}
+
+.mb1-text {
+    display: flex;
+    margin: auto;
     justify-content: center;
     text-decoration: none;
     color: var(--white-font);
@@ -119,6 +136,12 @@ html, body {
     }
 }
 
+.accordion {
+    :hover {
+        cursor: pointer;
+    }
+}
+
 .accordion-button {
     display: flex;
     justify-content: center;
@@ -133,7 +156,6 @@ html, body {
 
     :hover {
         color: var(--yellow-green);
-        cursor: pointer;
     }
 }
 
@@ -161,6 +183,7 @@ html, body {
 }
 
 .content-text {
+    display:flex;
     text-decoration: none;
     color: var(--dark-font);
 
