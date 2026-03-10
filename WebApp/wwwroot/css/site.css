@@ -50,6 +50,7 @@ main {
     background-color: var(--purple-tint);
     background-repeat: no-repeat;
     background-attachment: fixed;
+    background-position: top;
     border-radius: 20px;
     align-content: center;
     align-items: center;
@@ -190,4 +191,87 @@ main {
     :hover {
         cursor: pointer;
     }
+}
+
+.footer-wrapper {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.footer-container {
+    padding: 15px 40px;
+    height: auto;
+    width: 70%;
+    background: url('../Images/dark-section-img-footer.svg');
+    background-color: var(--purple-tint);
+    background-attachment: initial;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    border-radius: 24px;
+}
+
+.top-footer {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: auto;
+    width: 100%;
+    color: var(--white-font);
+    align-items: center;
+
+    .top-left-footer {
+        width: 70%;
+        justify-self: end;
+        text-align: end;
+    }
+
+    .logo-footer {
+        margin:20px 0px;
+        justify-self: start;
+    }
+}
+
+.footer-line {
+    background-color: var(--yellow-green);
+    opacity: 20%;
+    width:100%;
+    height:1px;
+}
+
+.middle-footer {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 100%;
+    color: var(--white-font);
+
+    .text-middle-footer {
+        width: 60%;
+        justify-self: start;
+        line-height: 23px;
+    }
+
+    .time-middle-footer {
+        justify-self: end;
+        text-align: end;
+        line-height: 20px;
+    }
+}
+
+.align-footer-text {
+    line-height: 40px;
+}
+
+.bottom-footer {
+    display: flex;
+    margin: auto;
+    margin-top: 10px;
+    font-size: 10px;
+    opacity: 70%;
+    color: var(--white-font);
+    justify-content: center;
+    align-items: center;
 }
