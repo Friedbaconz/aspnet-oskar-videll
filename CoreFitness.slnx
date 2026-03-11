@@ -1,7 +1,17 @@
 <Solution>
-  <Project Path="Application/Application.csproj" Id="eb449903-2cac-46fb-92ff-ef9bf882fdc6" />
-  <Project Path="Domain/Domain.csproj" Id="4ed70950-c64b-471a-ae0c-33b20c7aef8b" />
-  <Project Path="Infrastructure/Infrastructure.csproj" Id="540fba43-62c6-4ca2-b88a-a44657b74798" />
-  <Project Path="Tests/Tests.csproj" Id="51fd639d-39d8-4c5a-9913-e9b589ca7612" />
-  <Project Path="WebApp/Presentation.WebApp.csproj" />
+  <Project Path="Application/Application.csproj" Id="eb449903-2cac-46fb-92ff-ef9bf882fdc6">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
+  <Project Path="Domain/Domain.csproj" Id="4ed70950-c64b-471a-ae0c-33b20c7aef8b">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
+  <Project Path="Infrastructure/Infrastructure.csproj" Id="540fba43-62c6-4ca2-b88a-a44657b74798">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
+  <Project Path="Tests/Tests.csproj" Id="51fd639d-39d8-4c5a-9913-e9b589ca7612">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
+  <Project Path="WebApp/Presentation.WebApp.csproj">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
 </Solution>
