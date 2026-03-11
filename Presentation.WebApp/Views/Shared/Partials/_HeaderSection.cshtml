@@ -1,0 +1,102 @@
+﻿<section class="header-wrapper">
+    <div class="header-container">
+        <div class="end-header">
+            <a class="mb1" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/Images/logotype.svg" alt="Logotyp Fitness Core" />
+            </a>
+        </div>
+        <div class="middle-header">
+            <ul class="mb1">
+                <li class="mb1">
+                    <a class="mb1-text" asp-area="" asp-controller="" asp-action="">
+                        Fitness Centers
+                    </a>
+                </li>
+            </ul>
+            <ul class="mb1">
+                <li class="mb1">
+                    <a class="mb1-text" asp-area="" asp-controller="Home" asp-action="MemberShips">
+                        Memberships
+                    </a>
+                </li>
+            </ul>
+            <ul class="mb1">
+                <li class="mb1">
+                    <div class="accordion">
+
+                        <button id="accordionBtn" class="accordion-button" onclick="toggleAccordion(0)">
+                            Training
+                            <i class="bi bi-chevron-down" id="icon-img"></i>
+                        </button>
+
+                        <div class=" content-container">
+                            <div class="accordion-content">
+                                <a class="content-text" asp-area="" asp-controller="" asp-action="">
+                                    <i class="bi bi-dot"></i> Personal Training
+                                </a>
+                            </div>
+                            <div class="accordion-content">
+                                <a class="content-text" asp-area="" asp-controller="" asp-action="">
+                                    <i class="bi bi-dot"></i>Group Training
+                                </a>
+                            </div>
+                            <div class="accordion-content">
+                                <a class="content-text" asp-area="" asp-controller="" asp-action="">
+                                    <i class="bi bi-dot"></i>Padel
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="mb1">
+                <li class="mb1">
+                    <a class="mb1-text" asp-area="" asp-controller="Home" asp-action="CostumerService">
+                        Costumer Service
+                    </a>
+                </li>
+            </ul>
+            <ul class="mb1">
+                <li class="mb1">
+                    <a class="mb1-text" asp-area="" asp-controller="" asp-action="">
+                        Store
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="start-header">
+            <ul class="mb1-text">
+                <li class="mb1-text">
+                    <a class="mb1-text" asp-area="" asp-controller="Auth" asp-action="SignUp">
+                        Become Member
+                    </a>
+                </li>
+            </ul>
+            <ul class="mb2">
+                <li class="mb2container">
+                    <a class="mb2text" asp-area="" asp-controller="Auth" asp-action="SignIn">
+                        Sign In
+                        <img src="~/Images/sidearrow.svg" class="img-logo" />
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleAccordion() {
+
+            const sections = document.querySelectorAll(".accordion-content");
+            const button = document.getElementById("accordionBtn");
+
+            const isOpen = Array.from(sections).some(s => s.style.display === "block");
+
+                            sections.forEach(section => {
+                    section.style.display = isOpen ? "none" : "block";
+                });
+
+            button.classList.toggle("active", !isOpen);
+
+        }
+</script>

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers
+namespace Presentation.WebApp.Controllers
 {
-    public class BookingController : Controller
+    public class ActivitiesController : Controller
     {
         public IActionResult Index()
         {

@@ -8,10 +8,8 @@
   <Project Path="Infrastructure/Infrastructure.csproj" Id="540fba43-62c6-4ca2-b88a-a44657b74798">
     <Build Solution="Debug|*" Project="false" />
   </Project>
+  <Project Path="Presentation.WebApp/Presentation.WebApp.csproj" Id="d072850d-2269-4adc-a0c3-fa0bc9559e1f" />
   <Project Path="Tests/Tests.csproj" Id="51fd639d-39d8-4c5a-9913-e9b589ca7612">
-    <Build Solution="Debug|*" Project="false" />
-  </Project>
-  <Project Path="WebApp/Presentation.WebApp.csproj">
     <Build Solution="Debug|*" Project="false" />
   </Project>
 </Solution>

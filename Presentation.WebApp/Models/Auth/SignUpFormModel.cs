@@ -1,4 +1,4 @@
-﻿namespace WebApp.Models.Auth;
+﻿namespace Presentation.WebApp.Models.Auth;
 
 public class SignUpFormModel
 {

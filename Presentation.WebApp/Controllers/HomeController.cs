@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers;
+namespace Presentation.WebApp.Controllers;
 
 public class HomeController : Controller
 {
 
     public IActionResult Index()
     {
-        ViewData["Title"] = "Home";
+        ViewData["Title"] = "Home test";
 
         return View();
     }

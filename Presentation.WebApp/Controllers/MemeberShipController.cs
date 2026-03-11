@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers
+namespace Presentation.WebApp.Controllers
 {
     public class MemeberShipController : Controller
     {
