@@ -9,7 +9,5 @@
     <Build Solution="Debug|*" Project="false" />
   </Project>
   <Project Path="Presentation.WebApp/Presentation.WebApp.csproj" Id="d072850d-2269-4adc-a0c3-fa0bc9559e1f" />
-  <Project Path="Tests/Tests.csproj" Id="51fd639d-39d8-4c5a-9913-e9b589ca7612">
-    <Build Solution="Debug|*" Project="false" />
-  </Project>
+  <Project Path="Tests/Tests.csproj" Id="422da9c4-cb93-4679-9e9f-d69207a7f763" />
 </Solution>
