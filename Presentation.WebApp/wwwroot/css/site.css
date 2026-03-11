@@ -22,10 +22,21 @@ html, body {
     background-color: var(--white-bg);
     display: gird;
 }
-
 main {
+    height: 100dvh;
+}
+footer{
+    padding-bottom: 10px;
+}
+
+.body-wrapper{
     margin-top: 100px;
 }
+
+.Home-body{
+
+}
+
 .wrapper {
     display: gird;
     grid-template-rows: auto 1fr auto;
@@ -274,4 +285,23 @@ main {
     color: var(--white-font);
     justify-content: center;
     align-items: center;
+}
+
+.hero-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.hero-container {
+    padding: 15px 40px;
+    height: 851px;
+    width: 100%;
+    background: url('../Images/dark-section-img-hero.svg');
+    background-color: var(--purple-tint);
+    background-attachment: initial;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    border-radius: 24px;
 }

@@ -17,13 +17,12 @@
     <div class="wrapper">
         <header>
             <partial name="Partials/_HeaderSection" />
-
-        </header>
-        <main>
             @if (IsSectionDefined("Hero"))
             {
                 await RenderSectionAsync("Hero");
             }
+        </header>
+        <main>
             @RenderBody()
         </main>
         <footer>
