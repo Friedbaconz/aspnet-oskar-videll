@@ -418,3 +418,49 @@ footer{
         justify-self: baseline;
     }
 }
+
+.Equipment-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 19px;
+}
+
+.Equipment-container {
+    display: grid;
+    width:100%;
+    grid-template-columns: auto auto;
+    background-color:var(--yellow-green);
+    color: var(--black);
+    border-radius: 25px;
+    padding: 5px;
+    align-items:center;
+
+}
+
+.company-logos {
+    display: flex;
+    justify-self: start;
+    margin-left: 50px;
+
+    :hover {
+        padding-bottom: 20px;
+        cursor: pointer;
+    }
+
+    .company-logo {
+        margin-right: 50px;
+    }
+}
+
+.Equipment-title {
+    display: flex;
+    justify-self: end;
+    margin-right: 50px;
+    cursor:default;
+    .Equipment-text {
+        font-size: 40px;
+        font-weight: bolder;
+        margin: auto;
+    }
+}
