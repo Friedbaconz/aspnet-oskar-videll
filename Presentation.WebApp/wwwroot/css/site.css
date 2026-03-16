@@ -49,6 +49,7 @@ footer{
     left:0px;
     width:100%;
     padding: 8px;
+    z-index:1000;
 }
 
 .header-container {
@@ -205,6 +206,7 @@ footer{
 }
 
 .content-container {
+    z-index:100;
     position: absolute;
     margin-top: 4px;
     width: 200px;
@@ -365,6 +367,7 @@ footer{
 
 .tag-container {
     display:flex;
+    margin:auto;
     color: var(--white-font);
     background-color: var(--dark-font);
     width: auto;
@@ -462,5 +465,97 @@ footer{
         font-size: 40px;
         font-weight: bolder;
         margin: auto;
+    }
+}
+
+
+
+aboutus-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.aboutus-container {
+    display: grid;
+    width: 100%;
+    grid-template-columns: auto auto;
+    color: var(--black);
+    margin: 100px 0px;
+    position: relative;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.aboutus-right {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    justify-self: center;
+    margin-left:100px;
+}
+
+.aboutusimg1 {
+    mask-image: url("../Images/Mask-group1.svg");
+    position: absolute;
+    top: 0;
+}
+
+.aboutusimg2 {
+    position: absolute;
+    top: -30px;
+    left: 200px;
+}
+
+.aboutusimg3 {
+    position: absolute;
+    bottom: -150px;
+    left: 0;
+}
+
+.aboutus-left {
+    display: grid;
+    position:relative;
+}
+
+.tag-wrapper2 {
+    display:flex;
+    justify-self: start;
+}
+
+.aboutus-textcontainer {
+    display: grid;
+    width: 50%;
+    justify-self: end;
+    text-align: start;
+
+    .aboutus-title {
+        color: var(--dark-font);
+        font-size: 50px;
+        line-height: 70px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .aboutus-undertext {
+        color: var(--grey);
+        line-height: 20px;
+        margin: auto;
+        margin-bottom: 30px;
+    }
+}
+
+.aboutus-textborder {
+    background-color: var(--white-font);
+    border-radius: 25px;
+    padding: 30px;
+    margin: auto;
+
+    .aboutus-text {
+        color: var(--black);
+        margin: auto;
+        line-height: 20px;
     }
 }
