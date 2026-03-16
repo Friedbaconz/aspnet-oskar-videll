@@ -22,9 +22,6 @@ html, body {
     background-color: var(--white-bg);
     display: gird;
 }
-main {
-    height: 100dvh;
-}
 footer{
     padding-bottom: 10px;
 }
@@ -486,6 +483,7 @@ aboutus-wrapper {
     z-index: 100;
     justify-content: center;
     align-items: center;
+    margin-bottom:250px;
 }
 
 .aboutus-right {
@@ -559,3 +557,59 @@ aboutus-wrapper {
         line-height: 20px;
     }
 }
+
+
+program-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content:center;
+}
+
+.program-container {
+    display: grid;
+    height: auto;
+    width: 100%;
+    background-color: var(--white-font);
+    border-radius: 25px;
+    padding: 100px;
+    padding-bottom: 50px;
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+.tag-wrapper3   {
+    justify-self:center;
+}
+
+.program-title {
+    font-size: 50px;
+    width: 48%;
+    margin: auto;
+    margin-top: 20px;
+    line-height: 70px;
+    margin-bottom: 50px;
+}
+
+.program-imgbox {
+    display: gird;
+    margin:auto;
+    grid-template-columns: auto auto auto;
+    img{
+        margin-right:30px;
+    }
+}
+
+.program-linkbox {
+    display: flex;
+    margin: auto;
+    color: var(--dark-font);
+
+    .program-link {
+        color: var(--dark-font);
+        margin: auto;
+        margin-left: 5px;
+    }
+}
+
+
