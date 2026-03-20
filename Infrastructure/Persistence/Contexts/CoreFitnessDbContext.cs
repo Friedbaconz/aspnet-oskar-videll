@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Data;
+namespace Infrastructure.Persistence.Contexts;
 
 public sealed class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> options) : DbContext(options)
 {

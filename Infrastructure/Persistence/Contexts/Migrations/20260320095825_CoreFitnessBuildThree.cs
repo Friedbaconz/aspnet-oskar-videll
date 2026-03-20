@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastructure.Data.Migrations
+namespace Infrastructure.Persistence.Contexts.Migrations
 {
     /// <inheritdoc />
     public partial class CoreFitnessBuildThree : Migration

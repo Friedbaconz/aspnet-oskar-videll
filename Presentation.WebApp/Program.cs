@@ -1,5 +1,4 @@
 using Application.Extensions;
-using Infrastructure.Data;
 using Infrastructure.Extensions;
 using Infrastructure.Persistence.Contexts;
 using Infrastructure.Persistence.Extensions;
