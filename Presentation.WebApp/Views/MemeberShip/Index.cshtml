@@ -1,7 +1,12 @@
-﻿@{
+﻿@model MembershipViewModel
+
+@{
     ViewData["Title"] = "MemberShips";
 }
 <section class="body-wrapper">
+    @foreach (var membership in Model.Memberships)
+    {
+    }
     <div class="section-header-wrapper">
         <h1 class="section-header">Our Membership Offers</h1>
     </div>

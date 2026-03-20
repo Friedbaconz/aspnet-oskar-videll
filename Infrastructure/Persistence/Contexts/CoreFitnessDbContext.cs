@@ -5,15 +5,13 @@ namespace Infrastructure.Persistence.Contexts;
 
 public sealed class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> options) : DbContext(options)
 {
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoreFitnessDbContext).Assembly);
-    }
     public DbSet<UserEntity> Users => Set<UserEntity>();
 
     public DbSet<WorkoutEntity> Workouts => Set<WorkoutEntity>();
 
     public DbSet<MembershipEntity> Memberships => Set<MembershipEntity>();
+
+    public DbSet<MembershipBenefitEntity> MembershipBenefits => Set<MembershipBenefitEntity>();
 
     public DbSet<BookingEntity> Bookings => Set<BookingEntity>();
 
@@ -67,31 +65,6 @@ public sealed class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> 
 
             entity.ToTable(tb => tb.HasCheckConstraint("CK_User_Email_NotEmpty", "LTRIM(RTRIM('Email')) <> ''"));
 
-        });
-
-        modelBuilder.Entity<MembershipEntity>(entity =>
-        {
-            entity.ToTable("Memberships");
-
-            entity.HasKey(e => e.MembershipID).HasName("PK_Memberships_ID");
-
-            entity.Property(e => e.MembershipID)
-                .ValueGeneratedOnAdd();
-
-            entity.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(100);
-
-            entity.Property(e => e.Type)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            entity.Property(e => e.Status)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            entity.HasIndex(e => e.Name, "UQ_Memberships_Name")
-                .IsUnique();
         });
 
         modelBuilder.Entity<WorkoutEntity>(entity =>

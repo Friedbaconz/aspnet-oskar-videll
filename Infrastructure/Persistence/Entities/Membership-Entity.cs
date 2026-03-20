@@ -7,9 +7,17 @@ public sealed class MembershipEntity
 
     public string Name { get; set; } = null!;
 
+    public string Description { get; set; } = null!;
+
+    public ICollection<MembershipBenefitEntity> Benefits = null!;
+
     public string Type { get; set; } = null!;
 
     public string Status { get; set; } = null!;
+
+    public decimal Pricing { get; set; }
+
+    public int DurationInMonths { get; set; }
 
     public ICollection<UserEntity> Users = null!;
 

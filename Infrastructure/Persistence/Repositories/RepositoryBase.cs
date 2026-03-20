@@ -1,11 +1,11 @@
 ﻿
 
-using Domain.Abstractions.Repositories;
-using Microsoft.EntityFrameworkCore;
 
+using Microsoft.EntityFrameworkCore;
+using Domain.Abstractions.Repositories;
 namespace Infrastructure.Persistence.Repositories;
 
-public abstract class RepositoryBase<TDomainModel, TId, TEntity, TDbContext>(TDbContext context) : IRepositoryBase<TDomainModel, TId, TEntity> where TEntity : class where TDbContext : DbContext
+public abstract class RepositoryBase<TDomainModel, TId, TEntity, TDbContext>(TDbContext context) : IRepositoryBase<TDomainModel, TId> where TEntity : class where TDbContext : DbContext
 {
     protected readonly TDbContext _Context = context;
     protected DbSet<TEntity> Set => _Context.Set<TEntity>();
