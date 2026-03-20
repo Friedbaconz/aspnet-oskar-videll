@@ -3,19 +3,21 @@ using Infrastructure.Extensions;
 using Infrastructure.Persistence.Contexts;
 using Infrastructure.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+});
 
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddApplication(builder.Configuration, builder.Environment);
 
-builder.Services.AddDbContext<CoreFitnessDbContext>(options => options.UseNpgsql(
-    builder.Configuration.GetConnectionString("SqlConnection"), 
-    sql => sql.MigrationsAssembly("Infrastructure")
-));
-
 var app = builder.Build();
+
+await PersistenceDatabaseInitializer.InitializeAsync(app.Services, app.Environment);
 
 app.UseHsts();
 app.UseHttpsRedirection();

@@ -1,7 +1,7 @@
 ﻿
 namespace Infrastructure.Persistence.Entities;
 
-public class MembershipEntity
+public sealed class MembershipEntity
 {
     public Guid MembershipID { get; set; }
 

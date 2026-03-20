@@ -5,6 +5,10 @@ namespace Infrastructure.Persistence.Contexts;
 
 public sealed class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> options) : DbContext(options)
 {
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoreFitnessDbContext).Assembly);
+    }
     public DbSet<UserEntity> Users => Set<UserEntity>();
 
     public DbSet<WorkoutEntity> Workouts => Set<WorkoutEntity>();
@@ -16,6 +20,7 @@ public sealed class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoreFitnessDbContext).Assembly);
 
         modelBuilder.Entity<UserEntity>(entity =>
         {
