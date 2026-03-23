@@ -5,39 +5,32 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Infrastructure.Persistence.Contexts.Migrations
 {
     [DbContext(typeof(CoreFitnessDbContext))]
-    [Migration("20260320095825_CoreFitnessBuildThree")]
-    partial class CoreFitnessBuildThree
+    [Migration("20260323075924_TestEntityBuild")]
+    partial class TestEntityBuild
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.4");
 
             modelBuilder.Entity("Infrastructure.Persistence.Entities.BookingEntity", b =>
                 {
                     b.Property<Guid>("UserID")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid>("WorkoutID")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("BookingID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BookingID"));
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("UserID", "WorkoutID", "BookingID")
                         .HasName("PK_Bookings_ID");
@@ -47,26 +40,59 @@ namespace Infrastructure.Persistence.Contexts.Migrations
                     b.ToTable("Bookings", (string)null);
                 });
 
+            modelBuilder.Entity("Infrastructure.Persistence.Entities.MembershipBenefitEntity", b =>
+                {
+                    b.Property<int>("MembershipBenefitID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Benefit")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("MembershipID")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MembershipBenefitID")
+                        .HasName("PK_MembershipBenefits_ID");
+
+                    b.HasIndex("MembershipID");
+
+                    b.ToTable("MembershipBenefits", (string)null);
+                });
+
             modelBuilder.Entity("Infrastructure.Persistence.Entities.MembershipEntity", b =>
                 {
                     b.Property<Guid>("MembershipID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DurationInMonths")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Pricing")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("MembershipID")
                         .HasName("PK_Memberships_ID");
@@ -81,39 +107,39 @@ namespace Infrastructure.Persistence.Contexts.Migrations
                 {
                     b.Property<Guid>("UserID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Firstname")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("TEXT");
 
                     b.Property<Guid?>("MembershipID")
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("MembershipStatus")
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Phonenumber")
                         .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserID")
                         .HasName("PK_Users_ID");
@@ -133,28 +159,28 @@ namespace Infrastructure.Persistence.Contexts.Migrations
                 {
                     b.Property<Guid>("WorkoutID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Instructor")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("TEXT");
 
                     b.Property<TimeSpan>("Time")
-                        .HasColumnType("interval");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("WorkoutName")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("WorkoutID")
                         .HasName("PK_Workouts_ID");
@@ -183,6 +209,18 @@ namespace Infrastructure.Persistence.Contexts.Migrations
                     b.Navigation("Workout");
                 });
 
+            modelBuilder.Entity("Infrastructure.Persistence.Entities.MembershipBenefitEntity", b =>
+                {
+                    b.HasOne("Infrastructure.Persistence.Entities.MembershipEntity", "Membership")
+                        .WithMany("Benefits")
+                        .HasForeignKey("MembershipID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_MembershipBenefits_MembershipID");
+
+                    b.Navigation("Membership");
+                });
+
             modelBuilder.Entity("Infrastructure.Persistence.Entities.UserEntity", b =>
                 {
                     b.HasOne("Infrastructure.Persistence.Entities.MembershipEntity", "Membership")
@@ -196,6 +234,8 @@ namespace Infrastructure.Persistence.Contexts.Migrations
 
             modelBuilder.Entity("Infrastructure.Persistence.Entities.MembershipEntity", b =>
                 {
+                    b.Navigation("Benefits");
+
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618

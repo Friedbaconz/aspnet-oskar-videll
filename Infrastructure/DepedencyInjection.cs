@@ -1,13 +1,15 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+﻿using Infrastructure.Persistence.Contexts;
+using Infrastructure.Persistence.Repositories.Extensions;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Infrastructure.Persistence.Contexts.Extensions;
+namespace Infrastructure;
 
-public static class ContextRegistrationExtensions
+public static class DepedencyInjection
 {
     public static IServiceCollection AddDBContexts(this IServiceCollection services, IConfiguration configuration, IHostEnvironment env)
     {
@@ -41,6 +43,19 @@ public static class ContextRegistrationExtensions
 
         }
 
+        return services;
+    }
+
+    public static IServiceCollection AddPresistance(this IServiceCollection services, IConfiguration configuration, IHostEnvironment env)
+    {
+        services.AddRepositories(configuration, env);
+        services.AddDBContexts(configuration, env);
+        return services;
+    }
+
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IHostEnvironment env)
+    {
+        services.AddPresistance(configuration, env);
         return services;
     }
 }

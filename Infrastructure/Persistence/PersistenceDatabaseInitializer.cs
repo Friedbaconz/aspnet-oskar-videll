@@ -24,4 +24,6 @@ public static class PersistenceDatabaseInitializer
             await context.Database.MigrateAsync(ct);
         }
     }
+
+
 }
