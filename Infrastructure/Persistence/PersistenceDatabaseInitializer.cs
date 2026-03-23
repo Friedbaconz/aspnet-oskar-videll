@@ -11,7 +11,7 @@ public static class PersistenceDatabaseInitializer
 {
     public static async Task InitializeAsync(IServiceProvider sp, IHostEnvironment env, CancellationToken ct = default)
     {
-        if(env.IsDevelopment())
+        if (env.IsDevelopment())
         {
             using var scope = sp.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<CoreFitnessDbContext>();

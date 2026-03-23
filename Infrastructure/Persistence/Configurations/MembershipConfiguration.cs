@@ -23,7 +23,6 @@ internal class MembershipConfiguration : IEntityTypeConfiguration<MembershipEnti
                 .HasMaxLength(100);
 
             entity.Property(e => e.Description)
-                .IsRequired()
                 .HasMaxLength(500);
 
             entity.Property(e => e.Type)

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Contexts.Migrations
 {
     [DbContext(typeof(CoreFitnessDbContext))]
-    [Migration("20260323080349_TestEntityBuildtwo")]
-    partial class TestEntityBuildtwo
+    [Migration("20260323093529_CoreFitnessBuildFour")]
+    partial class CoreFitnessBuildFour
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,7 +69,6 @@ namespace Infrastructure.Persistence.Contexts.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 

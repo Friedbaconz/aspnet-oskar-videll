@@ -1,9 +1,8 @@
 using Application.Extensions;
 using Infrastructure.Extensions;
 using Infrastructure.Persistence.Contexts;
-using Infrastructure.Persistence.Extensions;
-using Microsoft.EntityFrameworkCore;
 using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();

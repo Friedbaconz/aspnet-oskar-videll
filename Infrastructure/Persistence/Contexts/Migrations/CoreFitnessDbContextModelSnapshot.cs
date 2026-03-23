@@ -66,7 +66,6 @@ namespace Infrastructure.Persistence.Contexts.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 

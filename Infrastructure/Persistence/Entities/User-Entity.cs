@@ -3,7 +3,7 @@ namespace Infrastructure.Persistence.Entities;
 
 public class UserEntity
 {
-    public Guid UserID { get; set; } = Guid.NewGuid();
+    public Guid UserID { get; set; }
 
     public string Firstname { get; set; } = null!;
 

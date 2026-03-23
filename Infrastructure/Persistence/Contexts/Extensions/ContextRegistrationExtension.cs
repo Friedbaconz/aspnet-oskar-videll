@@ -2,14 +2,15 @@
 using Infrastructure.Persistence.Repositories.Extensions;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Infrastructure;
+namespace Infrastructure.Persistence.Contexts.Extensions;
 
-public static class DepedencyInjection
+public static class ContextRegistrationExtension
 {
     public static IServiceCollection AddDBContexts(this IServiceCollection services, IConfiguration configuration, IHostEnvironment env)
     {
@@ -38,24 +39,13 @@ public static class DepedencyInjection
                 var connection = configuration.GetConnectionString("ProductionDatabaseUri")
                     ?? throw new ArgumentException("Connection string for production database is not Provided.");
 
-                options.UseNpgsql(connection);
+                options.UseNpgsql(connection)
+                    .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning))
+                    .EnableDetailedErrors();
             });
 
         }
 
-        return services;
-    }
-
-    public static IServiceCollection AddPresistance(this IServiceCollection services, IConfiguration configuration, IHostEnvironment env)
-    {
-        services.AddRepositories(configuration, env);
-        services.AddDBContexts(configuration, env);
-        return services;
-    }
-
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IHostEnvironment env)
-    {
-        services.AddPresistance(configuration, env);
         return services;
     }
 }
