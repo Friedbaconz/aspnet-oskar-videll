@@ -1,10 +1,10 @@
 ﻿
-
+using Domain.Aggregates.Users;
 namespace Domain.Aggregates.Memberships;
 
 public sealed class Membership
 {
-    public Membership(Guid id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration)
+    public Membership(Guid id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
     {
         Id = RequiredGuid(id, nameof(Id));
         Name = RequiredString(name, nameof(Name));
@@ -14,6 +14,7 @@ public sealed class Membership
         Type = RequiredString(type, nameof(Type));
         Pricing = RequiredValue(Pricing, nameof(Pricing));
         MonthlyDuration = monthlyDuration;
+        Users = users ?? throw new ArgumentNullException(nameof(users));
     }
 
     public Guid Id { get; }
@@ -24,6 +25,7 @@ public sealed class Membership
     public string Type {  get; private set; }
     public decimal Pricing { get; private set; }
     public int MonthlyDuration { get; private set; }
+    public List<User> Users { get; private set; }
 
     private static Guid RequiredGuid(Guid value, string propertyName)
     {
@@ -46,16 +48,16 @@ public sealed class Membership
         return value;
     }
 
-    public static Membership Create(Guid id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing = 0, int monthlyDuration = 20)
+    public static Membership Create(Guid id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
     {
-        return new Membership(Guid.NewGuid(), name, description, benefits, status, type, pricing, monthlyDuration);
+        return new Membership(id, name, description, benefits, status, type, pricing, monthlyDuration, users);
     }
 
-    public static Membership Rehydrate(Guid id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing = 0, int monthlyDuration= 20)
+    public static Membership Rehydrate(Guid id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
     {
-        return new Membership(id, name, description, benefits, status, type, pricing, monthlyDuration);
+        return new Membership(id, name, description, benefits, status, type, pricing, monthlyDuration, users);
     }
-    public void Update(string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration)
+    public void Update(string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
     {
         Name = RequiredString(name, nameof(Name));
         Description = RequiredString(description, nameof(Description));
@@ -63,5 +65,6 @@ public sealed class Membership
         Type = RequiredString(type, nameof(Type));
         Pricing = RequiredValue(pricing, nameof(Pricing));
         MonthlyDuration = monthlyDuration;
+        Users = Users;
     }
 }
