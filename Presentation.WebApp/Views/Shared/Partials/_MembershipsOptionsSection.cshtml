@@ -1,3 +1,24 @@
-﻿<section>
+﻿@model MembershipViewModel
 
+<section>
+    <div class="memberoptions-wrapper">
+        <div class="memberoptions-container">
+            @foreach (var membership in Model.Memberships)
+            {
+                <div class="membershipoptions-box">
+                    <h2>@membership.Name</h2>
+                    <p>@membership.Description</p>
+                    <div>
+                        @foreach (var benefit in membership.Benefits)
+                        {
+                            @foreach (var item in benefit.Benefit)
+                            {
+                                <p><i class="bi bi-check"></i> @item</p>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </section>
