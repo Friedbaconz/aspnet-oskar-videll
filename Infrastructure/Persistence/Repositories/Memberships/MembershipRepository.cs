@@ -22,12 +22,12 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
             MembershipID = model.Id,
             Name = model.Name,
             Description = model.Description,
-            Benefits,
+            Benefits = null,
             Type = model.Type,
             Status = model.Status,
             Pricing = model.Pricing,
             DurationInMonths = model.MonthlyDuration,
-            Users
+            Users = null
         };
 
         return entity;
@@ -47,9 +47,12 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
             entity.MembershipID,
             entity.Name,
             entity.Description,
+            null,
+            entity.Type,
             entity.Status,
             entity.Pricing,
-            entity.DurationInMonths
+            entity.DurationInMonths,
+            null
         );
 
         return membership;
