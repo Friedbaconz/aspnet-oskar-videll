@@ -1,12 +1,14 @@
-﻿using Infrastructure.Persistence.Entities.Booking;
+﻿using Infrastructure.Identity;
+using Infrastructure.Persistence.Entities.Booking;
 using Infrastructure.Persistence.Entities.Memberships;
 using Infrastructure.Persistence.Entities.Users;
 using Infrastructure.Persistence.Entities.Workouts;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Contexts;
 
-public sealed class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> options) : DbContext(options)
+public sealed class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

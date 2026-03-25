@@ -7,4 +7,7 @@ namespace Domain.Abstractions.Repositories.Users;
 
 public interface IUserRepository : IRepositoryBase<User, Guid>
 {
+    Task<User?> GetUserByUserIdAsync(Guid UserId, CancellationToken ct = default);
+
+    Guid GetUserId(User model);
 }

@@ -4,9 +4,9 @@ namespace Domain.Aggregates.Memberships;
 
 public sealed class Membership
 {
-    public Membership(Guid id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
+    public Membership(int id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
     {
-        Id = RequiredGuid(id, nameof(Id));
+        Id = RequiredInt(id, nameof(Id));
         Name = RequiredString(name, nameof(Name));
         Description = RequiredString(description, nameof(Description));
         Benefits = benefits ?? throw new ArgumentNullException(nameof(benefits));
@@ -17,7 +17,7 @@ public sealed class Membership
         Users = users ?? throw new ArgumentNullException(nameof(users));
     }
 
-    public Guid Id { get; }
+    public int Id { get; }
     public string Name { get; private set; }
     public string Description { get; private set; }
     public List<MembershipBenefits> Benefits {  get; private set; }
@@ -41,6 +41,13 @@ public sealed class Membership
         return value.Trim();
     }
 
+    private static int RequiredInt(int value, string propertyName)
+    {
+        if (value <= 0)
+            throw new ArgumentException($"{propertyName} must be a positive integer.", propertyName);
+        return value;
+    }
+
     private static decimal RequiredValue(decimal value, string propertyName)
     {
         if (value < 0)
@@ -48,12 +55,12 @@ public sealed class Membership
         return value;
     }
 
-    public static Membership Create(Guid id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
+    public static Membership Create(int id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
     {
         return new Membership(id, name, description, benefits, status, type, pricing, monthlyDuration, users);
     }
 
-    public static Membership Rehydrate(Guid id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
+    public static Membership Rehydrate(int id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
     {
         return new Membership(id, name, description, benefits, status, type, pricing, monthlyDuration, users);
     }

@@ -1,4 +1,5 @@
-﻿using Infrastructure.Persistence.Entities.Users;
+﻿using Infrastructure.Identity;
+using Infrastructure.Persistence.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,10 +11,18 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         builder.ToTable("Users");
 
-        builder.HasKey(e => e.UserID).HasName("PK_Users_ID");
+        builder.HasKey(e => e.Id).HasName("PK_Users_ID");
 
-        builder.Property(entity => entity.UserID)
-            .ValueGeneratedOnAdd();
+        builder.Property(e => e.Id)
+            .IsRequired();
+
+        builder.Property(e => e.UserID)
+            .IsRequired();
+
+        builder.HasOne<ApplicationUser>()
+            .WithOne(u => u.User)
+            .HasForeignKey<UserEntity>(e => e.UserID)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(e => e.Firstname)
             .IsRequired()
@@ -36,9 +45,17 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             .IsRequired(false)
             .HasMaxLength(20);
 
+        builder.Property(e => e.ProfileImageUri)
+            .IsUnicode(false)
+            .IsRequired(false)
+            .HasMaxLength(255);
+
         builder.Property(e => e.MembershipStatus)
             .IsRequired(false)
             .HasMaxLength(50);
+
+        builder.Property(e => e.MembershipID)
+            .IsRequired(false);
 
         builder.HasOne(e => e.Membership)
             .WithMany(m => m.Users)
@@ -47,6 +64,9 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             .HasConstraintName("FK_Users_ID");
 
         builder.HasIndex(e => e.Email, "UQ_Users_Email")
+            .IsUnique();
+
+        builder.HasIndex(e => e.UserID)
             .IsUnique();
 
         builder.ToTable(tb => tb.HasCheckConstraint("CK_User_Email_NotEmpty", "LTRIM(RTRIM('Email')) <> ''"));
