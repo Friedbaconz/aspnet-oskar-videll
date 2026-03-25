@@ -1,4 +1,4 @@
-﻿using Application.Memberships;
+﻿using Application.Memberships.Services;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApp.Models.Memberships;
 

@@ -1,6 +1,5 @@
-﻿
-
-using Domain.Abstractions.Repositories;
+﻿using Application.Memberships.Services;
+using Domain.Abstractions.Repositories.Memberships;
 using Domain.Aggregates.Memberships;
 
 namespace Application.Memberships;

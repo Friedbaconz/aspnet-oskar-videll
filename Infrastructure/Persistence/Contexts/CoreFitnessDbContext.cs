@@ -1,4 +1,7 @@
-﻿using Infrastructure.Persistence.Entities;
+﻿using Infrastructure.Persistence.Entities.Booking;
+using Infrastructure.Persistence.Entities.Memberships;
+using Infrastructure.Persistence.Entities.Users;
+using Infrastructure.Persistence.Entities.Workouts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Contexts;

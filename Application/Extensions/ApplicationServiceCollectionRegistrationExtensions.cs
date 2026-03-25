@@ -1,4 +1,5 @@
 ﻿using Application.Memberships;
+using Application.Memberships.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

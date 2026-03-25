@@ -7,13 +7,14 @@ namespace Domain.Aggregates.Users;
 
 public sealed class User
 {
-    public User(Guid id, string name, string email, string passwordHash, string phonenumber, Membership membership, List<Workout> workout)
+    public User(Guid id, string name, string email, string passwordHash, string phonenumber, string status, Membership membership, List<Workout> workout)
     {
         Id = RequiredGuid(id, nameof(Id));
         Name = RequiredString(name, nameof(Name));
         Email = RequiredString(email, nameof(Email));
         PasswordHash = RequiredString(passwordHash, nameof(PasswordHash));
         Phonenumber = RequiredString(phonenumber, nameof(Phonenumber));
+        Status = RequiredString(status, nameof(Status));
         Membership = membership ?? throw new ArgumentNullException(nameof(membership));
         Workouts = workout ?? throw new ArgumentNullException(nameof(workout));
     }
@@ -27,6 +28,8 @@ public sealed class User
     public string PasswordHash { get; private set; }
 
     public string Phonenumber { get; private set; }
+
+    public string Status { get; private set; }
 
     public Membership Membership { get; private set; }
 
@@ -45,22 +48,23 @@ public sealed class User
 
         return value.Trim();
     }
-    public static User Create(Guid id, string name, string email, string passwordHash, string phonenumber, Membership membership, List<Workout> workout)
+    public static User Create(Guid id, string name, string email, string passwordHash, string phonenumber, string status, Membership membership, List<Workout> workout)
     {
-        return new User(Guid.NewGuid(), name, email, phonenumber, passwordHash, membership, workout);
+        return new User(Guid.NewGuid(), name, email, passwordHash, phonenumber, status, membership, workout);
     }
 
-    public static User Rehydrate(Guid id, string name, string email, string passwordHash, string phonenumber, Membership membership, List<Workout> workout)
+    public static User Rehydrate(Guid id, string name, string email, string passwordHash, string phonenumber, string status, Membership membership, List<Workout> workout)
     {
-        return new User(id, name, email, phonenumber, passwordHash, membership, workout);
+        return new User(id, name, email, passwordHash, phonenumber, status, membership, workout);
     }
 
-    public void Update(string name, string email, string passwordHash, string phonenumber, Membership membership, List<Workout> workout)
+    public void Update(string name, string email, string passwordHash, string phonenumber, string status, Membership membership, List<Workout> workout)
     {
         Name = RequiredString(name, nameof(Name));
         Email = RequiredString(email, nameof(Email));
         PasswordHash = RequiredString(passwordHash, nameof(PasswordHash));
         Phonenumber = RequiredString(phonenumber, nameof(Phonenumber));
+        Status = RequiredString(status, nameof(Status));
         Membership = membership ?? throw new ArgumentNullException(nameof(membership));
         Workouts = workout ?? throw new ArgumentNullException(nameof(workout));
     }

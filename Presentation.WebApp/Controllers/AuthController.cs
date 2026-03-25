@@ -4,23 +4,22 @@ namespace Presentation.WebApp.Controllers;
 
 public class AuthController : Controller
 {
-    public IActionResult SignUp()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public IActionResult SignUp(string username)
-    {
-        return View();
-    }
-
-    public IActionResult SetPassword()
-    {
-        return View();
-    }
-
     public IActionResult SignIn()
+    {
+        return View();
+    }
+
+    public IActionResult RegisterEmail()
+    {
+        return View();
+    }
+
+    public IActionResult RegisterPassword() 
+    {
+        return View();
+    }
+
+    public IActionResult RegisterProfile()
     {
         return View();
     }

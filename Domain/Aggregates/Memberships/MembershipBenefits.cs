@@ -4,15 +4,15 @@ namespace Domain.Aggregates.Memberships;
 
 public sealed class MembershipBenefits
 {
-    public MembershipBenefits(Guid id, Guid membershipId, string benefit, Membership membership)
+    public MembershipBenefits(int id, Guid membershipId, string benefit, Membership membership)
     {
-        Id = RequiredGuid(id, nameof(Id));
+        Id = RequiredInt(id, nameof(Id));
         MembershipId = RequiredGuid(membershipId, nameof(MembershipId));
         Benefit = RequiredString(benefit, nameof(Benefit));
         Membership = membership ?? throw new ArgumentNullException(nameof(membership));
     }
 
-    public Guid Id { get; }
+    public int Id { get; }
 
     public Guid MembershipId { get; }
 
@@ -33,19 +33,25 @@ public sealed class MembershipBenefits
 
         return value.Trim();
     }
-
-    public static MembershipBenefits Create(Guid membershipId, string benefit, Membership membership)
+    private static int RequiredInt(int value, string propertyName)
     {
-        return new MembershipBenefits(Guid.NewGuid(), membershipId, benefit, membership);
+        if (value <= 0)
+            throw new ArgumentException($"{propertyName} must be a positive integer.", propertyName);
+        return value;
     }
 
-    public static MembershipBenefits Rehydrate(Guid id, Guid membershipId, string benefit, Membership membership)
+    public static MembershipBenefits Create(int id,Guid membershipId, string benefit, Membership membership)
+    {
+        return new MembershipBenefits(id ,membershipId = Guid.NewGuid(), benefit, membership);
+    }
+
+    public static MembershipBenefits Rehydrate(int id, Guid membershipId, string benefit, Membership membership)
     {
         return new MembershipBenefits(id, membershipId, benefit, membership);
     }
 
-    public void Update(string benefit)
+    public void UpdateBenefit(string newBenefit)
     {
-        Benefit = RequiredString(benefit, nameof(Benefit));
+        Benefit = RequiredString(newBenefit, nameof(Benefit));
     }
 }

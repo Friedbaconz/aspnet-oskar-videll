@@ -1,4 +1,5 @@
-﻿using Domain.Abstractions.Repositories;
+﻿using Domain.Abstractions.Repositories.Memberships;
+using Infrastructure.Persistence.Repositories.Memberships;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

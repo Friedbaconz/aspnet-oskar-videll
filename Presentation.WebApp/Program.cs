@@ -1,8 +1,9 @@
 using Application.Extensions;
 using Infrastructure.Extensions;
 using Infrastructure.Persistence.Contexts;
-using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+using Infrastructure.Persistence.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -17,6 +18,8 @@ builder.Services.AddApplication(builder.Configuration, builder.Environment);
 var app = builder.Build();
 
 await PersistenceDatabaseInitializer.InitializeAsync(app.Services, app.Environment);
+
+StaticWebAssetsLoader.UseStaticWebAssets(app.Environment, app.Configuration);
 
 app.UseHsts();
 app.UseHttpsRedirection();
