@@ -11,6 +11,7 @@ builder.Services.AddRouting(options =>
 {
     options.LowercaseUrls = true;
 });
+builder.Services.AddSession();
 
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddApplication(builder.Configuration, builder.Environment);
@@ -25,6 +26,8 @@ app.UseHsts();
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
