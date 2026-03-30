@@ -32,7 +32,7 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
     {
         try
         {
-            var entity = await Set.FirstOrDefaultAsync(e => e.UserID == UserId, ct);
+            var entity = await Set.FirstOrDefaultAsync(e => e.UserId == UserId, ct);
             return entity is null ? default : ToDomainModel(entity);
         }
         catch
@@ -59,11 +59,12 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
         var model = User.Create
             (
             entity.Id,
-            entity.UserID,
+            entity.UserId,
             entity.Firstname,
             entity.Lastname,
             entity.Phonenumber,
             entity.MembershipStatus,
+            entity.CreatedAt,
             entity.ProfileImageUri,
             entity.MembershipID
             );
@@ -77,7 +78,7 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
         var entity = new UserEntity
         {
             Id = model.Id,
-            UserID = model.UserId,
+            UserId = model.UserId,
             Firstname = model.FirstName,
             Lastname = model.LastName,
             Phonenumber = model.Phonenumber,

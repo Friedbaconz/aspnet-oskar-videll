@@ -46,11 +46,12 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
         {
             users.Add(User.Create(
                 userEntity.Id,
-                userEntity.UserID,
+                userEntity.UserId,
                 userEntity.Firstname,
                 userEntity.Lastname,
                 userEntity.Phonenumber,
                 userEntity.MembershipStatus,
+                userEntity.CreatedAt,
                 userEntity.ProfileImageUri,
                 userEntity.MembershipID
             ));

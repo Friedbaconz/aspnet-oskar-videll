@@ -8,19 +8,17 @@ public class UserEntity
 {
     public string Id { get; set; } = null!;
 
-    public string UserID { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
-    public string Firstname { get; set; } = null!;
+    public string? Firstname { get; set; }
 
-    public string Lastname { get; set; } = null!;
-
-    public string Email { get; set; } = null!;
-
-    public string Password { get; set; } = null!;
+    public string? Lastname { get; set; }
 
     public string? Phonenumber { get; set; }
 
     public string? MembershipStatus { get; set; }
+
+    public DateTimeOffset CreatedAt { get; set; }
 
     public string? ProfileImageUri { get; set; }
 

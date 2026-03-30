@@ -8,9 +8,9 @@ namespace Domain.Aggregates.Users;
 public sealed class User
 {
 
-    public string Id { get; }
+    public string Id { get; private set; } = null!;
 
-    public string UserId { get; }
+    public string UserId { get; private set; } = null!;
 
     public string? FirstName { get; private set; }
 
@@ -19,6 +19,8 @@ public sealed class User
     public string? Phonenumber { get; private set; }
 
     public string? Status { get; private set; }
+
+    public DateTimeOffset CreatedAt { get; private set; }
 
     public string? ProfileImageUri { get; private set; }
 
@@ -33,10 +35,11 @@ public sealed class User
 
     }
 
-    private User(string id, string userid)
+    private User(string id, string userid, DateTimeOffset createdAt)
     {
-        Id = RequiredString(id, nameof(Id));
-        UserId = RequiredString(userid, nameof(UserId));
+        Id = id;
+        UserId = userid;
+        CreatedAt = createdAt;
     }
     
     public static User Create(string userId)
@@ -47,15 +50,16 @@ public sealed class User
         var user = new User
             (
                 Guid.NewGuid().ToString(),
-                userId
+                userId,
+                DateTimeOffset.UtcNow
             );
 
         return user;
     }
 
-    public static User Create(string id, string userid, string firstname, string lastname, string? phonenumber, string? status, string? profileimage, int? membershipid)
+    public static User Create(string id, string userid, string? firstname, string? lastname, string? phonenumber, string? status, DateTimeOffset createAt, string? profileimage, int? membershipid)
     {
-        var user = new User(id, userid)
+        var user = new User(id, userid, createAt)
         {
             FirstName = firstname,
             LastName = lastname,
@@ -76,18 +80,11 @@ public sealed class User
         if (!string.IsNullOrWhiteSpace(lastname))
             throw new ArgumentException("Last name is required");
 
-        FirstName = RequiredString(firstname, nameof(FirstName));
-        LastName = RequiredString(lastname, nameof(LastName));
+        FirstName = firstname.Trim();
+        LastName = lastname.Trim();
         Phonenumber = string.IsNullOrWhiteSpace(phonenumber) ? null : phonenumber;
         Status = string.IsNullOrWhiteSpace(status) ? null : status;
         ProfileImageUri = string.IsNullOrWhiteSpace(profileimage) ? null : profileimage;
         MembershipId = membershipid is null ? null : membershipid.Value;
-    }
-    private static string RequiredString(string value, string propertyName)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException($"{propertyName} is required.", propertyName);
-
-        return value.Trim();
     }
 }

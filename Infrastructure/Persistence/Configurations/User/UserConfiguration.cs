@@ -9,33 +9,32 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 {
     public void Configure(EntityTypeBuilder<UserEntity> builder)
     {
-        builder.ToTable("UserEntites");
+        builder.ToTable("Users");
 
         builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.UserID)
+        builder.Property(e => e.Id)
             .IsRequired();
 
+        builder.Property(e => e.UserId)
+            .IsRequired();
+
+        builder.HasIndex(e => e.UserId)
+            .IsUnique();
+
         builder.Property(e => e.Firstname)
-            .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(100);
 
         builder.Property(e => e.Lastname)
-            .IsRequired()
-            .HasMaxLength(50);
-
-        builder.Property(e => e.Email)
-            .IsRequired()
-            .HasMaxLength(255);
-
-        builder.Property(e => e.Password)
-            .IsRequired()
-            .HasMaxLength(255);
+            .HasMaxLength(100);
 
         builder.Property(e => e.Phonenumber)
             .IsUnicode(false)
             .IsRequired(false)
             .HasMaxLength(20);
+
+        builder.Property(e => e.CreatedAt)
+            .IsRequired();
 
         builder.Property(e => e.ProfileImageUri)
             .IsUnicode(false)
@@ -53,20 +52,11 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             .WithMany(m => m.Users)
             .HasForeignKey("MembershipID")
             .OnDelete(DeleteBehavior.SetNull)
-            .HasConstraintName("FK_Users_ID");
+            .HasConstraintName("FK_Membership_ID");
 
         builder.HasOne<ApplicationUser>()
-            .WithOne(x => x.User)
-            .HasForeignKey<UserEntity>(x => x.UserID)
-            .OnDelete(DeleteBehavior.Cascade)
-            .HasConstraintName("Application_User_ID");
-
-        builder.HasIndex(e => e.Email, "UQ_Users_Email")
-            .IsUnique();
-
-        builder.HasIndex(e => e.UserID)
-            .IsUnique();
-
-        builder.ToTable(tb => tb.HasCheckConstraint("CK_User_Email_NotEmpty", "LTRIM(RTRIM('Email')) <> ''"));
+            .WithOne(e => e.User)
+            .HasForeignKey<UserEntity>(e => e.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

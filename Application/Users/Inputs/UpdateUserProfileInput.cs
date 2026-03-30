@@ -7,5 +7,5 @@ namespace Application.Users.Inputs;
 
 public record UpdateUserProfileInput 
 (
-    string Id, string UserId, string Firstname, string Lastname, string Email, string Password, string Phonenumber, string Status, string ProfileImageUri, int MembershipId
+    string Id, string UserId, string Firstname, string Lastname, string Email, string Password, string Phonenumber, string Status, DateTimeOffset CreatedAt, string ProfileImageUri, int MembershipId
 );

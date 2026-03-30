@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Identity;
+using Infrastructure.Persistence.Configurations.User;
 using Infrastructure.Persistence.Entities.Booking;
 using Infrastructure.Persistence.Entities.Memberships;
 using Infrastructure.Persistence.Entities.Users;
@@ -13,7 +14,6 @@ public class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> options
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoreFitnessDbContext).Assembly);
     }
 
