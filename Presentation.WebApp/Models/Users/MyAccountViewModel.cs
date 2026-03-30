@@ -1,6 +1,10 @@
-﻿namespace Presentation.WebApp.Models.Users;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Presentation.WebApp.Models.Users;
 
 public class MyAccountViewModel
 {
-    public MyProfileForm ProfileForm { get; set; } = new MyProfileForm();
+    [Display(Name = "Email Address")]
+    public string Email { get; set; } = string.Empty;
+    public MyProfileForm ProfileForm { get; set; } = null!;
 }
