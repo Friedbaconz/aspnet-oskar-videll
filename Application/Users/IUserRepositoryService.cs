@@ -2,5 +2,5 @@
 
 public interface IUserRepositoryService
 {
-    Task<bool> UserExistsAsync(Guid userId, CancellationToken ct = default);
+    Task<bool> UserExistsAsync(string userId, CancellationToken ct = default);
 }

@@ -4,9 +4,9 @@ namespace Domain.Aggregates.Workouts;
 
 public sealed class Workout
 {
-    public Workout(Guid id, string name, string category, string instructions, DateTime date, TimeSpan time, List<User> users)
+    public Workout(int id, string name, string category, string instructions, DateTime date, TimeSpan time, List<User> users)
     {
-        Id = RequiredGuid(id, nameof(Id));
+        Id = RequiredInt(id, nameof(Id));
         Name = RequiredString(name, nameof(Name));
         Category = RequiredString(category, nameof(Category));
         Instructions = RequiredString(instructions, nameof(Instructions));
@@ -15,7 +15,7 @@ public sealed class Workout
         Users = users;
     }
 
-    public Guid Id { get; }
+    public int Id { get; }
 
     public string Name { get; private set; }
 
@@ -29,10 +29,10 @@ public sealed class Workout
 
     public List<User> Users { get; private set; }
 
-    private static Guid RequiredGuid(Guid value, string propertyName)
+    private static int RequiredInt(int value, string propertyName)
     {
-        if (value == Guid.Empty)
-            throw new ArgumentException($"{propertyName} is required.", propertyName);
+        if (value <= 0)
+            throw new ArgumentException($"{propertyName} must be a positive integer.", propertyName);
         return value;
     }
     private static string RequiredString(string value, string propertyName)
@@ -55,12 +55,12 @@ public sealed class Workout
         return value;
     }
 
-    public static Workout Create(Guid id, string name, string category, string instructions, DateTime date, TimeSpan time, List<User> users)
+    public static Workout Create(int id, string name, string category, string instructions, DateTime date, TimeSpan time, List<User> users)
     {
-        return new Workout(Guid.NewGuid(), name, category, instructions, date, time, users);
+        return new Workout(id, name, category, instructions, date, time, users);
     }
 
-    public static Workout Rehydrate(Guid id, string name, string category, string instructions, DateTime date, TimeSpan time, List<User> users)
+    public static Workout Rehydrate(int id, string name, string category, string instructions, DateTime date, TimeSpan time, List<User> users)
     {
         return new Workout(id, name, category, instructions, date, time, users);
     }

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Domain.Abstractions.Repositories.Users;
 
-public interface IUserRepository : IRepositoryBase<User, Guid>
+public interface IUserRepository : IRepositoryBase<User, string>
 {
-    Task<User?> GetUserByUserIdAsync(Guid UserId, CancellationToken ct = default);
+    Task<User?> GetUserByUserIdAsync(string UserId, CancellationToken ct = default);
 
-    Guid GetUserId(User model);
+    string GetUserId(User model);
 }

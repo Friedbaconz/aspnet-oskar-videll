@@ -8,7 +8,7 @@ public class UserEntity
 {
     public string Id { get; set; } = null!;
 
-    public Guid UserID { get; set; }
+    public string UserID { get; set; } = null!;
 
     public string Firstname { get; set; } = null!;
 
@@ -26,10 +26,10 @@ public class UserEntity
 
     public ApplicationUser User {  get; set; } = null!;
 
-    public int MembershipID { get; set; }
+    public int? MembershipID { get; set; }
 
     public MembershipEntity? Membership { get; set; }
 
-    public ICollection<WorkoutEntity> Workouts = [];
+    public ICollection<WorkoutEntity>? Workouts = [];
 
 }

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstractions\Identity\" />
     <Folder Include="Shared\ValueObjects\" />
   </ItemGroup>
 

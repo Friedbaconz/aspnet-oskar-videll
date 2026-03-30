@@ -9,20 +9,12 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 {
     public void Configure(EntityTypeBuilder<UserEntity> builder)
     {
-        builder.ToTable("Users");
+        builder.ToTable("UserEntites");
 
-        builder.HasKey(e => e.Id).HasName("PK_Users_ID");
-
-        builder.Property(e => e.Id)
-            .IsRequired();
+        builder.HasKey(e => e.Id);
 
         builder.Property(e => e.UserID)
             .IsRequired();
-
-        builder.HasOne<ApplicationUser>()
-            .WithOne(u => u.User)
-            .HasForeignKey<UserEntity>(e => e.UserID)
-            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(e => e.Firstname)
             .IsRequired()
@@ -62,6 +54,12 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             .HasForeignKey("MembershipID")
             .OnDelete(DeleteBehavior.SetNull)
             .HasConstraintName("FK_Users_ID");
+
+        builder.HasOne<ApplicationUser>()
+            .WithOne(x => x.User)
+            .HasForeignKey<UserEntity>(x => x.UserID)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("Application_User_ID");
 
         builder.HasIndex(e => e.Email, "UQ_Users_Email")
             .IsUnique();

@@ -4,7 +4,7 @@ namespace Infrastructure.Persistence.Entities.Workouts;
 
 public class WorkoutEntity
 {
-    public Guid WorkoutID { get; set; }
+    public int WorkoutID { get; set; }
 
     public string WorkoutName { get; set; } = null!;
 

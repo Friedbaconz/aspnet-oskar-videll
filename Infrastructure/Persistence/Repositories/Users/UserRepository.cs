@@ -3,9 +3,11 @@
 using Domain.Abstractions.Repositories.Users;
 using Domain.Aggregates.Memberships;
 using Domain.Aggregates.Users;
+using Domain.Aggregates.Workouts;
 using Infrastructure.Persistence.Contexts;
 using Infrastructure.Persistence.Entities.Memberships;
 using Infrastructure.Persistence.Entities.Users;
+using Infrastructure.Persistence.Entities.Workouts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories.Users;
@@ -16,7 +18,7 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
     {
         throw new NotImplementedException();
     }
-    public Guid GetUserId(User model)
+    public string GetUserId(User model)
     {
         return model.UserId;
     }
@@ -26,51 +28,65 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
         return model.Id;
     }
 
-    public Task<User?> GetUserByUserIdAsync(Guid UserId, CancellationToken ct = default)
+    public async Task<User?> GetUserByUserIdAsync(string UserId, CancellationToken ct = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var entity = await Set.FirstOrDefaultAsync(e => e.UserID == UserId, ct);
+            return entity is null ? default : ToDomainModel(entity);
+        }
+        catch
+        {
+            throw;
+        }
     }
     protected override void ApplyPropertyUpdates(UserEntity entity, User model)
     {
+
         entity.Firstname = model.FirstName;
         entity.Lastname = model.LastName;
-        entity.Email = model.Email;
-        entity.Password = model.PasswordHash;
         entity.Phonenumber = model.Phonenumber;
         entity.MembershipStatus = model.Status;
         entity.ProfileImageUri = model.ProfileImageUri;
         entity.MembershipID = model.MembershipId;
-        entity.Membership = model.Membership != null ? new MembershipEntity
-        {
-            MembershipID = model.Membership.Id,
-            Name = model.Membership.Name,
-            Description = model.Membership.Description,
-            Pricing = model.Membership.Pricing
-        } : null;
     }
 
 
 
     protected override User ToDomainModel(UserEntity entity)
     {
-        var model = User.Create(
+
+        var model = User.Create
+            (
             entity.Id,
             entity.UserID,
             entity.Firstname,
             entity.Lastname,
-            entity.Email,
-            entity.Password,
             entity.Phonenumber,
             entity.MembershipStatus,
             entity.ProfileImageUri,
-            entity.MembershipID,
-            entity.Membership = context.Memberships.SingleOrDefault(b => b.MembershipID == entity.MembershipID),
+            entity.MembershipID
+            );
 
+        return model;
     }
 
     public override UserEntity ToEntity(User model)
     {
-        throw new NotImplementedException();
+
+        var entity = new UserEntity
+        {
+            Id = model.Id,
+            UserID = model.UserId,
+            Firstname = model.FirstName,
+            Lastname = model.LastName,
+            Phonenumber = model.Phonenumber,
+            MembershipStatus = model.Status,
+            ProfileImageUri = model.ProfileImageUri,
+            MembershipID = model.MembershipId
+        };
+        
+        return entity;
     }
 
 }

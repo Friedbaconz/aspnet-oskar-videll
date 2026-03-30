@@ -4,17 +4,17 @@ namespace Domain.Aggregates.Memberships;
 
 public sealed class MembershipBenefits
 {
-    public MembershipBenefits(int id, Guid membershipId, string benefit, Membership membership)
+    public MembershipBenefits(int id, int membershipId, string benefit, Membership membership)
     {
         Id = RequiredInt(id, nameof(Id));
-        MembershipId = RequiredGuid(membershipId, nameof(MembershipId));
+        MembershipId = RequiredInt(membershipId, nameof(MembershipId));
         Benefit = RequiredString(benefit, nameof(Benefit));
         Membership = membership ?? throw new ArgumentNullException(nameof(membership));
     }
 
     public int Id { get; }
 
-    public Guid MembershipId { get; }
+    public int MembershipId { get; }
 
     public string Benefit { get; private set; }
 
@@ -40,12 +40,12 @@ public sealed class MembershipBenefits
         return value;
     }
 
-    public static MembershipBenefits Create(int id,Guid membershipId, string benefit, Membership membership)
+    public static MembershipBenefits Create(int id,int membershipId, string benefit, Membership membership)
     {
-        return new MembershipBenefits(id ,membershipId = Guid.NewGuid(), benefit, membership);
+        return new MembershipBenefits(id ,membershipId, benefit, membership);
     }
 
-    public static MembershipBenefits Rehydrate(int id, Guid membershipId, string benefit, Membership membership)
+    public static MembershipBenefits Rehydrate(int id, int membershipId, string benefit, Membership membership)
     {
         return new MembershipBenefits(id, membershipId, benefit, membership);
     }

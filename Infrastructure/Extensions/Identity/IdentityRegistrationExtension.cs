@@ -1,5 +1,6 @@
 ﻿
 
+using Application.Abstractions.Identity;
 using Infrastructure.Identity;
 using Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Identity;
@@ -36,6 +37,8 @@ public static class IdentityRegistrationExtension
             options.AccessDeniedPath = "/Auth/SignIn";
             options.Cookie.Name = "CoreFitness.Auth.Cookie";
         });
+
+        services.AddScoped<IidentityService, IdentityService>();
 
         return services;
     }

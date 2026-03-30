@@ -2,5 +2,5 @@
 
 public interface IWorkoutRepositoryService
 {
-    Task<bool> WorkoutExistsAsync(Guid workoutId, CancellationToken ct = default);
+    Task<bool> WorkoutExistsAsync(int workoutId, CancellationToken ct = default);
 }

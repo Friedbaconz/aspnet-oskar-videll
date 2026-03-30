@@ -8,13 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Contexts;
 
-public sealed class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> options) : IdentityDbContext<ApplicationUser>(options)
+public class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoreFitnessDbContext).Assembly);
     }
-    public DbSet<UserEntity> Users => Set<UserEntity>();
+
+    public DbSet<UserEntity> UserEntites => Set<UserEntity>();
 
     public DbSet<WorkoutEntity> Workouts => Set<WorkoutEntity>();
 
