@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Identity;
 using Infrastructure.Persistence.Entities.Memberships;
 using Infrastructure.Persistence.Entities.Workouts;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Infrastructure.Persistence.Entities.Users;
 

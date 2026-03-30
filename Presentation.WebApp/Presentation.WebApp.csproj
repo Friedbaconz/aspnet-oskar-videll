@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Shared\Components\" />
-    <Folder Include="Views\Shared\Layouts\" />
     <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 

@@ -11,16 +11,13 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         builder.ToTable("Users");
 
-        builder.HasKey(e => e.Id);
+        builder.HasKey(e => e.Id).HasName("PK_ProfileUsers_Id");
 
         builder.Property(e => e.Id)
             .IsRequired();
 
         builder.Property(e => e.UserId)
             .IsRequired();
-
-        builder.HasIndex(e => e.UserId)
-            .IsUnique();
 
         builder.Property(e => e.Firstname)
             .HasMaxLength(100);
@@ -54,8 +51,11 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             .OnDelete(DeleteBehavior.SetNull)
             .HasConstraintName("FK_Membership_ID");
 
-        builder.HasOne<ApplicationUser>()
-            .WithOne(e => e.User)
+        builder.HasIndex(e => e.UserId)
+            .IsUnique();
+
+        builder.HasOne(x => x.User)
+            .WithOne(x => x.Member)
             .HasForeignKey<UserEntity>(e => e.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }

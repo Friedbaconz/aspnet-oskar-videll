@@ -52,11 +52,15 @@ public class AuthController(IRegisterUserAccountService registerUserAccount, ISi
         return View(new RegisterEmailForm());
     }
 
+    [HttpPost("SignUp")]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> SignUp(RegisterEmailForm form, CancellationToken ct = default)
     {
         if (!ModelState.IsValid)
             return View(form);
+
         HttpContext.Session.SetString(RegisterEmailSessionKey, form.Email);
+
         return RedirectToAction(nameof(RegisterPassword));
     }
 
@@ -64,19 +68,19 @@ public class AuthController(IRegisterUserAccountService registerUserAccount, ISi
     public IActionResult RegisterPassword() 
     {
         var email = HttpContext.Session.GetString(RegisterEmailSessionKey);
-        if (string.IsNullOrEmpty(email))
+        if (string.IsNullOrWhiteSpace(email))
         {
             return RedirectToAction(nameof(SignUp));
         }
 
-        return View();
+        return View(new RegisterPasswordForm());
     }
 
     [HttpPost("RegisterPassword")]
     public async Task<IActionResult> RegisterPassword(RegisterPasswordForm form, CancellationToken ct = default)
     {
         var email = HttpContext.Session.GetString(RegisterEmailSessionKey);
-        if (string.IsNullOrEmpty(email))
+        if (string.IsNullOrWhiteSpace(email))
         {
             return RedirectToAction(nameof(SignUp));
         }

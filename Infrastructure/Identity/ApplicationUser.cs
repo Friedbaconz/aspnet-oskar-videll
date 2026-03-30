@@ -5,7 +5,7 @@ namespace Infrastructure.Identity;
 
 public class ApplicationUser : IdentityUser
 {
-    public UserEntity? User { get; set; }
+    public UserEntity? Member { get; set; }
 
     public static ApplicationUser Create(string email, bool confirmed= true)
     {

@@ -1,6 +1,52 @@
-﻿@{
+﻿@model SignInForm
+
+@{
+    Layout = "~/Views/Shared/Layouts/_AuthLayout.cshtml";
     ViewData["Title"] = "Sign In";
 }
-<section class="body-wrapper">
-    Sign In
+<section>
+    <div class="sigin-wrapper">
+        <div class="sigin-container">
+
+        </div>
+    </div>
+    <form asp-action="SignIn" asp-controller="Auth" method="post" novalidate>
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <div>
+            <label asp-for="Email">Email Address</label>
+            <input asp-for="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+
+        <div>
+            <input asp-for="RememberMe" />
+            <label asp-for="RememberMe"></label>
+        </div>
+
+        <button type="submit">Continue</button>
+
+        @if (!string.IsNullOrWhiteSpace(ViewData["ErrorMessage"]?.ToString()))
+        {
+            <div>
+                @ViewData["ErrorMessage"]
+            </div>
+        }
+
+        <p>
+            Not a member? <a asp-action="SignUp" asp-controller="Auth">Become One</a>
+        </p>
+    </form>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScript"></partial>
+    }

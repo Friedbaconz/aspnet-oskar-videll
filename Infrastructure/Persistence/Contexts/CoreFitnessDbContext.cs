@@ -13,8 +13,8 @@ public class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> options
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoreFitnessDbContext).Assembly);
+        base.OnModelCreating(modelBuilder);
     }
 
     public DbSet<UserEntity> UserEntites => Set<UserEntity>();

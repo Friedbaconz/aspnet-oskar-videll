@@ -808,3 +808,20 @@ program-wrapper {
     margin: auto;
     font-size:50px;
 }
+
+.sigin-wrapper {
+    display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.sigin-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    height: auto;
+    width: 100%;
+    margin: 100px 0px;
+    justify-content: center;
+    width: 70%;
+}
