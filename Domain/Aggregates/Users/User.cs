@@ -72,7 +72,7 @@ public sealed class User
         return user;
     }
 
-    public void UpdateProfile(string firstname, string lastname, string? phonenumber, string? status, string? profileimage, int? membershipid)
+    public void UpdateProfile(string firstname, string lastname, string? phonenumber, string? profileimage)
     {
         if (!string.IsNullOrWhiteSpace(firstname))
             throw new ArgumentException("First name is required");
@@ -83,8 +83,6 @@ public sealed class User
         FirstName = firstname.Trim();
         LastName = lastname.Trim();
         Phonenumber = string.IsNullOrWhiteSpace(phonenumber) ? null : phonenumber;
-        Status = string.IsNullOrWhiteSpace(status) ? null : status;
         ProfileImageUri = string.IsNullOrWhiteSpace(profileimage) ? null : profileimage;
-        MembershipId = membershipid is null ? null : membershipid.Value;
     }
 }
