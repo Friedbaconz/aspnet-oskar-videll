@@ -8,24 +8,32 @@
 <section>
     <div class="sigin-wrapper">
         <div class="sigin-container">
-            <form asp-action="SignUp" asp-controller="Auth" method="post" novalidate>
+            <form class="signin-form" asp-action="SignUp" asp-controller="Auth" method="post" novalidate>
                 <h1>Become a Memeber</h1>
                 <p>Sign up to continue your fitness journey with full access to your customized program, training history, and progress tracking. Stay consistent, monitor your development, and keep moving forward with the structure and support built into your account.</p>
                 <hr />
-                <div>
+                <div class="signin-alt">
+                    <div class="sigin-circle"></div>
+                    <div class="sigin-circle"></div>
+                    <div class="sigin-circle"></div>
+                </div>
+                <div class="signin-line">
+                    <span></span><p>OR CONTINUE WITH</p><span></span>
+                </div>
+                <div class="signin-bar">
                     <label asp-for="Email">Email Address</label>
                     <input asp-for="Email" />
                     <span asp-validation-for="Email"></span>
                 </div>
-                <button type="submit">Continue</button>
+                <button class="sigin-button"type="submit">Continue</button>
 
                 @if (!string.IsNullOrWhiteSpace(ViewData["ErrorMessage"]?.ToString()))
                 {
-                    <div>
+                    <div class="error-in-text">
                         @ViewData["ErrorMessage"]
                     </div>
                 }
-                <div>
+                <div class="signin-undertext">
                     <p>We will send a verification code to your email address.</p>
                 </div>
             </form>

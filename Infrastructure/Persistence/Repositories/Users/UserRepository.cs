@@ -14,10 +14,6 @@ namespace Infrastructure.Persistence.Repositories.Users;
 
 public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User, string, UserEntity, CoreFitnessDbContext>(context), IUserRepository
 {
-    public Task<User?> GetByIdAsync(Guid id, CancellationToken ct = default)
-    {
-        throw new NotImplementedException();
-    }
     public string GetUserId(User model)
     {
         return model.UserId;

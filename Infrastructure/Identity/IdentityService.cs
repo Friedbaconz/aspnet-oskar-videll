@@ -35,22 +35,7 @@ public class IdentityService(UserManager<ApplicationUser> userManager, SignInMan
             : Task.FromResult(Result.Ok());
     }
 
-    public Task<Result<bool>> RemoveUserAsync(string userId, CancellationToken ct = default)
-    {
-        var result = userManager.FindByIdAsync(userId);
-        return result.ContinueWith(task =>
-        {
-            var user = task.Result;
-            if (user is null)
-            {
-                return Result<bool>.NotFound($"User with ID {userId} not found.");
-            }
-            var deleteResult = userManager.DeleteAsync(user).Result;
-            return !deleteResult.Succeeded 
-                ? Result<bool>.Error("Failed to delete user.") 
-                : Result<bool>.Ok(true);
-        }, ct);
-    }
+
 
     public Task SignOutAsync(CancellationToken ct = default)
     {

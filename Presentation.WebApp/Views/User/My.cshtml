@@ -4,9 +4,66 @@
     ViewData["Title"] = "My Account";
 }
 
-<div>
-    <section>
-        <form asp-action="My" asp-controller="User" method="post" novalidate>
-        </form>
-    </section>
-</div>
+<section>
+        <div class="sigin-wrapper">
+            <div class="sigin-container">
+                <aside>
+
+                            <section><a asp-action="My" asp-controller="User">My Account</a></section>
+                            <section><a asp-action="MyProgram" asp-controller="User">My Program</a></section>
+                            <section><a asp-action="MyHistory" asp-controller="User">My History</a></section>
+                            <section><a asp-action="MyProgress" asp-controller="User">My Progress</a></section>
+                        
+                </aside>
+
+                <section>
+                <form class="signin-form" asp-action="My" asp-controller="User" method="post" novalidate>
+                        <h1>About me</h1>
+                        <hr />
+
+                        @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+                        {
+                            if (ViewData["MessageType"]?.ToString() == "error")
+                            {
+                                <div class="error-in-text">
+                                    @ViewData["Message"]
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="success-in-text">
+                                    @ViewData["Message"]
+                                </div>
+                            }
+                        }
+
+                        <div class="signin-bar">
+                            <label asp-for="ProfileForm.FirstName"></label>
+                            <input asp-for="ProfileForm.FirstName" />
+                            <span asp-validation-for="ProfileForm.FirstName"></span>
+                        </div>
+
+                        <div class="signin-bar">
+                            <label asp-for="ProfileForm.LastName"></label>
+                            <input asp-for="ProfileForm.LastName" />
+                            <span asp-validation-for="ProfileForm.LastName"></span>
+                        </div>
+
+                        <div class="signin-bar">
+                            <label asp-for="ProfileForm.PhoneNumber"></label>
+                            <input asp-for="ProfileForm.PhoneNumber" />
+                            <span asp-validation-for="ProfileForm.PhoneNumber"></span>
+                        </div>
+
+                        <div class="signin-bar">
+                            <label asp-for="ProfileForm.ProfileImageUri"></label>
+                            <input type="file" asp-for="ProfileForm.ProfileImageUri" />
+                            <span asp-validation-for="ProfileForm.ProfileImageUri"></span>
+                        </div>
+
+                        <button type="submit">Save</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+</section>

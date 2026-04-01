@@ -23,4 +23,18 @@ public class ApplicationUser : IdentityUser
 
         return user;
     }
+
+    public async Task<IdentityResult> SetPasswordAsync(UserManager<ApplicationUser> userManager, string password, CancellationToken ct = default)
+    {
+        if (userManager is null)
+        {
+            throw new ArgumentNullException(nameof(userManager));
+        }
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new ArgumentException("Password cannot be null or empty.", nameof(password));
+        }
+        var token = await userManager.GeneratePasswordResetTokenAsync(this);
+        return await userManager.ResetPasswordAsync(this, token, password);
+    }
 }

@@ -17,7 +17,6 @@ public static class UserRegistrationExtension
     {
         services.AddScoped<IRegisterUserAccountService, RegisterUserAccountService>();
         services.AddScoped<IGetUserProfileService, GetUserProfileService>();
-        services.AddScoped<IRemoveUserProfileService, RemoveUserProfileService>();
         services.AddScoped<ISignInUserService, SignInUserService>();
         services.AddScoped<IUpdateUserService, UpdateUserService>();
         return services;

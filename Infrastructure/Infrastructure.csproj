@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Persistence\Contexts\Migrations\" />
-    <Folder Include="Persistence\Repositories\Workout\" />
+    <Folder Include="Persistence\Repositories\Bookings\" />
   </ItemGroup>
 
 </Project>

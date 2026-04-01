@@ -65,7 +65,7 @@ public class AuthController(IRegisterUserAccountService registerUserAccount, ISi
     }
 
     [HttpGet("RegisterPassword")]
-    public IActionResult RegisterPassword() 
+    public IActionResult RegisterPassword()
     {
         var email = HttpContext.Session.GetString(RegisterEmailSessionKey);
         if (string.IsNullOrWhiteSpace(email))
@@ -91,7 +91,7 @@ public class AuthController(IRegisterUserAccountService registerUserAccount, ISi
         var input = new RegisterUserAccountInput(email, form.Password);
 
         var result = await registerUserAccount.ExecuteAsync(input, ct);
-        if(!result.Success)
+        if (!result.Success)
         {
             ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during registration.";
             return View(form);
@@ -109,5 +109,5 @@ public class AuthController(IRegisterUserAccountService registerUserAccount, ISi
         HttpContext.Session.Remove(RegisterEmailSessionKey);
         return RedirectToAction("My", "User");
     }
-
 }
+

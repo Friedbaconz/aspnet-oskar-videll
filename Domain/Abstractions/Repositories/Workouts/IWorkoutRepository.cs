@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Domain.Abstractions.Repositories.Workouts;
 
-public interface IWorkoutRepository : IRepositoryBase<Workout, Guid>
+public interface IWorkoutRepository : IRepositoryBase<Workout, int>
 {
 
 }

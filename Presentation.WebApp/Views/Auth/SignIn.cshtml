@@ -7,44 +7,55 @@
 <section>
     <div class="sigin-wrapper">
         <div class="sigin-container">
+            <form class="signin-form" asp-action="SignIn" asp-controller="Auth" method="post" novalidate>
+                @Html.AntiForgeryToken()
+                <h1>Welcome Back!</h1>
+                <p>Log in to continue your fitness journey with full access to your customized program, training history, and progress tracking. Stay consistent, monitor your development, and keep moving forward with the structure and support built into your account.</p>
+                <hr />
+                <div class="signin-alt">
+                    <div class="sigin-circle"></div>
+                    <div class="sigin-circle"></div>
+                    <div class="sigin-circle"></div>
+                </div>
+                <div class="signin-line">
+                    <span></span><p>OR CONTINUE WITH</p><span></span>
+                </div>
+                <div asp-validation-summary="ModelOnly"></div>
 
+                <div class="signin-bar">
+                    <label asp-for="Email">Email Address</label>
+                    <input asp-for="Email" />
+                    <span asp-validation-for="Email"></span>
+                </div>
+
+                <div class="signin-bar">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" />
+                    <span asp-validation-for="Password"></span>
+                    <a>Forgot Your Password?</a>
+                </div>
+
+                <div class="signin-rembar">
+                    <input asp-for="RememberMe" />
+                    <label asp-for="RememberMe"> Remember Me?</label>
+                </div>
+
+                <button class ="sigin-button">Continue</button>
+
+                @if (!string.IsNullOrWhiteSpace(ViewData["ErrorMessage"]?.ToString()))
+                {
+                    <div class="error-in-text">
+                        @ViewData["ErrorMessage"]
+                    </div>
+                }
+
+                <p>
+                    Not a member? <a asp-action="SignUp" asp-controller="Auth">Become One</a>
+                </p>
+
+            </form>
         </div>
     </div>
-    <form asp-action="SignIn" asp-controller="Auth" method="post" novalidate>
-        @Html.AntiForgeryToken()
-
-        <div asp-validation-summary="ModelOnly"></div>
-
-        <div>
-            <label asp-for="Email">Email Address</label>
-            <input asp-for="Email" />
-            <span asp-validation-for="Email"></span>
-        </div>
-
-        <div>
-            <label asp-for="Password"></label>
-            <input asp-for="Password" />
-            <span asp-validation-for="Password"></span>
-        </div>
-
-        <div>
-            <input asp-for="RememberMe" />
-            <label asp-for="RememberMe"></label>
-        </div>
-
-        <button type="submit">Continue</button>
-
-        @if (!string.IsNullOrWhiteSpace(ViewData["ErrorMessage"]?.ToString()))
-        {
-            <div>
-                @ViewData["ErrorMessage"]
-            </div>
-        }
-
-        <p>
-            Not a member? <a asp-action="SignUp" asp-controller="Auth">Become One</a>
-        </p>
-    </form>
 </section>
 
 @section Scripts {

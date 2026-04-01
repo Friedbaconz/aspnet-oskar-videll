@@ -35,7 +35,14 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
 
     protected override void ApplyPropertyUpdates(MembershipEntity entity, Membership model)
     {
-
+        entity.Name = model.Name;
+        entity.Description = model.Description;
+        entity.Status = model.Status;
+        entity.Type = model.Type;
+        entity.Pricing = model.Pricing;
+        entity.DurationInMonths = model.MonthlyDuration;
+        entity.Users = null;
+        entity.Benefits = null;
     }
 
     protected override Membership ToDomainModel(MembershipEntity entity)

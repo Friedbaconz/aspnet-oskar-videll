@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="Memberships\Inputs\" />
     <Folder Include="Workouts\Inputs\" />
-    <Folder Include="Workouts\Services\" />
   </ItemGroup>
 
 </Project>

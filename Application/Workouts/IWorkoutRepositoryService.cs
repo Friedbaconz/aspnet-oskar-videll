@@ -1,6 +1,14 @@
-﻿namespace Application.Workouts;
+﻿using Application.Workouts.Services;
+using Domain.Abstractions.Repositories.Workouts;
+using Domain.Aggregates.Workouts;
 
-public interface IWorkoutRepositoryService
+namespace Application.Workouts;
+
+public sealed class WorkoutRepositoryService(IWorkoutRepository repo) : IWorkoutService
 {
-    Task<bool> WorkoutExistsAsync(int workoutId, CancellationToken ct = default);
+    public Task<IReadOnlyList<Workout>> GetWorkoutsAsync(CancellationToken ct = default)
+    {
+        var workouts = repo.GetAllAsync(ct);
+        return workouts;
+    }
 }
