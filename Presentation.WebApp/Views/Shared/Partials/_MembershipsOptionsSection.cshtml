@@ -11,7 +11,7 @@
                     <div>
                         @foreach (var benefit in membership.Benefits)
                         {
-                            @foreach (var item in benefit.Benefit)
+                            @foreach (var item in benefit)
                             {
                                 <p><i class="bi bi-check"></i> @item</p>
                             }
