@@ -45,6 +45,9 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(e => e.MembershipID)
             .IsRequired(false);
 
+        builder.Property(e => e.workoutId)
+            .IsRequired(false);
+
         builder.HasOne(e => e.Membership)
             .WithMany(m => m.Users)
             .HasForeignKey("MembershipID")

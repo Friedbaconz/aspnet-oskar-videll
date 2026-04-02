@@ -4,7 +4,7 @@ namespace Infrastructure.Persistence.Entities.Workouts;
 
 public class WorkoutEntity
 {
-    public int WorkoutID { get; set; }
+    public string WorkoutID { get; set; } = null!;
 
     public string WorkoutName { get; set; } = null!;
 
@@ -15,7 +15,6 @@ public class WorkoutEntity
     public DateTime Date { get; set; }
 
     public TimeSpan Time { get; set; }
-
 
     public ICollection<UserEntity> Users = [];
 }

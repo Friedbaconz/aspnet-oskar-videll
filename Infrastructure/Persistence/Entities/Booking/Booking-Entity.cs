@@ -9,7 +9,7 @@ public class BookingEntity
 
     public string UserID { get; set; } = null!;
 
-    public int WorkoutID { get; set; }
+    public string WorkoutID { get; set; } = null!;
 
     public UserEntity User { get; set; } = null!;
 

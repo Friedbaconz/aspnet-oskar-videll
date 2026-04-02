@@ -38,6 +38,16 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
     }
     protected override void ApplyPropertyUpdates(UserEntity entity, User model)
     {
+        var NewEntity = context.UserEntites.FirstOrDefault(m => m.UserId == entity.UserId);
+
+        if (NewEntity != null)
+        {
+            entity.Workouts = NewEntity.Workouts;
+        }
+        else
+        {
+            entity.Workouts = new List<WorkoutEntity>();
+        }
 
         entity.Firstname = model.FirstName;
         entity.Lastname = model.LastName;
@@ -51,6 +61,10 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
 
     protected override User ToDomainModel(UserEntity entity)
     {
+        var Workouts = context.Workouts
+            .Where(b => b.WorkoutID == entity.workoutId)
+            .Select(b => b.WorkoutID)
+            .ToList();
 
         var model = User.Create
             (
@@ -62,7 +76,9 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
             entity.MembershipStatus,
             entity.CreatedAt,
             entity.ProfileImageUri,
-            entity.MembershipID
+            entity.MembershipID,
+            entity.workoutId,
+            Workouts
             );
 
         return model;
@@ -70,6 +86,20 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
 
     public override UserEntity ToEntity(User model)
     {
+        var Workouts = new List<WorkoutEntity>();
+
+        if (model.Workouts != null)
+        {
+            foreach (var Workout in model.Workouts)
+            {
+                var existing = context.Workouts.FirstOrDefault(e => e.WorkoutID == Workout);
+
+                if (existing != null)
+                {
+                    Workouts.Add(existing);
+                }
+            }
+        }
 
         var entity = new UserEntity
         {
@@ -80,7 +110,8 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
             Phonenumber = model.Phonenumber,
             MembershipStatus = model.Status,
             ProfileImageUri = model.ProfileImageUri,
-            MembershipID = model.MembershipId
+            MembershipID = model.MembershipId,
+            Workouts = Workouts
         };
         
         return entity;

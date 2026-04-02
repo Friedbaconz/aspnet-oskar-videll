@@ -4,9 +4,9 @@ namespace Domain.Aggregates.Workouts;
 
 public sealed class Workout
 {
-    public Workout(int id, string name, string category, string instructions, DateTime date, TimeSpan time, List<User> users)
+    public Workout(string id, string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
     {
-        Id = RequiredInt(id, nameof(Id));
+        Id = RequiredString(id.ToString(), nameof(Id));
         Name = RequiredString(name, nameof(Name));
         Category = RequiredString(category, nameof(Category));
         Instructions = RequiredString(instructions, nameof(Instructions));
@@ -15,7 +15,7 @@ public sealed class Workout
         Users = users;
     }
 
-    public int Id { get; }
+    public string Id { get; }
 
     public string Name { get; private set; }
 
@@ -27,7 +27,7 @@ public sealed class Workout
 
     public TimeSpan Time { get; private set; }
 
-    public List<User> Users { get; private set; }
+    public IEnumerable<string> Users { get; private set; }
 
     private static int RequiredInt(int value, string propertyName)
     {
@@ -55,17 +55,17 @@ public sealed class Workout
         return value;
     }
 
-    public static Workout Create(int id, string name, string category, string instructions, DateTime date, TimeSpan time, List<User> users)
+    public static Workout Create(string id, string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
     {
-        return new Workout(id, name, category, instructions, date, time, users);
+        return new Workout(id = Guid.NewGuid().ToString(), name, category, instructions, date, time, users);
     }
 
-    public static Workout Rehydrate(int id, string name, string category, string instructions, DateTime date, TimeSpan time, List<User> users)
+    public static Workout Rehydrate(string id, string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
     {
-        return new Workout(id, name, category, instructions, date, time, users);
+        return new Workout(id = Guid.NewGuid().ToString(), name, category, instructions, date, time, users);
     }
 
-    public void Update(string name, string category, string instructions, DateTime date, TimeSpan time, List<User> users)
+    public void Update(string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
     {
         Name = RequiredString(name, nameof(Name));
         Category = RequiredString(category, nameof(Category));

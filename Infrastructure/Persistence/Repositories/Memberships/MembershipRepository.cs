@@ -4,6 +4,8 @@ using Domain.Aggregates.Users;
 using Domain.Aggregates.Workouts;
 using Infrastructure.Persistence.Contexts;
 using Infrastructure.Persistence.Entities.Memberships;
+using Infrastructure.Persistence.Entities.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories.Memberships;
 
@@ -17,79 +19,95 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
 
     public override MembershipEntity ToEntity(Membership model)
     {
+        var benefits = new List<MembershipBenefitEntity>();
+
+        foreach (var benefit in model.Benefits)
+        {
+            var existing = context.MembershipBenefits.FirstOrDefault(e => e.MembershipID == model.Id && e.Benefit == benefit);
+            
+            if (existing != null)
+            {
+                benefits.Add(existing);
+            }
+        }
+
+        var members = new List<UserEntity>();
+
+        foreach (var member in model.Users)
+        {
+            var existing = context.UserEntites.FirstOrDefault(e => e.Id == member);
+
+            if (existing != null)
+            {
+                members.Add(existing);
+            }
+        }
+
         var entity = new MembershipEntity
         {
             MembershipID = model.Id,
             Name = model.Name,
             Description = model.Description,
-            Benefits = null,
+            Benefits = benefits,
             Type = model.Type,
             Status = model.Status,
             Pricing = model.Pricing,
             DurationInMonths = model.MonthlyDuration,
-            Users = null
+            Users = members
         };
+
 
         return entity;
     }
 
     protected override void ApplyPropertyUpdates(MembershipEntity entity, Membership model)
     {
+        var NewEntity = context.Memberships.FirstOrDefault(m => m.MembershipID == entity.MembershipID);
+
+        if (NewEntity != null)
+        {
+            entity.Benefits = NewEntity.Benefits;
+            entity.Users = NewEntity.Users;
+        }
+        else
+        {
+            entity.Benefits = new List<MembershipBenefitEntity>();
+            entity.Users = new List<UserEntity>();
+        }
+
         entity.Name = model.Name;
         entity.Description = model.Description;
         entity.Status = model.Status;
         entity.Type = model.Type;
         entity.Pricing = model.Pricing;
         entity.DurationInMonths = model.MonthlyDuration;
-        entity.Users = null;
-        entity.Benefits = null;
     }
 
     protected override Membership ToDomainModel(MembershipEntity entity)
     {
-        var users = new List<User>();
+        var benefits = context.MembershipBenefits
+            .Where(b => b.MembershipID == entity.MembershipID)
+            .Select(b => b.Benefit)
+            .ToList();
 
-        foreach (var userEntity in entity.Users)
-        {
-            users.Add(User.Create(
-                userEntity.Id,
-                userEntity.UserId,
-                userEntity.Firstname,
-                userEntity.Lastname,
-                userEntity.Phonenumber,
-                userEntity.MembershipStatus,
-                userEntity.CreatedAt,
-                userEntity.ProfileImageUri,
-                userEntity.MembershipID
-            ));
-        }
+        var users = context.UserEntites
+            .Where(u => u.MembershipID == entity.MembershipID)
+            .Select(u => u.Id)
+            .ToList();
 
 
-        var benefits = new List<MembershipBenefits>();
-
-        foreach (var benefitEntity in entity.Benefits)
-        {
-            benefits.Add(MembershipBenefits.Create(
-                benefitEntity.MembershipBenefitID,
-                benefitEntity.MembershipID,
-                benefitEntity.Benefit,
-                benefitEntity.Membership != null ? ToDomainModel(benefitEntity.Membership) : null
-            ));
-        }
-
-
-        var membership = Membership.Create(
+        var model = Membership.Create(
             entity.MembershipID,
             entity.Name,
             entity.Description,
             benefits,
-            entity.Type,
             entity.Status,
+            entity.Type,
             entity.Pricing,
             entity.DurationInMonths,
             users
         );
 
-        return membership;
+        return model;
     }
 }

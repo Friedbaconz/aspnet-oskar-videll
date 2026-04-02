@@ -4,11 +4,11 @@ namespace Domain.Aggregates.Memberships;
 
 public sealed class Membership
 {
-    public Membership(int id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
+    public Membership(int id, string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
     {
         Id = RequiredInt(id, nameof(Id));
         Name = RequiredString(name, nameof(Name));
-        Description = RequiredString(description, nameof(Description));
+        Description = description;
         Benefits = benefits ?? throw new ArgumentNullException(nameof(benefits));
         Status = RequiredString(status, nameof(Status));
         Type = RequiredString(type, nameof(Type));
@@ -19,13 +19,13 @@ public sealed class Membership
 
     public int Id { get; }
     public string Name { get; private set; }
-    public string Description { get; private set; }
-    public List<MembershipBenefits> Benefits {  get; private set; }
+    public string? Description { get; private set; }
+    public IEnumerable<string> Benefits {  get; private set; }
     public string Status { get; private set; }
     public string Type {  get; private set; }
     public decimal Pricing { get; private set; }
     public int MonthlyDuration { get; private set; }
-    public List<User> Users { get; private set; }
+    public IEnumerable<string> Users { get; private set; }
 
     private static string RequiredString(string value, string propertyName)
     {
@@ -49,19 +49,19 @@ public sealed class Membership
         return value;
     }
 
-    public static Membership Create(int id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
+    public static Membership Create(int id, string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
     {
         return new Membership(id, name, description, benefits, status, type, pricing, monthlyDuration, users);
     }
 
-    public static Membership Rehydrate(int id, string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
+    public static Membership Rehydrate(int id, string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
     {
         return new Membership(id, name, description, benefits, status, type, pricing, monthlyDuration, users);
     }
-    public void Update(string name, string description, List<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, List<User> users)
+    public void Update(string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
     {
         Name = RequiredString(name, nameof(Name));
-        Description = RequiredString(description, nameof(Description));
+        Description = description;
         Benefits = benefits;
         Type = RequiredString(type, nameof(Type));
         Pricing = RequiredValue(pricing, nameof(Pricing));

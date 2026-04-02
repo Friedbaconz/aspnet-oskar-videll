@@ -26,9 +26,9 @@ public sealed class User
 
     public int? MembershipId { get; private set; }
 
-    public Membership? Membership { get; private set; }
+    public string? workoutId { get; private set; }
 
-    public List<Workout>? Workouts { get; private set; }
+    public IEnumerable<string>? Workouts { get; private set; }
 
     private User()
     {
@@ -57,7 +57,7 @@ public sealed class User
         return user;
     }
 
-    public static User Create(string id, string userid, string? firstname, string? lastname, string? phonenumber, string? status, DateTimeOffset createAt, string? profileimage, int? membershipid)
+    public static User Create(string id, string userid, string? firstname, string? lastname, string? phonenumber, string? status, DateTimeOffset createAt, string? profileimage, int? membershipid, string? workoutId, IEnumerable<string>? Workouts)
     {
         var user = new User(id, userid, createAt)
         {
@@ -66,7 +66,9 @@ public sealed class User
             Phonenumber = phonenumber,
             Status = status,
             ProfileImageUri = profileimage,
-            MembershipId = membershipid
+            MembershipId = membershipid,
+            workoutId = workoutId,
+            Workouts = Workouts
         };
 
         return user;

@@ -29,6 +29,8 @@ public class UserEntity
 
     public MembershipEntity? Membership { get; set; }
 
+    public string? workoutId { get; set; }
+
     public ICollection<WorkoutEntity>? Workouts = [];
 
 }
