@@ -4,7 +4,7 @@ using Domain.Aggregates.Workouts;
 
 namespace Application.Workouts;
 
-public sealed class WorkoutRepositoryService(IWorkoutRepository repo) : IWorkoutService
+public sealed class WorkoutService(IWorkoutRepository repo) : IWorkoutService
 {
     public Task<IReadOnlyList<Workout>> GetWorkoutsAsync(CancellationToken ct = default)
     {
