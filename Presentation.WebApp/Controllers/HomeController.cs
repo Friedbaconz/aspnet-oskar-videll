@@ -11,14 +11,4 @@ public class HomeController : Controller
 
         return View();
     }
-
-    public IActionResult CostumerService()
-    {
-        return View(); 
-    }
-
-    public IActionResult MyAccount()
-    {
-        return View(); 
-    }
 }
