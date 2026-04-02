@@ -9,9 +9,9 @@ namespace Application.Bookings
 {
     public sealed class BookingService(IBookingRepository repo) : IBookingService
     {
-        public Task<IReadOnlyList<Booking>> GetBookingsAsync(CancellationToken ct = default)
+        public async Task<IReadOnlyList<Booking>> GetBookingsAsync(CancellationToken ct = default)
         {
-            var bookings = repo.GetAllAsync(ct);
+            var bookings = await repo.GetAllAsync(ct);
             return bookings;
         }
     }

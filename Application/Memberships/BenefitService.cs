@@ -9,9 +9,9 @@ namespace Application.Memberships
 {
     public sealed class BenefitService(IBenefitRepository repo) : IBenefitService
     {
-        public Task<IReadOnlyList<MembershipBenefits>> GetBenefitsAsync(CancellationToken ct = default)
+        public async Task<IReadOnlyList<MembershipBenefits>> GetBenefitsAsync(CancellationToken ct = default)
         {
-            var benefits = repo.GetAllAsync(ct);
+            var benefits = await repo.GetAllAsync(ct);
             return benefits;
         }
     }

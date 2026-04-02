@@ -6,9 +6,9 @@ namespace Application.Workouts;
 
 public sealed class WorkoutService(IWorkoutRepository repo) : IWorkoutService
 {
-    public Task<IReadOnlyList<Workout>> GetWorkoutsAsync(CancellationToken ct = default)
+    public async Task<IReadOnlyList<Workout>> GetWorkoutsAsync(CancellationToken ct = default)
     {
-        var workouts = repo.GetAllAsync(ct);
+        var workouts = await repo.GetAllAsync(ct);
         return workouts;
     }
 }

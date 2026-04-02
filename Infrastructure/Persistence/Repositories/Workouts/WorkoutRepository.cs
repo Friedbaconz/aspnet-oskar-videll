@@ -9,16 +9,12 @@ using Infrastructure.Persistence.Entities.Users;
 
 namespace Infrastructure.Persistence.Repositories.Workouts;
 
-public sealed class WorkoutRepository(CoreFitnessDbContext context) : RepositoryBase<Workout, int, WorkoutEntity, CoreFitnessDbContext>(context), IWorkoutRepository
+public sealed class WorkoutRepository(CoreFitnessDbContext context) : RepositoryBase<Workout, string, WorkoutEntity, CoreFitnessDbContext>(context), IWorkoutRepository
 {
-    public Task<Workout?> GetByIdAsync(string id, CancellationToken ct = default)
-    {
-        return GetByIdAsync(id, ct);
-    }
 
-    public override int GetId(Workout model)
+    public override string GetId(Workout model)
     {
-        throw new NotImplementedException();
+        return model.Id;
     }
 
     public override WorkoutEntity ToEntity(Workout model)
