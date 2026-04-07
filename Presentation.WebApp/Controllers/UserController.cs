@@ -1,4 +1,5 @@
-﻿using Application.Users.Abstractions;
+﻿using Application.Abstractions.Identity;
+using Application.Users.Abstractions;
 using Application.Users.Inputs;
 using Application.Users.Services;
 using Infrastructure.Identity;
@@ -11,7 +12,7 @@ namespace Presentation.WebApp.Controllers;
 
 [Authorize]
 [Route("User")]
-public class UserController( UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService) : Controller
+public class UserController( UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService) : Controller
 {
     [HttpGet("My")]
     public async Task<IActionResult> My(CancellationToken ct = default)
@@ -83,4 +84,38 @@ public class UserController( UserManager<ApplicationUser> userManager, IGetUserP
 
         return View(viewmodel);
     }
+
+    [HttpPost("DeleteUser")]
+    [ValidateAntiForgeryToken]
+
+    public async Task<IActionResult> DeleteUser(CancellationToken ct = default)
+    {
+        var user = await userManager.GetUserAsync(User);
+        if (user is null)
+        {
+            return Challenge();
+        }
+        var result = await removeUserService.ExecuteAsync(user.Id, ct);
+
+        if (!result.Success)
+        {
+            ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred while deleting your account.";
+            ViewData["ErrorType"] = "error";
+            return RedirectToAction("My");
+        }
+
+        var deleteResult = await iidentityService.DeleteUserAsync(user.Email ?? string.Empty, ct);
+
+        if (!deleteResult.Success)
+        {
+            ViewData["ErrorMessage"] = deleteResult.ErrorMessage ?? "An error occurred while deleting your account from the identity store.";
+            ViewData["ErrorType"] = "error";
+            return RedirectToAction("My");
+        }
+
+        await iidentityService.SignOutAsync(ct);
+        return RedirectToAction("Index", "Home");
+    }
+
+
 }

@@ -9,3 +9,4 @@ public record UpdateUserProfileInput
 (
     string UserId, string Firstname, string Lastname, string Phonenumber, string ProfileImageUri
 );
+

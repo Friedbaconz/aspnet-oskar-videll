@@ -19,8 +19,6 @@ public class UserEntity
 
     public string? MembershipStatus { get; set; }
 
-    public DateTimeOffset CreatedAt { get; set; }
-
     public string? ProfileImageUri { get; set; }
 
     public ApplicationUser User {  get; set; } = null!;

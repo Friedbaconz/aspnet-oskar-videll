@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class BuildCoreFitnessIdentityFix2 : Migration
+    public partial class BuildCoreFitnessIdentityFix3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -220,7 +220,6 @@ namespace Infrastructure.Migrations
                     Lastname = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     Phonenumber = table.Column<string>(type: "TEXT", unicode: false, maxLength: 20, nullable: true),
                     MembershipStatus = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     ProfileImageUri = table.Column<string>(type: "TEXT", unicode: false, maxLength: 255, nullable: true),
                     MembershipID = table.Column<int>(type: "INTEGER", nullable: true),
                     workoutId = table.Column<string>(type: "TEXT", nullable: true)

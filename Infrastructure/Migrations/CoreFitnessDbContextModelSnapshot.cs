@@ -167,9 +167,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Firstname")
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");

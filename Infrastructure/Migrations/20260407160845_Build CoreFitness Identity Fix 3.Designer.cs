@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CoreFitnessDbContext))]
-    [Migration("20260407141110_Build CoreFitness Identity Fix 2")]
-    partial class BuildCoreFitnessIdentityFix2
+    [Migration("20260407160845_Build CoreFitness Identity Fix 3")]
+    partial class BuildCoreFitnessIdentityFix3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -168,9 +168,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Persistence.Entities.Users.UserEntity", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Firstname")

@@ -24,6 +24,24 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
         return model.Id;
     }
 
+    public async Task<bool> DeleteAsync(User model, CancellationToken ct = default)
+    {
+        try
+        {
+            var id = GetId(model);
+            var entity = await Set.FindAsync([id], ct);
+            if (entity is null)
+                return false;
+            Set.Remove(entity);
+            await _Context.SaveChangesAsync(ct);
+            return true;
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
     public async Task<User?> GetUserByUserIdAsync(string UserId, CancellationToken ct = default)
     {
         try
@@ -74,7 +92,6 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
             entity.Lastname,
             entity.Phonenumber,
             entity.MembershipStatus,
-            entity.CreatedAt,
             entity.ProfileImageUri,
             entity.MembershipID,
             entity.workoutId,

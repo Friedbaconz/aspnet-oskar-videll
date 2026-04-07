@@ -5,22 +5,37 @@
 }
 
 <section class="body-wrapper">
+    <div class="section-header-wrapper">
+        <h1 class="section-header">My Account</h1>
+    </div>
         <div class="sigin-wrapper">
             <div class="sigin-container">
-                <div class="section-header-wrapper">
-                    <h1 class="section-header">Customer Service</h1>
-                </div>
                 <aside>
+                            <div>
+                                //img
+                                @if (!string.IsNullOrWhiteSpace(Model.ProfileForm.ProfileImageUri))
+                                {
+                                    <img src="@Model.ProfileForm.ProfileImageUri" alt="Profile Image" class="profile-image"/>
+                                }
+                                else
+                                {
+                                    <div class="profile-placeholder">No Profile Image</div>
+                                }
+                            </div>
+                            <div>
+                                <p>Menu Options</p>
+                                <section><a asp-area="" asp-action="Index" asp-controller="CostumerService">About Us</a></section>
+                                <section><a asp-area="" asp-action="Index" asp-controller="MemeberShip">My Membership</a></section>
+                                <section><a asp-area="" asp-action="User" asp-controller="Bookings">My Bookings</a></section>
+                                <section><form asp-area="" asp-action="SignOut" asp-controller="Auth" method="post"><input type="submit" value="Logout"/></form></section>
+                            </div>
 
-                            <section><a asp-action="My" asp-controller="User">My Account</a></section>
-                            <section><a asp-action="MyProgram" asp-controller="User">My Program</a></section>
-                            <section><a asp-action="MyHistory" asp-controller="User">My History</a></section>
-                            <section><a asp-action="MyProgress" asp-controller="User">My Progress</a></section>
-                        
+                            <section><form asp-controller="User" asp-action="DeleteUser" method="post"><input type="submit" value="Delete" /></form></section>
+                            
                 </aside>
 
                 <section>
-                <form class="signin-form" asp-action="My" asp-controller="User" method="post" novalidate>
+                <form class="signin-form" asp-action="My" asp-controller="User" method="post"  novalidate>
                         <h1>About me</h1>
                         <hr />
 
@@ -53,10 +68,18 @@
                         </div>
 
                         <div class="signin-bar">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" />
+                            <span asp-validation-for="Email"></span>
+                        </div>
+
+                        <div class="signin-bar">
                             <label asp-for="ProfileForm.PhoneNumber"></label>
                             <input asp-for="ProfileForm.PhoneNumber" />
                             <span asp-validation-for="ProfileForm.PhoneNumber"></span>
                         </div>
+
+                        <hr />
 
                         <div class="signin-bar">
                             <label asp-for="ProfileForm.ProfileImageUri"></label>

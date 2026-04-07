@@ -20,8 +20,6 @@ public sealed class User
 
     public string? Status { get; private set; }
 
-    public DateTimeOffset CreatedAt { get; private set; }
-
     public string? ProfileImageUri { get; private set; }
 
     public int? MembershipId { get; private set; }
@@ -35,11 +33,10 @@ public sealed class User
 
     }
 
-    private User(string id, string userid, DateTimeOffset createdAt)
+    private User(string id, string userid)
     {
         Id = id;
         UserId = userid;
-        CreatedAt = createdAt;
     }
     
     public static User Create(string userId)
@@ -50,16 +47,15 @@ public sealed class User
         var user = new User
             (
                 Guid.NewGuid().ToString(),
-                userId,
-                DateTimeOffset.UtcNow
+                userId
             );
 
         return user;
     }
 
-    public static User Create(string id, string userid, string? firstname, string? lastname, string? phonenumber, string? status, DateTimeOffset createAt, string? profileimage, int? membershipid, string? workoutId, IEnumerable<string>? Workouts)
+    public static User Create(string id, string userid, string? firstname, string? lastname, string? phonenumber, string? status, string? profileimage, int? membershipid, string? workoutId, IEnumerable<string>? Workouts)
     {
-        var user = new User(id, userid, createAt)
+        var user = new User(id, userid)
         {
             FirstName = firstname,
             LastName = lastname,
@@ -76,10 +72,10 @@ public sealed class User
 
     public void UpdateProfile(string firstname, string lastname, string? phonenumber, string? profileimage)
     {
-        if (!string.IsNullOrWhiteSpace(firstname))
+        if (string.IsNullOrWhiteSpace(firstname))
             throw new ArgumentException("First name is required");
 
-        if (!string.IsNullOrWhiteSpace(lastname))
+        if (string.IsNullOrWhiteSpace(lastname))
             throw new ArgumentException("Last name is required");
 
         FirstName = firstname.Trim();

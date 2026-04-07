@@ -30,9 +30,6 @@ internal class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             .IsRequired(false)
             .HasMaxLength(20);
 
-        builder.Property(e => e.CreatedAt)
-            .IsRequired();
-
         builder.Property(e => e.ProfileImageUri)
             .IsUnicode(false)
             .IsRequired(false)

@@ -9,5 +9,7 @@ public interface IUserRepository : IRepositoryBase<User, string>
 {
     Task<User?> GetUserByUserIdAsync(string UserId, CancellationToken ct = default);
 
+    Task<bool> DeleteAsync(User model, CancellationToken ct = default);
+
     string GetUserId(User model);
 }

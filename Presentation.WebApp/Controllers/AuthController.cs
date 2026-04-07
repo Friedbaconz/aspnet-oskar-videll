@@ -109,5 +109,6 @@ public class AuthController(IRegisterUserAccountService registerUserAccount, ISi
         HttpContext.Session.Remove(RegisterEmailSessionKey);
         return RedirectToAction("My", "User");
     }
+
 }
 
