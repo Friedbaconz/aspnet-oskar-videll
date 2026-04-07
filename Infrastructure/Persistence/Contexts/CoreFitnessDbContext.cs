@@ -6,6 +6,7 @@ using Infrastructure.Persistence.Entities.Users;
 using Infrastructure.Persistence.Entities.Workouts;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Persistence.Contexts;
 
@@ -13,8 +14,9 @@ public class CoreFitnessDbContext(DbContextOptions<CoreFitnessDbContext> options
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoreFitnessDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoreFitnessDbContext).Assembly);
+
     }
 
     public DbSet<UserEntity> UserEntites => Set<UserEntity>();

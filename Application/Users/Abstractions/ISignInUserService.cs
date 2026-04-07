@@ -5,6 +5,6 @@ namespace Application.Users.Abstractions
 {
     public interface ISignInUserService
     {
-        Task<Result<string?>> ExecuteAsync(SignInInput input, CancellationToken ct = default);
+        Task<Result> ExecuteAsync(SignInInput input, CancellationToken ct = default);
     }
 }

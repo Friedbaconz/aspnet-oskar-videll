@@ -20,7 +20,7 @@ public record Result(bool Success, ErrorTypes? ErrorType = null, string? ErrorMe
     public static Result Error(string message = "An unexpected error occurred") => new(false, ErrorTypes.Error, message);
 }
 
-public record Result<T>(bool Success, T? value = default, ErrorTypes? ErrorType = null, string? ErrorMessage = null)
+public record Result<T>(bool Success, T? Value = default, ErrorTypes? ErrorType = null, string? ErrorMessage = null)
 {
     public static Result<T> Ok(T value) => new(true, value);
 

@@ -13,7 +13,7 @@ public class UpdateUserService(IUserRepository userRepository) : IUpdateUserServ
         try
         {
             if (input is null)
-                throw new ArgumentNullException("input must be provided");
+                throw new ArgumentException("input must be provided");
 
             var user = await userRepository.GetUserByUserIdAsync(input.UserId, ct);
             if (user is null)
@@ -21,10 +21,8 @@ public class UpdateUserService(IUserRepository userRepository) : IUpdateUserServ
 
             user.UpdateProfile(input.Firstname, input.Lastname, input.Phonenumber, input.ProfileImageUri);
             var result = await userRepository.UpdateAsync(user, ct);
-            if (!result)
-                return Result<User>.Error($"Failed to update user with user id '{input.UserId}'");
 
-            return user is null
+            return !result
                 ? Result<User>.NotFound($"User with user id '{user.UserId}' was not found")
                 : Result<User>.Ok(user);
 

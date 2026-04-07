@@ -12,27 +12,25 @@ public class IdentityService(UserManager<ApplicationUser> userManager, SignInMan
 {
     public async Task<Result<string?>> CreateUserInAsync(string email, string password, CancellationToken ct = default)
     {
-        var user = await userManager.FindByEmailAsync(email);
-        if (user is not null) 
+        var exsistinguser = await userManager.FindByEmailAsync(email);
+        if (exsistinguser is not null) 
         { 
             return Result<string?>.Conflict($"A user with the email {email} already exists.");
         }
 
-        var newUser = ApplicationUser.Create(email);
+        var user = ApplicationUser.Create(email);
 
-        var result = await userManager.CreateAsync(newUser, password);
+        var result = await userManager.CreateAsync(user, password);
         return !result.Succeeded 
             ? Result<string?>.Error("Failed to create user.") 
-            : Result<string?>.Ok(newUser.Id);
+            : Result<string?>.Ok(user.Id);
 
     }
 
-    public Task<Result> PasswordSignInAsync(string email, string password, bool rememberMe, CancellationToken ct = default)
+    public async Task<Result<bool>> PasswordSignInAsync(string email, string password, bool rememberMe, CancellationToken ct = default)
     {
-        var result = signInManager.PasswordSignInAsync(email, password, rememberMe, false);
-        return !result.Result.Succeeded 
-            ? Task.FromResult(Result.Error("Invalid login attempt.")) 
-            : Task.FromResult(Result.Ok());
+        var result = await signInManager.PasswordSignInAsync(email, password, rememberMe, false);
+        return !result.Succeeded ? Result<bool>.Error("Invalid email or password.") : Result<bool>.Ok(true);
     }
 
 

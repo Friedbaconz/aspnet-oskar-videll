@@ -17,17 +17,17 @@ public class RegisterUserAccountService(IidentityService identityService, IUserR
         try
         {
             if (input is null)
-                throw new ArgumentNullException("Input must be provided");
+                throw new ArgumentException("Input must be provided");
 
             var identityResult = await identityService.CreateUserInAsync(input.Email, input.Password, ct);
-            if (!identityResult.Success || string.IsNullOrWhiteSpace(identityResult.value))
+            if (!identityResult.Success || string.IsNullOrWhiteSpace(identityResult.Value))
                 return Result<string?>.Error(identityResult?.ErrorMessage ?? "Unable to create user account");
 
-            var user = User.Create(identityResult.value);
+            var user = User.Create(identityResult.Value);
 
             await userRepository.AddAsync(user, ct);
 
-            return Result<string?>.Ok(user.Id);
+            return Result<string?>.Ok(user.UserId);
         }
         catch (Exception ex)
         {

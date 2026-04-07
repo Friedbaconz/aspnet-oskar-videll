@@ -9,7 +9,7 @@ namespace Application.Users.Services;
 
 public class SignInUserService(IidentityService identityService) : ISignInUserService
 {
-    public async Task<Result<string?>> ExecuteAsync(SignInInput input, CancellationToken ct = default)
+    public async Task<Result> ExecuteAsync(SignInInput input, CancellationToken ct = default)
     {
         try
         {
@@ -18,14 +18,13 @@ public class SignInUserService(IidentityService identityService) : ISignInUserSe
 
             var signInResult = await identityService.PasswordSignInAsync(input.Email, input.Password, input.RememberMe, ct);
             return !signInResult.Success
-                ? Result<string?>.BadRequest("Invalid email or password")
-                : Result<string?>.Ok("User signed in successfully");
+                ? Result.Error(signInResult.ErrorMessage ?? "Failed to sign in") : Result.Ok();
 
 
         }
         catch (Exception ex)
         {
-            return Result<string?>.Error(ex.Message);
+            return Result.Error(ex.Message);
         }
     }
 

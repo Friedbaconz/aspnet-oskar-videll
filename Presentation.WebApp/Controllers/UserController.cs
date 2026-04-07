@@ -33,10 +33,10 @@ public class UserController( UserManager<ApplicationUser> userManager, IGetUserP
             Email = user.Email ?? string.Empty,
             ProfileForm = new MyProfileForm
             {
-                FirstName = profile.value?.FirstName ?? string.Empty,
-                LastName = profile.value?.LastName ?? string.Empty,
-                PhoneNumber = profile.value?.Phonenumber ?? string.Empty,
-                ProfileImageUri = profile.value?.ProfileImageUri ?? string.Empty,
+                FirstName = profile.Value?.FirstName ?? string.Empty,
+                LastName = profile.Value?.LastName ?? string.Empty,
+                PhoneNumber = profile.Value?.Phonenumber ?? string.Empty,
+                ProfileImageUri = profile.Value?.ProfileImageUri ?? string.Empty,
             }
         };
 
