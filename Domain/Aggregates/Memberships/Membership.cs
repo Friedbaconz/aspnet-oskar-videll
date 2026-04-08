@@ -18,13 +18,14 @@ public sealed class Membership
     }
 
     public int Id { get; }
-    public string Name { get; private set; }
+    public string? Name { get; private set; }
     public string? Description { get; private set; }
     public IEnumerable<string> Benefits {  get; private set; }
     public string Status { get; private set; }
     public string Type {  get; private set; }
     public decimal Pricing { get; private set; }
     public int MonthlyDuration { get; private set; }
+    public string Userid { get; private set; }
     public IEnumerable<string> Users { get; private set; }
 
     private static string RequiredString(string value, string propertyName)
@@ -54,11 +55,7 @@ public sealed class Membership
         return new Membership(id, name, description, benefits, status, type, pricing, monthlyDuration, users);
     }
 
-    public static Membership Rehydrate(int id, string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
-    {
-        return new Membership(id, name, description, benefits, status, type, pricing, monthlyDuration, users);
-    }
-    public void Update(string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
+    public void Update(string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, string userid,IEnumerable<string> users)
     {
         Name = RequiredString(name, nameof(Name));
         Description = description;
@@ -66,6 +63,7 @@ public sealed class Membership
         Type = RequiredString(type, nameof(Type));
         Pricing = RequiredValue(pricing, nameof(Pricing));
         MonthlyDuration = monthlyDuration;
+        Userid = userid;
         Users = Users;
     }
 }

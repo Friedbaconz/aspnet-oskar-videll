@@ -1,0 +1,51 @@
+﻿@model MyAccountViewModel
+
+@{
+    ViewData["Title"] = "My Membership";
+}
+
+<section class="body-wrapper">
+    <div class="section-header-wrapper">
+        <h1 class="section-header">My Account</h1>
+    </div>
+    <div class="sigin-wrapper">
+        <div class="sigin-container">
+            <aside>
+                <div>
+                    <p>Menu Options</p>
+                    <section><a asp-area="" asp-action="My" asp-controller="User">About Us</a></section>
+                    <section><a asp-area="" asp-action="MyMembership" asp-controller="User">My Membership</a></section>
+                    <section><a asp-area="" asp-action="User" asp-controller="Bookings">My Bookings</a></section>
+                    <section><form asp-area="" asp-action="SignOut" asp-controller="Auth" method="post"><input type="submit" value="Logout" /></form></section>
+                </div>
+
+                <section><form asp-controller="User" asp-action="DeleteUser" method="post"><input type="submit" value="Delete" /></form></section>
+                            
+            </aside>
+
+            <section>
+                <form class="signin-form" asp-action="MyMemberShip" asp-controller="User" novalidate>
+                    <h1>My Membership</h1>
+                    <hr />
+
+                    @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+                    {
+                        if (ViewData["MessageType"]?.ToString() == "error")
+                        {
+                            <div class="error-in-text">
+                                @ViewData["Message"]
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="success-in-text">
+                                @ViewData["Message"]
+                            </div>
+                        }
+                    }
+                       
+                </form>
+            </section>
+        </div>
+    </div>
+</section>

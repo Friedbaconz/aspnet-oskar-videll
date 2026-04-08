@@ -8,6 +8,7 @@ using Domain.Aggregates.Workouts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Application.Memberships.Abstractions;
 namespace Application.Extensions;
 
 public static class ApplicationServiceCollectionRegistrationExtensions
@@ -18,6 +19,7 @@ public static class ApplicationServiceCollectionRegistrationExtensions
         services.AddScoped<IWorkoutService, WorkoutService>();
         services.AddScoped<IBookingService, BookingService>();
         services.AddScoped<IBenefitService, BenefitService>();
+        services.AddScoped<IUpdateMembershipService, UpdateMembershipService>();
         services.AddUserSevice();
         return services;
     }

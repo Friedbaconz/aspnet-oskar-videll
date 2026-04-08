@@ -56,15 +56,24 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
     }
     protected override void ApplyPropertyUpdates(UserEntity entity, User model)
     {
-        var NewEntity = context.UserEntites.FirstOrDefault(m => m.UserId == entity.UserId);
+        var MembershipEntity = context.Memberships.FirstOrDefault(m => m.MembershipID == model.MembershipId);
 
-        if (NewEntity != null)
-        {
-            entity.Workouts = NewEntity.Workouts;
+        if (MembershipEntity != null) {
+
+            entity.Membership = MembershipEntity;
+            entity.MembershipID = MembershipEntity.MembershipID;
         }
-        else
+
+        var Workouts = new List<WorkoutEntity>();
+
+        foreach (var workout in model.WorkoutsId)
         {
-            entity.Workouts = new List<WorkoutEntity>();
+            var existing = context.Workouts.FirstOrDefault(e => e.WorkoutID == workout);
+
+            if (existing != null)
+            {
+                Workouts.Add(existing);
+            }
         }
 
         entity.Firstname = model.FirstName;
@@ -72,17 +81,27 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
         entity.Phonenumber = model.Phonenumber;
         entity.MembershipStatus = model.Status;
         entity.ProfileImageUri = model.ProfileImageUri;
-        entity.MembershipID = model.MembershipId;
+        entity.Workouts = Workouts;
+
     }
 
 
 
     protected override User ToDomainModel(UserEntity entity)
     {
-        var Workouts = context.Workouts
-            .Where(b => b.WorkoutID == entity.workoutId)
-            .Select(b => b.WorkoutID)
-            .ToList();
+        var MembershipId = context.UserEntites.Where(e => e.MembershipID == entity.MembershipID).Select(e => e.MembershipID).FirstOrDefault();
+
+        var Workoutsid = new List<string>();
+
+        foreach ( var workout in entity.Workouts)
+        {
+            var existing = context.UserEntites.Where(e => e.workoutId == workout.WorkoutID).Select(e => e.workoutId).FirstOrDefault();
+
+            if (existing != null)
+            {
+                Workoutsid.Add(existing);
+            }
+        }
 
         var model = User.Create
             (
@@ -93,9 +112,8 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
             entity.Phonenumber,
             entity.MembershipStatus,
             entity.ProfileImageUri,
-            entity.MembershipID,
-            entity.workoutId,
-            Workouts
+            MembershipId,
+            Workoutsid
             );
 
         return model;
@@ -103,20 +121,20 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
 
     public override UserEntity ToEntity(User model)
     {
+        var MembershipEntity = context.Memberships.FirstOrDefault(m => m.MembershipID == model.MembershipId);
+
         var Workouts = new List<WorkoutEntity>();
 
-        if (model.Workouts != null)
+        foreach (var workout in model.WorkoutsId)
         {
-            foreach (var Workout in model.Workouts)
-            {
-                var existing = context.Workouts.FirstOrDefault(e => e.WorkoutID == Workout);
+            var existing = context.Workouts.FirstOrDefault(e => e.WorkoutID == workout);
 
-                if (existing != null)
-                {
-                    Workouts.Add(existing);
-                }
+            if (existing != null)
+            {
+                Workouts.Add(existing);
             }
         }
+
 
         var entity = new UserEntity
         {
@@ -127,8 +145,9 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
             Phonenumber = model.Phonenumber,
             MembershipStatus = model.Status,
             ProfileImageUri = model.ProfileImageUri,
-            MembershipID = model.MembershipId,
-            Workouts = Workouts
+            MembershipID = MembershipEntity.MembershipID,
+            Workouts = Workouts,
+            Membership = MembershipEntity
         };
         
         return entity;

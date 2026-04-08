@@ -2,9 +2,9 @@
 
 namespace Presentation.WebApp.Models.Memberships;
 
-public class MembershipViewModel
+public class NewMembershipForm
 {
-    public IEnumerable<Membership> Memberships { get; set; } = [];
-    public IEnumerable<int> MembershipIDs { get; set; } = [];
+    public int MembershipId { get; set; }
+
     public IEnumerable<MembershipBenefits> Benefits { get; set; } = [];
 }

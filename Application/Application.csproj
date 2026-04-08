@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Folder Include="Bookings\Inputs\" />
-    <Folder Include="Memberships\Inputs\" />
     <Folder Include="Workouts\Inputs\" />
   </ItemGroup>
 

@@ -24,10 +24,10 @@
                             </div>
                             <div>
                                 <p>Menu Options</p>
-                                <section><a asp-area="" asp-action="Index" asp-controller="CostumerService">About Us</a></section>
-                                <section><a asp-area="" asp-action="Index" asp-controller="MemeberShip">My Membership</a></section>
+                                <section><a asp-area="" asp-action="My" asp-controller="User">About Us</a></section>
+                                <section><a asp-area="" asp-action="MyMembership" asp-controller="User">My Membership</a></section>
                                 <section><a asp-area="" asp-action="User" asp-controller="Bookings">My Bookings</a></section>
-                                <section><form asp-area="" asp-action="SignOut" asp-controller="Auth" method="post"><input type="submit" value="Logout"/></form></section>
+                                <section><form asp-area="" asp-action="SignOut" asp-controller="Auth" method="post"><input type="submit" value="Logout" /></form></section>
                             </div>
 
                             <section><form asp-controller="User" asp-action="DeleteUser" method="post"><input type="submit" value="Delete" /></form></section>

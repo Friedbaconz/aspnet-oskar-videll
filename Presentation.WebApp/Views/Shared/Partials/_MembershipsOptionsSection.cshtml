@@ -2,23 +2,23 @@
 
 <section>
     <div class="memberoptions-wrapper">
-        <div class="memberoptions-container">
+        <div>
             @foreach (var membership in Model.Memberships)
             {
-                <div class="membershipoptions-box">
+                <form class="memberoptions-container" asp-controller="MemeberShip" asp-action="ConnectMembershiptoUser" asp-area="" method="post" class="membershipoptions-box">
                     <h2>@membership.Name</h2>
                     <p>@membership.Description</p>
+                    <input name="id" type="hidden" value="@membership.Id"/>
                     <div>
                         @foreach (var benefit in membership.Benefits)
                         {
-                            @foreach (var item in benefit)
-                            {
-                                <p><i class="bi bi-check"></i> @item</p>
-                            }
+                                <p><i class="bi bi-check"></i> @benefit</p>
                         }
                     </div>
-                </div>
+                    <button type="submit">Join Now</button>
+                </form>
             }
+
         </div>
     </div>
 </section>

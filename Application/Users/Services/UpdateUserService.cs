@@ -19,7 +19,7 @@ public class UpdateUserService(IUserRepository userRepository) : IUpdateUserServ
             if (user is null)
                 return Result<User>.NotFound($"User with user id '{input.UserId}' was not found");
 
-            user.UpdateProfile(input.Firstname, input.Lastname, input.Phonenumber, input.ProfileImageUri);
+            user.UpdateProfile(input.Firstname, input.Lastname, input.Phonenumber, input.ProfileImageUri, user.MembershipId, user.WorkoutsId);
             var result = await userRepository.UpdateAsync(user, ct);
 
             return !result

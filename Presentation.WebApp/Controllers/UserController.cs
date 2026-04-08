@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Identity;
+using Application.Memberships.Services;
 using Application.Users.Abstractions;
 using Application.Users.Inputs;
 using Application.Users.Services;
@@ -12,7 +13,7 @@ namespace Presentation.WebApp.Controllers;
 
 [Authorize]
 [Route("User")]
-public class UserController( UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService) : Controller
+public class UserController( UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService, IMembershipService membershipservice) : Controller
 {
     [HttpGet("My")]
     public async Task<IActionResult> My(CancellationToken ct = default)
@@ -83,6 +84,24 @@ public class UserController( UserManager<ApplicationUser> userManager, IGetUserP
         ViewData["ErrorType"] = "success";
 
         return View(viewmodel);
+    }
+
+    [HttpGet("MyMembership")]
+    public async Task<IActionResult> MyMembership(CancellationToken ct = default)
+    {
+
+
+
+        return View();
+    }
+
+        [HttpPost("MyMembership")]
+    public async Task<IActionResult> MyMembership(MyAccountViewModel viewmodel, CancellationToken ct = default)
+    {
+        
+
+
+        return View();
     }
 
     [HttpPost("DeleteUser")]

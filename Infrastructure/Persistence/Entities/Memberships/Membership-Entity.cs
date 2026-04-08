@@ -10,7 +10,7 @@ public sealed class MembershipEntity
 
     public string? Description { get; set; }
 
-    public ICollection<MembershipBenefitEntity> Benefits = null!;
+    public ICollection<MembershipBenefitEntity> Benefits = [];
 
     public string Type { get; set; } = null!;
 
@@ -20,6 +20,6 @@ public sealed class MembershipEntity
 
     public int DurationInMonths { get; set; }
 
-    public ICollection<UserEntity> Users = null!;
+    public ICollection<UserEntity> Users = [];
 
 }

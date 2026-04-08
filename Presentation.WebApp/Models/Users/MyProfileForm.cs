@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Aggregates.Memberships;
+using Domain.Aggregates.Workouts;
+using System.ComponentModel.DataAnnotations;
 
 namespace Presentation.WebApp.Models.Users;
 

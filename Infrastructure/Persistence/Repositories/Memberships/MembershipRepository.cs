@@ -11,6 +11,32 @@ namespace Infrastructure.Persistence.Repositories.Memberships;
 
 public sealed class MembershipRepository(CoreFitnessDbContext context) : RepositoryBase<Membership, int, MembershipEntity, CoreFitnessDbContext>(context), IMembershipRepository
 {
+    public async Task<Membership> Connectwithuserasync(string userid, Membership Membership)
+    {
+
+        var list = new List<string>();
+
+        list = context.UserEntites
+            .Where(u => u.MembershipID == Membership.Id)
+            .Select(u => u.UserId)
+            .ToList();
+
+        list.Add(userid);
+
+        var model = Membership.Create(
+            Membership.Id,
+            Membership.Name,
+            Membership.Description,
+            Membership.Benefits,
+            Membership.Status,
+            Membership.Type,
+            Membership.Pricing,
+            Membership.MonthlyDuration,
+            list
+        );
+
+        return model;
+    }
 
     public override int GetId(Membership model)
     {
@@ -35,7 +61,7 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
 
         foreach (var member in model.Users)
         {
-            var existing = context.UserEntites.FirstOrDefault(e => e.Id == member);
+            var existing = context.UserEntites.FirstOrDefault(e => e.UserId == member);
 
             if (existing != null)
             {
@@ -63,7 +89,7 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
     protected override void ApplyPropertyUpdates(MembershipEntity entity, Membership model)
     {
         var NewEntity = context.Memberships.FirstOrDefault(m => m.MembershipID == entity.MembershipID);
-
+        var users = context.UserEntites.Where(u => u.MembershipID == entity.MembershipID).ToList();
         if (NewEntity != null)
         {
             entity.Benefits = NewEntity.Benefits;
@@ -92,7 +118,7 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
 
         var users = context.UserEntites
             .Where(u => u.MembershipID == entity.MembershipID)
-            .Select(u => u.Id)
+            .Select(u => u.UserId)
             .ToList();
 
 

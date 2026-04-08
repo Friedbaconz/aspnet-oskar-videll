@@ -24,9 +24,7 @@ public sealed class User
 
     public int? MembershipId { get; private set; }
 
-    public string? workoutId { get; private set; }
-
-    public IEnumerable<string>? Workouts { get; private set; }
+    public IEnumerable<string>? WorkoutsId { get; private set; }
 
     private User()
     {
@@ -53,7 +51,7 @@ public sealed class User
         return user;
     }
 
-    public static User Create(string id, string userid, string? firstname, string? lastname, string? phonenumber, string? status, string? profileimage, int? membershipid, string? workoutId, IEnumerable<string>? Workouts)
+    public static User Create(string id, string userid, string? firstname, string? lastname, string? phonenumber, string? status, string? profileimage, int? membershipid, IEnumerable<string>? workoutsId)
     {
         var user = new User(id, userid)
         {
@@ -63,14 +61,13 @@ public sealed class User
             Status = status,
             ProfileImageUri = profileimage,
             MembershipId = membershipid,
-            workoutId = workoutId,
-            Workouts = Workouts
+            WorkoutsId = workoutsId,
         };
 
         return user;
     }
 
-    public void UpdateProfile(string firstname, string lastname, string? phonenumber, string? profileimage)
+    public void UpdateProfile(string firstname, string lastname, string? phonenumber, string? profileimage, int? membershipid, IEnumerable<string>? workoutsId)
     {
         if (string.IsNullOrWhiteSpace(firstname))
             throw new ArgumentException("First name is required");
@@ -82,5 +79,7 @@ public sealed class User
         LastName = lastname.Trim();
         Phonenumber = string.IsNullOrWhiteSpace(phonenumber) ? null : phonenumber;
         ProfileImageUri = string.IsNullOrWhiteSpace(profileimage) ? null : profileimage;
+        MembershipId = membershipid;
+        WorkoutsId = workoutsId;
     }
 }
