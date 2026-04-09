@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(CoreFitnessDbContext))]
-    [Migration("20260407160845_Build CoreFitness Identity Fix 3")]
-    partial class BuildCoreFitnessIdentityFix3
+    [Migration("20260409123157_New Build Corefitness 2")]
+    partial class NewBuildCorefitness2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,8 +114,9 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("MembershipID")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MembershipID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("MembershipBenefitID")
                         .HasName("PK_MembershipBenefits_ID");
@@ -127,9 +128,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Persistence.Entities.Memberships.MembershipEntity", b =>
                 {
-                    b.Property<int>("MembershipID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MembershipID")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
@@ -178,8 +178,8 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("MembershipID")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MembershipID")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("MembershipStatus")
                         .HasMaxLength(50)

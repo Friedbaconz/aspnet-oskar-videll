@@ -22,9 +22,9 @@ public sealed class User
 
     public string? ProfileImageUri { get; private set; }
 
-    public int? MembershipId { get; private set; }
+    public string MembershipId { get; private set; }
 
-    public IEnumerable<string>? WorkoutsId { get; private set; }
+    public IEnumerable<string> WorkoutsId { get; private set; }
 
     private User()
     {
@@ -51,7 +51,7 @@ public sealed class User
         return user;
     }
 
-    public static User Create(string id, string userid, string? firstname, string? lastname, string? phonenumber, string? status, string? profileimage, int? membershipid, IEnumerable<string>? workoutsId)
+    public static User Create(string id, string userid, string? firstname, string? lastname, string? phonenumber, string? status, string? profileimage, string membershipid, IEnumerable<string> workoutsId)
     {
         var user = new User(id, userid)
         {
@@ -60,14 +60,14 @@ public sealed class User
             Phonenumber = phonenumber,
             Status = status,
             ProfileImageUri = profileimage,
-            MembershipId = membershipid,
+            MembershipId = string.IsNullOrWhiteSpace(membershipid) ? string.Empty : membershipid,
             WorkoutsId = workoutsId,
         };
 
         return user;
     }
 
-    public void UpdateProfile(string firstname, string lastname, string? phonenumber, string? profileimage, int? membershipid, IEnumerable<string>? workoutsId)
+    public void UpdateProfile(string firstname, string lastname, string? phonenumber, string? profileimage, string membershipid, IEnumerable<string> workoutsId)
     {
         if (string.IsNullOrWhiteSpace(firstname))
             throw new ArgumentException("First name is required");
@@ -79,7 +79,7 @@ public sealed class User
         LastName = lastname.Trim();
         Phonenumber = string.IsNullOrWhiteSpace(phonenumber) ? null : phonenumber;
         ProfileImageUri = string.IsNullOrWhiteSpace(profileimage) ? null : profileimage;
-        MembershipId = membershipid;
+        MembershipId = string.IsNullOrWhiteSpace(membershipid) ? string.Empty : membershipid;
         WorkoutsId = workoutsId;
     }
 }

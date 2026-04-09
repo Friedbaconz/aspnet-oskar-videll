@@ -4,7 +4,7 @@ namespace Infrastructure.Persistence.Entities.Memberships;
 
 public sealed class MembershipEntity
 {
-    public int MembershipID { get; set; }
+    public string MembershipID { get; set; } = null!;
 
     public string Name { get; set; } = null!;
 

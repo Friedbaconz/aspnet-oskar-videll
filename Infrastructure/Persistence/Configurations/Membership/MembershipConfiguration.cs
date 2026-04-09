@@ -15,8 +15,8 @@ internal class MembershipConfiguration : IEntityTypeConfiguration<MembershipEnti
 
             entity.HasKey(e => e.MembershipID).HasName("PK_Memberships_ID");
 
-            entity.Property(e => e.MembershipID)
-                .ValueGeneratedOnAdd();
+        entity.Property(e => e.MembershipID)
+                .IsRequired();
 
             entity.Property(e => e.Name)
                 .IsRequired()
@@ -54,7 +54,8 @@ internal class MembershipBenefitsConfiguration : IEntityTypeConfiguration<Member
         entity.HasKey(e => e.MembershipBenefitID).HasName("PK_MembershipBenefits_ID");
 
         entity.Property(e => e.MembershipBenefitID)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedOnAdd()
+            .IsRequired();
 
         entity.Property(e => e.MembershipID)
             .IsRequired();

@@ -23,7 +23,7 @@ public class UserEntity
 
     public ApplicationUser User {  get; set; } = null!;
 
-    public int? MembershipID { get; set; }
+    public string MembershipID { get; set; } = null!;
 
     public MembershipEntity? Membership { get; set; }
 

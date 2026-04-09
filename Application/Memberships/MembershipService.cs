@@ -14,7 +14,7 @@ public sealed class MembershipService(IMembershipRepository repo) : IMembershipS
 
 
 
-    public async Task<Membership?> GetMembershipByIdAsync(int id, CancellationToken ct = default)
+    public async Task<Membership?> GetMembershipByIdAsync(string id, CancellationToken ct = default)
     {
         var membership = await repo.GetByIdAsync(id, ct);
         if(membership == null)

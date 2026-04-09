@@ -21,10 +21,13 @@ public sealed class UpdateMembershipService(IMembershipRepository repo, IUserRep
         var result = await repo.UpdateAsync(Update, ct);
         if(!result) return false;
 
-        var user = await urepo.GetByIdAsync(input.UserId, ct);
+        var user = await urepo.GetUserByUserIdAsync(input.UserId, ct);
         if(user == null) return false;
 
+        user.UpdateProfile(user.FirstName, user.LastName, user.Phonenumber, user.ProfileImageUri, membership.Id, user.WorkoutsId);
+
         var uresult = await urepo.UpdateAsync(user, ct);
+
         if (!uresult) return false;
 
         return uresult;

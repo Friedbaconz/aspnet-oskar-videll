@@ -4,6 +4,6 @@ namespace Application.Memberships.Services;
 public interface IMembershipService
 {
     Task<IReadOnlyList<Membership>> GetMembershipsAsync(CancellationToken ct= default);
-    Task<Membership?> GetMembershipByIdAsync(int id, CancellationToken ct = default);
+    Task<Membership?> GetMembershipByIdAsync(string id, CancellationToken ct = default);
 
 }

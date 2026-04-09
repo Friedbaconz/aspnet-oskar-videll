@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories.Memberships;
 
-public sealed class MembershipRepository(CoreFitnessDbContext context) : RepositoryBase<Membership, int, MembershipEntity, CoreFitnessDbContext>(context), IMembershipRepository
+public sealed class MembershipRepository(CoreFitnessDbContext context) : RepositoryBase<Membership, string, MembershipEntity, CoreFitnessDbContext>(context), IMembershipRepository
 {
     public async Task<Membership> Connectwithuserasync(string userid, Membership Membership)
     {
@@ -38,7 +38,7 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
         return model;
     }
 
-    public override int GetId(Membership model)
+    public override string GetId(Membership model)
     {
         return model.Id;
     }

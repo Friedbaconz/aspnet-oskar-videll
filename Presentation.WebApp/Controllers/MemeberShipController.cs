@@ -16,12 +16,14 @@ namespace Presentation.WebApp.Controllers
     {
         public async Task<IActionResult> Index()
         {
+
             var memberships = await service.GetMembershipsAsync();
             var model = new MembershipViewModel()
             {
                 MembershipIDs = memberships.Select(m => m.Id),
                 Memberships = memberships
             };
+
             return View(model);
         }
 
@@ -37,7 +39,7 @@ namespace Presentation.WebApp.Controllers
         }
 
         [HttpPost("ConnectToUser")]
-        public async Task<IActionResult> ConnectMembershiptoUser(MyAccountViewModel viewModel, int id, CancellationToken ct = default)
+        public async Task<IActionResult> ConnectMembershiptoUser(MyAccountViewModel viewModel, string id, CancellationToken ct = default)
         {
             var user = await userManager.GetUserAsync(User);
             if(user == null)
@@ -63,7 +65,7 @@ namespace Presentation.WebApp.Controllers
                 return BadRequest();
             }
 
-            return View(result);
+            return RedirectToAction("Index", "MemeberShip");
         }
 
         public IActionResult MembershipStatus()

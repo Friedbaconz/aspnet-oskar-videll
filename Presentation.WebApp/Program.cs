@@ -39,7 +39,7 @@ using (var scope = app.Services.CreateScope())
             {
                 var basicMembership = new MembershipEntity
                 {
-                    MembershipID = 1,
+                    MembershipID = Guid.NewGuid().ToString(),
                     Name = "Basic",
                     Description = "Access to gym during staffed hours.",
                     Type = "Monthly",
@@ -62,7 +62,7 @@ using (var scope = app.Services.CreateScope())
 
                 var premiumMembership = new MembershipEntity
                 {
-                    MembershipID = 2,
+                    MembershipID = Guid.NewGuid().ToString(),
                     Name = "Premium",
                     Description = "24/7 access, all classes included.",
                     Type = "Monthly",

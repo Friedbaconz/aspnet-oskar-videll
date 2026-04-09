@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class BuildCoreFitnessIdentityFix3 : Migration
+    public partial class NewBuildCorefitness2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,8 +54,7 @@ namespace Infrastructure.Migrations
                 name: "Memberships",
                 columns: table => new
                 {
-                    MembershipID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    MembershipID = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
                     Type = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
@@ -196,7 +195,7 @@ namespace Infrastructure.Migrations
                 {
                     MembershipBenefitID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    MembershipID = table.Column<int>(type: "INTEGER", nullable: false),
+                    MembershipID = table.Column<string>(type: "TEXT", nullable: false),
                     Benefit = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
@@ -221,7 +220,7 @@ namespace Infrastructure.Migrations
                     Phonenumber = table.Column<string>(type: "TEXT", unicode: false, maxLength: 20, nullable: true),
                     MembershipStatus = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     ProfileImageUri = table.Column<string>(type: "TEXT", unicode: false, maxLength: 255, nullable: true),
-                    MembershipID = table.Column<int>(type: "INTEGER", nullable: true),
+                    MembershipID = table.Column<string>(type: "TEXT", nullable: true),
                     workoutId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>

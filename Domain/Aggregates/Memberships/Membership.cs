@@ -4,20 +4,8 @@ namespace Domain.Aggregates.Memberships;
 
 public sealed class Membership
 {
-    public Membership(int id, string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
-    {
-        Id = RequiredInt(id, nameof(Id));
-        Name = RequiredString(name, nameof(Name));
-        Description = description;
-        Benefits = benefits ?? throw new ArgumentNullException(nameof(benefits));
-        Status = RequiredString(status, nameof(Status));
-        Type = RequiredString(type, nameof(Type));
-        Pricing = RequiredValue(Pricing, nameof(Pricing));
-        MonthlyDuration = monthlyDuration;
-        Users = users ?? throw new ArgumentNullException(nameof(users));
-    }
 
-    public int Id { get; }
+    public string Id { get; }
     public string? Name { get; private set; }
     public string? Description { get; private set; }
     public IEnumerable<string> Benefits {  get; private set; }
@@ -28,42 +16,59 @@ public sealed class Membership
     public string Userid { get; private set; }
     public IEnumerable<string> Users { get; private set; }
 
-    private static string RequiredString(string value, string propertyName)
+    private Membership()
     {
-        if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException($"{propertyName} is required.", propertyName);
 
-        return value.Trim();
     }
 
-    private static int RequiredInt(int value, string propertyName)
+    private Membership(string id)
     {
-        if (value <= 0)
-            throw new ArgumentException($"{propertyName} must be a positive integer.", propertyName);
-        return value;
+        Id = id;
     }
 
-    private static decimal RequiredValue(decimal value, string propertyName)
+    public static Membership Create (string id)
     {
-        if (value < 0)
-            throw new ArgumentException($"{propertyName} must be a non-negative value.", propertyName);
-        return value;
+        if (string.IsNullOrWhiteSpace(id))
+            throw new ArgumentNullException("membership id is required");
+
+        var membership = new Membership
+            (
+                Guid.NewGuid().ToString()
+            );
+
+        return membership;
     }
 
-    public static Membership Create(int id, string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
+    public static Membership Create(string id, string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
     {
-        return new Membership(id, name, description, benefits, status, type, pricing, monthlyDuration, users);
+        var membership = new Membership(id)
+        {
+            Name = name,
+            Description = description,
+            Benefits = benefits,
+            Status = status,
+            Type = type,
+            Pricing = pricing,
+            MonthlyDuration = monthlyDuration,
+            Users = users
+
+        };
+
+        return membership;
     }
 
     public void Update(string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, string userid,IEnumerable<string> users)
     {
-        Name = RequiredString(name, nameof(Name));
+        if (string.IsNullOrWhiteSpace(Name))
+            throw new ArgumentException("First name is required");
+
+        Name = name.Trim();
         Description = description;
         Benefits = benefits;
-        Type = RequiredString(type, nameof(Type));
-        Pricing = RequiredValue(pricing, nameof(Pricing));
+        Type = type;
+        Pricing = pricing;
         MonthlyDuration = monthlyDuration;
         Userid = userid;
-        Users = Users;
+        Users = users;
     }
 }

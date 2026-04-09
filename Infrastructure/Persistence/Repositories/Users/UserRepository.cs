@@ -125,32 +125,53 @@ public class UserRepository(CoreFitnessDbContext context) : RepositoryBase<User,
 
         var Workouts = new List<WorkoutEntity>();
 
-        foreach (var workout in model.WorkoutsId)
+        if (model.WorkoutsId != null)
         {
-            var existing = context.Workouts.FirstOrDefault(e => e.WorkoutID == workout);
-
-            if (existing != null)
+            foreach (var workout in model.WorkoutsId)
             {
-                Workouts.Add(existing);
+                var existing = context.Workouts.FirstOrDefault(e => e.WorkoutID == workout);
+
+                if (existing != null)
+                {
+                    Workouts.Add(existing);
+                }
             }
         }
 
-
-        var entity = new UserEntity
+        if (MembershipEntity == null)
         {
-            Id = model.Id,
-            UserId = model.UserId,
-            Firstname = model.FirstName,
-            Lastname = model.LastName,
-            Phonenumber = model.Phonenumber,
-            MembershipStatus = model.Status,
-            ProfileImageUri = model.ProfileImageUri,
-            MembershipID = MembershipEntity.MembershipID,
-            Workouts = Workouts,
-            Membership = MembershipEntity
-        };
-        
-        return entity;
+            var entity = new UserEntity
+            {
+                Id = model.Id,
+                UserId = model.UserId,
+                Firstname = model.FirstName,
+                Lastname = model.LastName,
+                Phonenumber = model.Phonenumber,
+                MembershipStatus = model.Status,
+                ProfileImageUri = model.ProfileImageUri,
+                MembershipID = model.MembershipId,
+                Workouts = Workouts,
+                Membership = MembershipEntity
+            };
+            return entity;
+        }
+        else
+        {
+            var entity = new UserEntity
+            {
+                Id = model.Id,
+                UserId = model.UserId,
+                Firstname = model.FirstName,
+                Lastname = model.LastName,
+                Phonenumber = model.Phonenumber,
+                MembershipStatus = model.Status,
+                ProfileImageUri = model.ProfileImageUri,
+                MembershipID = MembershipEntity.MembershipID,
+                Workouts = Workouts,
+                Membership = MembershipEntity
+            };
+            return entity;
+        }
     }
 
 }

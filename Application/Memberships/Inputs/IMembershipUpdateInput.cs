@@ -7,5 +7,5 @@ namespace Application.Memberships.Inputs;
 
 public record IConnectMembershipWithUserInput
 (
-    string UserId, int MembershipId
+    string UserId, string MembershipId
 );

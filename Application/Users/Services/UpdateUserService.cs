@@ -32,5 +32,4 @@ public class UpdateUserService(IUserRepository userRepository) : IUpdateUserServ
             return Result<User>.Error(ex.Message);
         }
     }
-
 }

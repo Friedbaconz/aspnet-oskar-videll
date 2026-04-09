@@ -1,4 +1,4 @@
-﻿@model MyAccountViewModel
+﻿@model MyMembershipViewModel
 
 @{
     ViewData["Title"] = "My Membership";
@@ -43,8 +43,30 @@
                             </div>
                         }
                     }
+
+                    @if (Model.Benefits != null)
+                    {
+                        var header = Model.MembershipName;
+                        var text = Model.Description;
+                        <div>
+                            <p> @header </p>
+                            <p> @text </p>
+                            @foreach (var Benefit in Model.Benefits)
+                            {
+                                <p>@Benefit</p>
+                            }
+                        </div>
+                    }
+                    @if (Model.Benefits is null) 
+                    {
+                        <p>You Have No MemberShip</p>
+                    }
                        
                 </form>
+                    @if (Model.Benefits != null)
+                {
+                    <section><form asp-controller="User" asp-action="DeleteMembership" method="post"><input type="submit" value="Delete" /></form></section>
+                }
             </section>
         </div>
     </div>

@@ -1,4 +1,6 @@
 ﻿using Application.Abstractions.Identity;
+using Application.Memberships.Abstractions;
+using Application.Memberships.Inputs;
 using Application.Memberships.Services;
 using Application.Users.Abstractions;
 using Application.Users.Inputs;
@@ -8,12 +10,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApp.Models.Users;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Presentation.WebApp.Controllers;
 
 [Authorize]
 [Route("User")]
-public class UserController( UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService, IMembershipService membershipservice) : Controller
+public class UserController(IRemoveUserMemembershipService removemembership,UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService, IMembershipService membershipservice) : Controller
 {
     [HttpGet("My")]
     public async Task<IActionResult> My(CancellationToken ct = default)
@@ -89,24 +92,90 @@ public class UserController( UserManager<ApplicationUser> userManager, IGetUserP
     [HttpGet("MyMembership")]
     public async Task<IActionResult> MyMembership(CancellationToken ct = default)
     {
+        var user = await userManager.GetUserAsync(User);
+        if (user is null)
+        {
+            return Challenge();
+        }
+
+        var profile = await getUserProfileService.ExecuteAsync(user.Id, ct);
+        if (profile is null)
+        {
+            return NotFound();
+        }
+
+        if(profile.Value.MembershipId == string.Empty)
+        {
+            var Viewmodel = new MyMembershipViewModel
+            {
+                MembershipId = null,
+                MembershipName = null,
+                Description = null,
+                Benefits = null
+            };
+            return View(Viewmodel);
+        }
+        else
+        {
+            var membership = await membershipservice.GetMembershipByIdAsync(profile.Value.MembershipId);
+
+            var Benefit = new List<string>();
+
+            foreach (var benefit in membership.Benefits)
+            {
+                if (benefit is not null)
+                {
+                    Benefit.Add(benefit);
+                }
+            }
+
+            var viewmodel = new MyMembershipViewModel
+            {
+                MembershipId = membership.Id,
+                MembershipName = membership.Name,
+                Description = membership.Description,
+                Benefits = Benefit
+            };
 
 
+            return View(viewmodel);
+        }
 
-        return View();
     }
 
-        [HttpPost("MyMembership")]
-    public async Task<IActionResult> MyMembership(MyAccountViewModel viewmodel, CancellationToken ct = default)
+    [HttpPost("DeleteMembership")]
+
+    public async Task<IActionResult> DeleteMembership(CancellationToken ct = default)
     {
-        
+        var user = await userManager.GetUserAsync(User);
+
+        if (user is null)
+        {
+            return Challenge();
+        }
+
+        var profile = await getUserProfileService.ExecuteAsync(user.Id, ct);
+
+        if (profile is null)
+        {
+            return NotFound();
+        }
+
+        var result = await removemembership.ExecuteAsync(user.Id, profile.Value.MembershipId, ct);
+
+        if (!result.Success)
+        {
+            ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred while deleting your membership.";
+            ViewData["ErrorType"] = "error";
+            return RedirectToAction("My");
+        }
 
 
-        return View();
+        return RedirectToAction("MyMembership", "User");
     }
 
     [HttpPost("DeleteUser")]
     [ValidateAntiForgeryToken]
-
     public async Task<IActionResult> DeleteUser(CancellationToken ct = default)
     {
         var user = await userManager.GetUserAsync(User);
