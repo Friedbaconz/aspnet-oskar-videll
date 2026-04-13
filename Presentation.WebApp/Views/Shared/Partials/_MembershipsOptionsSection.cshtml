@@ -30,7 +30,21 @@
                                 </div>
                                 <p>* Monthly 20 Classes</p>
                             </div>
-                            <button type="submit">Join Now<img src="~/Images/sidearrow.svg" class="img-logo" /></button>
+                            @if (User.Identity?.IsAuthenticated ?? false)
+                            {
+                                <button type="submit">Join Now<img src="~/Images/sidearrow.svg" class="img-logo" /></button>
+                            }
+                            else
+                            {
+                                <ul class="mb2hero">
+                                    <li class="mb2container">
+                                        <a class="mb2text" asp-area="" asp-controller="User" asp-action="My">
+                                            Join Now
+                                            <img src="~/Images/sidearrow.svg" class="img-logo" />
+                                        </a>
+                                    </li>
+                               </ul>
+                            }
                         </div>
                         <hr />
                         <p>Try Any Membership Fre for 1 Week</p>
@@ -50,7 +64,7 @@
                         <hr />
                         <h2>Call Us At: +(46) 8 410 521 00</h2>
                     </div>
-                    <div>
+                    <div class="mb2extra">
                         <ul class="mb2hero">
                             <li class="mb2container">
                                 <a class="mb2text" asp-area="" asp-controller="CostumerService" asp-action="Index">

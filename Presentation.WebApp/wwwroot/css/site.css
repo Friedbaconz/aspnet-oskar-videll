@@ -1074,8 +1074,9 @@ program-wrapper {
     display: grid;
     grid-template-columns: auto;
     background-color: var(--white-font);
+    height: 650px;
     width: 100%;
-    padding:10px;
+    padding: 10px;
     border-radius: 25px;
     color: var(--grey);
     justify-content: start;
@@ -1083,7 +1084,7 @@ program-wrapper {
     margin: auto;
 
     .memberoptions-padding-box {
-        padding: 10px 40px;
+        padding: 12px 40px;
     }
 
     .img-grid {
@@ -1121,7 +1122,9 @@ program-wrapper {
         background-color: var(--dark-font);
         padding: 20px;
         border-radius: 25px;
-
+        .mb2hero{
+            margin-top: 0px;
+        }
         hr {
             color: var(--lightgrey);
             width: 100%;
@@ -1190,27 +1193,33 @@ program-wrapper {
     }
 }
 
+.mb2extra{
+    display:flex;
+    margin:auto;
+    margin-top:20px;
+}
+
 .memberoptions-container-end {
-    display: block;
+    display: grid;
     grid-template-columns: auto;
     background-color: var(--dark-font);
     width: 100%;
     border-radius: 25px;
     color: var(--white-font);
-    margin: auto;
     justify-content: center;
     align-items: center;
     text-align: center;
+    height: 650px;
 
     .memberoptions-padding-box {
-        padding: 15px 40px;
+        padding: 12px 40px;
     }
 
     .memberoptions-text {
+        display:grid;
         align-items: center;
         text-align: center;
         justify-content: center;
-        margin-bottom: 30px;
 
         hr {
             margin: auto;
@@ -1238,6 +1247,7 @@ program-wrapper {
     }
 
     ul {
+        display: flex;
         margin: auto;
         margin-bottom: 70px;
     }
@@ -1248,8 +1258,10 @@ program-wrapper {
     display: grid;
     grid-template-columns: auto;
     justify-content: end;
-    align-items: normal;
-
+    align-items: end;
+    border-radius: 25px;
+    align-self: end;
+    justify-self: end;
 }
 
 .list-item-mem {
