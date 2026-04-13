@@ -25,7 +25,7 @@
                     <input asp-for="Email" />
                     <span asp-validation-for="Email"></span>
                 </div>
-                <button class="sigin-button"type="submit">Continue</button>
+                <button class="sigin-button" type="submit">Continue<img src="~/Images/sidearrow.svg" class="img-logo" /></button>
 
                 @if (!string.IsNullOrWhiteSpace(ViewData["ErrorMessage"]?.ToString()))
                 {

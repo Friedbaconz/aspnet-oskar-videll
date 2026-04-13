@@ -10,9 +10,8 @@
     </div>
         <div class="sigin-wrapper">
             <div class="sigin-container">
-                <aside>
+                <aside class="aside-controller">
                             <div>
-                                //img
                                 @if (!string.IsNullOrWhiteSpace(Model.ProfileForm.ProfileImageUri))
                                 {
                                     <img src="@Model.ProfileForm.ProfileImageUri" alt="Profile Image" class="profile-image"/>
@@ -22,19 +21,24 @@
                                     <div class="profile-placeholder">No Profile Image</div>
                                 }
                             </div>
-                            <div>
+                            <div class="my-sidecontroller">
                                 <p>Menu Options</p>
-                                <section><a asp-area="" asp-action="My" asp-controller="User">About Us</a></section>
-                                <section><a asp-area="" asp-action="MyMembership" asp-controller="User">My Membership</a></section>
-                                <section><a asp-area="" asp-action="User" asp-controller="Bookings">My Bookings</a></section>
-                                <section><form asp-area="" asp-action="SignOut" asp-controller="Auth" method="post"><input type="submit" value="Logout" /></form></section>
+                                <section><a class="my-text" asp-area="" asp-action="My" asp-controller="User">About Me</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
+                                <hr />
+                                <section><a class="my-text" asp-area="" asp-action="MyMembership" asp-controller="User">My Membership</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
+                                <hr />
+                                <section><a class="my-text" asp-area="" asp-action="User" asp-controller="Bookings">My Bookings</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
+                                <hr />
+                                <section><form class="my-text" asp-area="" asp-action="SignOut" asp-controller="Auth" method="post"><input type="submit" value="Logout" /></form><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
                             </div>
-
-                            <section><form asp-controller="User" asp-action="DeleteUser" method="post"><input type="submit" value="Delete" /></form></section>
+                            <div class="delete-section">
+                                <p>If you like to cancel your account click below</p>
+                                <section><form asp-controller="User" asp-action="DeleteUser" method="post"><input type="submit" value="Remove Account" /></form></section>
+                            </div>
                             
                 </aside>
 
-                <section>
+                <section class="main-menu-My">
                 <form class="signin-form" asp-action="My" asp-controller="User" method="post"  novalidate>
                         <h1>About me</h1>
                         <hr />
@@ -87,7 +91,7 @@
                             <span asp-validation-for="ProfileForm.ProfileImageUri"></span>
                         </div>
 
-                        <button type="submit">Save</button>
+                        <button type="submit">Save<img src="~/Images/sidearrow.svg" class="img-logo" /></button>
                     </form>
                 </section>
             </div>

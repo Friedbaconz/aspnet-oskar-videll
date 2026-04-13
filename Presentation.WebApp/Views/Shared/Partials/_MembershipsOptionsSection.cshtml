@@ -2,23 +2,75 @@
 
 <section>
     <div class="memberoptions-wrapper">
-        <div>
+        <div class="memberships-wrapper">
             @foreach (var membership in Model.Memberships)
             {
                 <form class="memberoptions-container" asp-controller="MemeberShip" asp-action="ConnectMembershiptoUser" asp-area="" method="post" class="membershipoptions-box">
-                    <h2>@membership.Name</h2>
-                    <p>@membership.Description</p>
-                    <input name="id" type="hidden" value="@membership.Id"/>
-                    <div>
-                        @foreach (var benefit in membership.Benefits)
-                        {
+                    <div class="memberoptions-padding-box">
+                        <div class="img-grid">
+                            <div class="mem-logo"><img src="~/Images/memicon.svg" /></div>
+                        </div>
+                        <h2>@membership.Name</h2>
+                        <hr />
+                        <p>@membership.Description</p>
+                        <input name="id" type="hidden" value="@membership.Id" />
+                        <div class="benefits-container">
+                            @foreach (var benefit in membership.Benefits)
+                            {
                                 <p><i class="bi bi-check"></i> @benefit</p>
-                        }
+                            }
+                        </div>
                     </div>
-                        <button type="submit">Join Now</button>
+                    <div class="memberoptions-container-dark">
+                        <div class="button-area-member">
+                            <div class="pricing-area">
+                                <div class="price-container">
+                                    <h2>@membership.Pricing</h2>
+                                    <p>/monthly</p>
+                                </div>
+                                <p>* Monthly 20 Classes</p>
+                            </div>
+                            <button type="submit">Join Now<img src="~/Images/sidearrow.svg" class="img-logo" /></button>
+                        </div>
+                        <hr />
+                        <p>Try Any Membership Fre for 1 Week</p>
+                    </div>
                 </form>
             }
+            <div class="memberoptions-container-end">
+                <div class="memberoptions-padding-box">
+                    <div class="memberoptions-text">
+                        <h2>Get Your Membership</h2>
+                        <div class="memberoptions-text-inner">
+                            <p>
+                                Our memberships give you access to all
+                            </p>
+                            <p>equipment, personalized training.</p>
+                        </div>
+                        <hr />
+                        <h2>Call Us At: +(46) 8 410 521 00</h2>
+                    </div>
+                    <div>
+                        <ul class="mb2hero">
+                            <li class="mb2container">
+                                <a class="mb2text" asp-area="" asp-controller="CostumerService" asp-action="Index">
+                                    Call Us Today!
+                                    <img src="~/Images/sidearrow.svg" class="img-logo" />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="img-price-container">
+                    <img src="~/Images/our-pricing-cta-image.svg" class="img-price" />
+                </div>
+            </div>
 
         </div>
+    </div>
+    <div class="list-item-mem">
+        <p><img src="~/Images/Bookcheck.svg" class="img-price" /> Get 30 day free trail</p>
+        <p><img src="~/Images/Card.svg" class="img-price" /> No any hidden fees pay</p>
+        <p><img src="~/Images/clock.svg" class="img-price" /> You can cancel anytime</p>
     </div>
 </section>

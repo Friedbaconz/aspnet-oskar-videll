@@ -10,8 +10,8 @@ public sealed class Workout
         Name = RequiredString(name, nameof(Name));
         Category = RequiredString(category, nameof(Category));
         Instructions = RequiredString(instructions, nameof(Instructions));
-        Date = RequiredDateTime(date, nameof(Date));
-        Time = RequiredTimeSpan(time, nameof(Time));
+        Date = date;
+        Time = time;
         Users = users;
     }
 

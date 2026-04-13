@@ -1023,3 +1023,333 @@ program-wrapper {
         }
     }
 }
+
+.memberoptions-wrapper {
+    display: flex;
+    margin: auto;
+    width: 100%;
+    margin-top: 70px;
+    margin-bottom: 70px;
+    align-content:center;
+    justify-content:center;
+
+    hr {
+        width: 100%;
+        opacity: 30%;
+    }
+
+    .memberships-wrapper {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        height: 100%;
+        width: 70%;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+        justify-content:space-evenly;
+    }
+}
+
+.benefits-container {
+    color: var(--grey);
+    p {
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: start;
+        align-items: start;
+
+        i {
+            display: flex;
+            flex-wrap: nowrap;
+            color: var(--white-font);
+            border-radius: 25px;
+            background-color: var(--yellow-green);
+            margin: auto;
+            margin-right: 5px;
+        }
+    }
+}
+
+.memberoptions-container {
+    display: grid;
+    grid-template-columns: auto;
+    background-color: var(--white-font);
+    width: 100%;
+    padding:10px;
+    border-radius: 25px;
+    color: var(--grey);
+    justify-content: start;
+    align-items: start;
+    margin: auto;
+
+    .memberoptions-padding-box {
+        padding: 10px 40px;
+    }
+
+    .img-grid {
+        display: grid;
+        width: 100%;
+        grid-template-columns: auto;
+        justify-content: start;
+        align-items: start;
+    }
+
+    .mem-logo {
+        display: flex;
+        background-color: var(--yellow-green);
+        border-radius: 100px;
+        margin: auto;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        padding: 16px 10px;
+
+        img {
+            display: flex;
+            margin: auto;
+        }
+    }
+
+    h2 {
+        color: var(--black);
+        line-height: 10px;
+    }
+
+    .memberoptions-container-dark {
+        display: grid;
+        width: 100%;
+        color: var(--white-font);
+        background-color: var(--dark-font);
+        padding: 20px;
+        border-radius: 25px;
+
+        hr {
+            color: var(--lightgrey);
+            width: 100%;
+            opacity: 30%;
+        }
+
+        .button-area-member {
+            display: grid;
+            grid-template-columns: auto auto;
+            margin: auto;
+            justify-content: center;
+            align-items: center;
+
+            .pricing-area {
+                display: grid;
+                grid-template-columns: auto;
+                margin: auto;
+                margin-right: 50px;
+                justify-content: start;
+                align-items: start;
+
+                p {
+                    display: flex;
+                    width: 100%;
+                    margin: auto;
+                }
+
+                .price-container {
+                    display: flex;
+
+                    p {
+                        font-size: 13px;
+                        display: flex;
+                        width: 100%;
+                        margin: auto;
+                    }
+
+                    h2 {
+                        color: var(--white-font);
+                        display: flex;
+                        width: 100%;
+                        margin: auto;
+                        line-height: 10px;
+                    }
+                }
+            }
+
+            button {
+                background-color: var(--yellow-green);
+                border: none;
+                padding: 5px 20px;
+                font-size: 15px;
+                border-radius: 25px;
+                align-items: center;
+                font-family: var(--font-family);
+                justify-content: center;
+                display: flex;
+                margin: auto;
+                cursor: pointer;
+            }
+
+                button:hover {
+                    background-color: var(--lightgrey);
+                }
+        }
+    }
+}
+
+.memberoptions-container-end {
+    display: block;
+    grid-template-columns: auto;
+    background-color: var(--dark-font);
+    width: 100%;
+    border-radius: 25px;
+    color: var(--white-font);
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .memberoptions-padding-box {
+        padding: 15px 40px;
+    }
+
+    .memberoptions-text {
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        margin-bottom: 30px;
+
+        hr {
+            margin: auto;
+        }
+
+        h2 {
+            margin: auto;
+        }
+
+        .memberoptions-text-inner {
+            display: grid;
+            grid-template-columns: auto;
+            margin: auto;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+
+            p {
+                display: flex;
+                margin: auto;
+                line-height: 20px;
+            }
+        }
+    }
+
+    ul {
+        margin: auto;
+        margin-bottom: 70px;
+    }
+}
+
+.img-price-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: end;
+    align-items: normal;
+
+}
+
+.list-item-mem {
+    display: flex;
+    width: 40%;
+    margin: auto;
+    margin-top: 50px;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 80px;
+    p {
+        display: gird;
+        grid-template-columns: auto auto;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            margin: auto;
+            margin-right: 10px;
+        }
+    }
+}
+
+.main-menu-My {
+    display: grid;
+    grid-template-columns: auto;
+    justify-self: center;
+    align-self: center;
+    width:100%;
+}
+
+.aside-controller {
+    display: grid;
+    grid-template-columns: auto;
+    justify-self: start;
+    align-self: start;
+}
+.my-sidecontroller {
+    padding: 20px;
+    background-color: var(--white-font);
+    border-radius: 25px;
+    color: var(--black);
+    width: 404px;
+    margin-right: 50px;
+    margin-top: 50px;
+
+    section {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto auto;
+        margin: auto;
+
+        .my-text {
+            align-self: center;
+            justify-self: start;
+            color:var(--black);
+            text-decoration:none;
+
+        }
+
+        img {
+            align-self: center;
+            justify-self: end;
+        }
+    }
+
+    hr {
+        color: var(--lightgrey);
+        width: 100%;
+        opacity: 30%;
+    }
+}
+
+.delete-section {
+    display: grid;
+    grid-template-columns: auto;
+    margin: auto;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+
+    p {
+        font-size: 10px;
+        color:var(--grey);
+        display: flex;
+        margin: auto;
+    }
+
+    section {
+        display: flex;
+        margin: auto;
+        input{
+            border:none;
+            background-color:none;
+            color:red;
+            font-size:15px;
+        }
+    }
+}

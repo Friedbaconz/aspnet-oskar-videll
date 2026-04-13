@@ -40,7 +40,7 @@
                     <label asp-for="RememberMe"> Remember Me?</label>
                 </div>
 
-                <button class ="sigin-button">Continue</button>
+                <button class="sigin-button">Continue<img src="~/Images/sidearrow.svg" class="img-logo" /></button>
 
                 @if (!string.IsNullOrWhiteSpace(ViewData["ErrorMessage"]?.ToString()))
                 {

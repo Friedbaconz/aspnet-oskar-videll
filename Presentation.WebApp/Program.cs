@@ -59,6 +59,11 @@ using (var scope = app.Services.CreateScope())
                     MembershipBenefitID = 2,
                     Benefit = "Locker room access"
                 });
+                basicMembership.Benefits.Add(new MembershipBenefitEntity
+                {
+                    MembershipBenefitID = 3,
+                    Benefit = "High-energy group fitness classes"
+                });
 
                 var premiumMembership = new MembershipEntity
                 {
@@ -74,17 +79,17 @@ using (var scope = app.Services.CreateScope())
 
                 premiumMembership.Benefits.Add(new MembershipBenefitEntity
                 {
-                    MembershipBenefitID = 3,
+                    MembershipBenefitID = 4,
                     Benefit = "All classes included"
                 });
                 premiumMembership.Benefits.Add(new MembershipBenefitEntity
                 {
-                    MembershipBenefitID = 4,
+                    MembershipBenefitID = 5,
                     Benefit = "Priority booking for classes"
                 });
                 premiumMembership.Benefits.Add(new MembershipBenefitEntity
                 {
-                    MembershipBenefitID = 5,
+                    MembershipBenefitID = 6,
                     Benefit = "Access to VIP lounge"
                 });
 
