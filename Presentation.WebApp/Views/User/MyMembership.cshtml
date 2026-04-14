@@ -65,7 +65,7 @@
                 </form>
                     @if (Model.Benefits != null)
                 {
-                    <section><form asp-controller="User" asp-action="DeleteMembership" method="post"><input type="submit" value="Delete" /></form></section>
+                    <section><form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><input type="submit" name="id" value="@Model.MembershipId" /></form></section>
                 }
             </section>
         </div>

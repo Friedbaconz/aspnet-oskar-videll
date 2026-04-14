@@ -1,10 +1,15 @@
 using Application.Extensions;
+using Application.Memberships.Abstractions;
+using Application.Memberships.Inputs;
+using Application.Memberships.Services;
 using Infrastructure.Extensions;
+using Infrastructure.Identity;
 using Infrastructure.Persistence.Contexts;
 using Infrastructure.Persistence.Data;
 using Infrastructure.Persistence.Entities.Memberships;
 using Infrastructure.Persistence.Entities.Workouts;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -16,8 +21,8 @@ builder.Services.AddRouting(options =>
 });
 builder.Services.AddSession();
 
-builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
-builder.Services.AddApplication(builder.Configuration, builder.Environment);
+var Infrastructure = builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
+var Application = builder.Services.AddApplication(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
@@ -33,70 +38,74 @@ using (var scope = app.Services.CreateScope())
     if (!context.Memberships.Any())
         using (var sscope = app.Services.CreateScope())
         {
-            var ccontext = sscope.ServiceProvider.GetRequiredService<CoreFitnessDbContext>();
+            var ServiceMembership = scope.ServiceProvider.GetRequiredService<IRegisterMembershipService>();
 
-            if (!ccontext.Memberships.Any())
+            if (!context.Memberships.Any())
             {
-                var basicMembership = new MembershipEntity
-                {
-                    MembershipID = Guid.NewGuid().ToString(),
-                    Name = "Basic",
-                    Description = "Access to gym during staffed hours.",
-                    Type = "Monthly",
-                    Status = "Active",
-                    Pricing = 19.99m,
-                    DurationInMonths = 1,
-                    Benefits = new List<MembershipBenefitEntity>()
-                };
+                    //Basic
+                    var basicmember = new RegisterMemebershipInput
+                    (
+                        name: "Basic",
+                        description: "Access to gym during staffed hours.",
+                        benefits: new List<RegisterBenfitsInput>(),
+                        status: "Active",
+                        type: "Monthly",
+                        pricing: 19.99m,
+                        monthlyDuration: 1
+                    );
 
-                basicMembership.Benefits.Add(new MembershipBenefitEntity
-                {
-                    MembershipBenefitID = 1,
-                    Benefit = "Gym floor access"
-                });
-                basicMembership.Benefits.Add(new MembershipBenefitEntity
-                {
-                    MembershipBenefitID = 2,
-                    Benefit = "Locker room access"
-                });
-                basicMembership.Benefits.Add(new MembershipBenefitEntity
-                {
-                    MembershipBenefitID = 3,
-                    Benefit = "High-energy group fitness classes"
-                });
+                    basicmember.benefits.AddRange(
+                        new RegisterBenfitsInput
+                        (
+                        id: 1,
+                        benefit: "MorningYoga"
+                        ),
+                        new RegisterBenfitsInput
+                        (
+                        id: 2,
+                        benefit: "MorningYoga"
+                        ),
+                        new RegisterBenfitsInput
+                        (
+                        id: 3,
+                        benefit: "MorningYoga"
+                        ));
+                    
+                    ServiceMembership?.ExecuteAsync(basicmember);
+                    
+                    //Premium
+                    var Premiummember = new RegisterMemebershipInput
+                    (
+                        name: "Premium",
+                        description: "Access to gym during staffed hours.",
+                        benefits: new List<RegisterBenfitsInput>(),
+                        status: "Active",
+                        type: "Monthly",
+                        pricing: 39.99m,
+                        monthlyDuration: 1
+                    );
+                    
+                    Premiummember.benefits.AddRange(
+                        new RegisterBenfitsInput
+                        (
+                        id: 4,
+                        benefit: "MorningYoga"
+                        ),
+                        new RegisterBenfitsInput
+                        (
+                        id: 5,
+                        benefit: "MorningYoga"
+                        ),
+                        new RegisterBenfitsInput
+                        (
+                        id: 6,
+                        benefit: "MorningYoga"
+                        ));
 
-                var premiumMembership = new MembershipEntity
-                {
-                    MembershipID = Guid.NewGuid().ToString(),
-                    Name = "Premium",
-                    Description = "24/7 access, all classes included.",
-                    Type = "Monthly",
-                    Status = "Active",
-                    Pricing = 39.99m,
-                    DurationInMonths = 1,
-                    Benefits = new List<MembershipBenefitEntity>()
-                };
-
-                premiumMembership.Benefits.Add(new MembershipBenefitEntity
-                {
-                    MembershipBenefitID = 4,
-                    Benefit = "All classes included"
-                });
-                premiumMembership.Benefits.Add(new MembershipBenefitEntity
-                {
-                    MembershipBenefitID = 5,
-                    Benefit = "Priority booking for classes"
-                });
-                premiumMembership.Benefits.Add(new MembershipBenefitEntity
-                {
-                    MembershipBenefitID = 6,
-                    Benefit = "Access to VIP lounge"
-                });
-
-                context.Memberships.AddRange(basicMembership, premiumMembership);
+                    ServiceMembership?.ExecuteAsync(Premiummember);
             }
 
-            if (!context.Workouts.Any())
+                if (!context.Workouts.Any())
             {
                 context.Workouts.AddRange(
                     new WorkoutEntity
@@ -120,32 +129,6 @@ using (var scope = app.Services.CreateScope())
 
             await context.SaveChangesAsync();
         }
-
-    if (!context.Workouts.Any())
-    {
-        context.Workouts.AddRange(
-            new WorkoutEntity
-            {
-                WorkoutID = Guid.NewGuid().ToString(),
-                WorkoutName = "Morning Yoga",
-                Category = "Yoga",
-                Instructor = "Alice",
-                Date = DateTime.Today.AddDays(1),
-                Time = TimeSpan.FromHours(7)
-            },
-            new WorkoutEntity
-            {
-                WorkoutID = Guid.NewGuid().ToString(),
-                WorkoutName = "Evening HIIT",
-                Category = "HIIT",
-                Instructor = "Bob",
-                Date = DateTime.Today.AddDays(2),
-                Time = TimeSpan.FromHours(18)
-            }
-        );
-    }
-
-    await context.SaveChangesAsync();
 }
 
 app.UseHsts();
@@ -155,6 +138,21 @@ app.UseRouting();
 app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
+
+using(var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    string[] roleNames = { "Admin", "User" };
+
+    foreach(var roleName in roleNames)
+    {
+        var exsist = await roleManager.RoleExistsAsync(roleName);
+        if (!exsist)
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+}
 
 app.MapStaticAssets();
 

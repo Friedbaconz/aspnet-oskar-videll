@@ -1,10 +1,11 @@
-﻿using Domain.Aggregates.Memberships;
+﻿using Application.Common.Results;
 using Application.Memberships.Inputs;
+using Domain.Aggregates.Memberships;
 
 namespace Application.Memberships.Abstractions
 {
     public interface IUpdateMembershipService
     {
-        Task<bool> ConnectMembershipWithUserAsync(IConnectMembershipWithUserInput input, CancellationToken ct = default);
+        Task<Result<Membership>> ExecuteAsync(UpdateMembershipInput input, List<UpdateMembershipBenefitInput> benefits, CancellationToken ct = default);
     }
 }

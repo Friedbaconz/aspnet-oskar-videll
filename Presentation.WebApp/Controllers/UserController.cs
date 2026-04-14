@@ -16,7 +16,7 @@ namespace Presentation.WebApp.Controllers;
 
 [Authorize]
 [Route("User")]
-public class UserController(IRemoveUserMemembershipService removemembership,UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService, IMembershipService membershipservice) : Controller
+public class UserController(UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService, IMembershipService membershipservice) : Controller
 {
     [HttpGet("My")]
     public async Task<IActionResult> My(CancellationToken ct = default)
@@ -143,36 +143,7 @@ public class UserController(IRemoveUserMemembershipService removemembership,User
 
     }
 
-    [HttpPost("DeleteMembership")]
-
-    public async Task<IActionResult> DeleteMembership(CancellationToken ct = default)
-    {
-        var user = await userManager.GetUserAsync(User);
-
-        if (user is null)
-        {
-            return Challenge();
-        }
-
-        var profile = await getUserProfileService.ExecuteAsync(user.Id, ct);
-
-        if (profile is null)
-        {
-            return NotFound();
-        }
-
-        var result = await removemembership.ExecuteAsync(user.Id, profile.Value.MembershipId, ct);
-
-        if (!result.Success)
-        {
-            ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred while deleting your membership.";
-            ViewData["ErrorType"] = "error";
-            return RedirectToAction("My");
-        }
-
-
-        return RedirectToAction("MyMembership", "User");
-    }
+    
 
     [HttpPost("DeleteUser")]
     [ValidateAntiForgeryToken]

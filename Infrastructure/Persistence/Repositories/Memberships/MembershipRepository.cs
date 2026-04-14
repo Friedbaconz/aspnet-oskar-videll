@@ -6,6 +6,7 @@ using Infrastructure.Persistence.Contexts;
 using Infrastructure.Persistence.Entities.Memberships;
 using Infrastructure.Persistence.Entities.Users;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Persistence.Repositories.Memberships;
 
@@ -89,17 +90,42 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
     protected override void ApplyPropertyUpdates(MembershipEntity entity, Membership model)
     {
         var NewEntity = context.Memberships.FirstOrDefault(m => m.MembershipID == entity.MembershipID);
-        var users = context.UserEntites.Where(u => u.MembershipID == entity.MembershipID).ToList();
+        var users = context.UserEntites.Where(u => u.MembershipID == entity.MembershipID);
         if (NewEntity != null)
         {
             entity.Benefits = NewEntity.Benefits;
-            entity.Users = NewEntity.Users;
         }
         else
         {
             entity.Benefits = new List<MembershipBenefitEntity>();
+        }
+        if (users != null)
+        {
+            foreach(var newuser in users)
+            {
+                if(model.Users.IsNullOrEmpty())
+                {
+                    entity.Users.Remove(newuser);
+                }
+
+                foreach(var newmodel in model.Users)
+                {
+                    if(newmodel == newuser.UserId)
+                    {
+                        entity.Users.Add(newuser);
+                    }
+                    else
+                    {
+                        entity.Users.Remove(newuser);
+                    }
+                }
+            }
+        }
+        else
+        {
             entity.Users = new List<UserEntity>();
         }
+
 
         entity.Name = model.Name;
         entity.Description = model.Description;

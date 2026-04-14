@@ -20,6 +20,7 @@ public static class ApplicationServiceCollectionRegistrationExtensions
         services.AddScoped<IBookingService, BookingService>();
         services.AddScoped<IBenefitService, BenefitService>();
         services.AddScoped<IUpdateMembershipService, UpdateMembershipService>();
+        services.AddScoped<IRegisterMembershipService, RegisterMembershipService>();
         services.AddUserSevice();
         return services;
     }
