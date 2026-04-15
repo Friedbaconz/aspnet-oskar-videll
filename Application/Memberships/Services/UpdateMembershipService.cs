@@ -74,11 +74,9 @@ public sealed class UpdateMembershipService(IMembershipRepository repo, IUserRep
                 }
                 else
                 {
-                    updatebenefit.UpdateBenefit(updatebenefit.Benefit);
-
                     benefitlist.Remove(updatebenefit.Benefit);
 
-                    await BenefitRepo.UpdateAsync(updatebenefit);
+                    await BenefitRepo.RemoveAsync(updatebenefit);
                 }
             }
             else
