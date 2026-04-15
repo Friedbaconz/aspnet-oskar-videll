@@ -111,6 +111,7 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
                 MembershipId = null,
                 MembershipName = null,
                 Description = null,
+                status = null,
                 Benefits = null
             };
             return View(Viewmodel);
@@ -134,6 +135,7 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
                 MembershipId = membership.Id,
                 MembershipName = membership.Name,
                 Description = membership.Description,
+                status = membership.Status,
                 Benefits = Benefit
             };
 

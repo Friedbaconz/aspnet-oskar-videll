@@ -22,15 +22,15 @@ public sealed class MembershipBenefits
         Id = id;
     }
 
-    public static MembershipBenefits Create(int id)
+    public static MembershipBenefits create(string membershipId, string benefit)
     {
+        var request = new MembershipBenefits
+        {
+            Benefit = benefit,
+            MembershipId = membershipId,
+        };
 
-        var membership = new MembershipBenefits
-            (
-                id = 1
-            );
-
-        return membership;
+        return request;
     }
 
 

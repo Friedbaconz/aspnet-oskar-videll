@@ -20,7 +20,7 @@ public sealed class BenefitRepository(CoreFitnessDbContext context) : Repository
 
         var entity = new MembershipBenefitEntity
         {
-            MembershipBenefitID = model.Id,
+            MembershipBenefitID = context.MembershipBenefits.Count() +1,
             Benefit = model.Benefit,
             MembershipID = model.MembershipId,
             Membership = context.Memberships.FirstOrDefault(m => m.MembershipID == model.MembershipId)

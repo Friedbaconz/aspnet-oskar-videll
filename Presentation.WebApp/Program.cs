@@ -10,7 +10,11 @@ using Infrastructure.Persistence.Entities.Memberships;
 using Infrastructure.Persistence.Entities.Workouts;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Presentation.WebApp.Controllers;
+using Presentation.WebApp.Models.Memberships;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,11 +25,11 @@ builder.Services.AddRouting(options =>
 });
 builder.Services.AddSession();
 
-var Infrastructure = builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
-var Application = builder.Services.AddApplication(builder.Configuration, builder.Environment);
+builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
+builder.Services.AddApplication(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
-
+app.MapControllers();
 await PersistenceDatabaseInitializer.InitializeAsync(app.Services, app.Environment);
 
 StaticWebAssetsLoader.UseStaticWebAssets(app.Environment, app.Configuration);
@@ -49,30 +53,27 @@ using (var scope = app.Services.CreateScope())
                         description: "Access to gym during staffed hours.",
                         benefits: new List<RegisterBenfitsInput>(),
                         status: "Active",
-                        type: "Monthly",
+                        type: "monthly",
                         pricing: 19.99m,
                         monthlyDuration: 1
                     );
 
                     basicmember.benefits.AddRange(
-                        new RegisterBenfitsInput
-                        (
-                        id: 1,
-                        benefit: "MorningYoga"
-                        ),
-                        new RegisterBenfitsInput
-                        (
-                        id: 2,
-                        benefit: "MorningYoga"
-                        ),
-                        new RegisterBenfitsInput
-                        (
-                        id: 3,
-                        benefit: "MorningYoga"
-                        ));
-                    
-                    ServiceMembership?.ExecuteAsync(basicmember);
-                    
+                    new RegisterBenfitsInput
+                    (
+                        benefit: "new benefit"
+                    ),
+                    new RegisterBenfitsInput
+                    (
+                        benefit: "new benefit"
+                    ),
+                    new RegisterBenfitsInput
+                    (
+                        benefit: "new benefit"
+                    ));
+
+                    await ServiceMembership.ExecuteAsync(basicmember);
+
                     //Premium
                     var Premiummember = new RegisterMemebershipInput
                     (
@@ -80,29 +81,26 @@ using (var scope = app.Services.CreateScope())
                         description: "Access to gym during staffed hours.",
                         benefits: new List<RegisterBenfitsInput>(),
                         status: "Active",
-                        type: "Monthly",
+                        type: "monthly",
                         pricing: 39.99m,
                         monthlyDuration: 1
                     );
-                    
-                    Premiummember.benefits.AddRange(
-                        new RegisterBenfitsInput
-                        (
-                        id: 4,
-                        benefit: "MorningYoga"
-                        ),
-                        new RegisterBenfitsInput
-                        (
-                        id: 5,
-                        benefit: "MorningYoga"
-                        ),
-                        new RegisterBenfitsInput
-                        (
-                        id: 6,
-                        benefit: "MorningYoga"
-                        ));
 
-                    ServiceMembership?.ExecuteAsync(Premiummember);
+                    Premiummember.benefits.AddRange(
+                    new RegisterBenfitsInput
+                    (
+                        benefit: "new benefit"
+                    ),
+                    new RegisterBenfitsInput
+                    (
+                        benefit: "new benefit"
+                    ),
+                    new RegisterBenfitsInput
+                    (
+                        benefit: "new benefit"
+                    ));
+
+                    await ServiceMembership.ExecuteAsync(Premiummember);
             }
 
                 if (!context.Workouts.Any())

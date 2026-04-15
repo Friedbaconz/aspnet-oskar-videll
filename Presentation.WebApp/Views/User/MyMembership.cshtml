@@ -46,10 +46,12 @@
 
                     @if (Model.Benefits != null)
                     {
+                        var status = Model.status;
                         var header = Model.MembershipName;
                         var text = Model.Description;
                         <div>
                             <p> @header </p>
+                            <p> @status </p>
                             <p> @text </p>
                             @foreach (var Benefit in Model.Benefits)
                             {

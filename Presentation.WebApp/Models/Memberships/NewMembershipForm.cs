@@ -4,7 +4,14 @@ namespace Presentation.WebApp.Models.Memberships;
 
 public class NewMembershipForm
 {
-    public string MembershipId { get; set; }
 
-    public IEnumerable<MembershipBenefits> Benefits { get; set; } = [];
+    public string MembershipName { get; set; }
+
+    public string description { get; set; }
+
+    public List<NewMembershipBenefitForm> Benefits { get; set; } = new List<NewMembershipBenefitForm>();
+
+    public decimal pricing {  get; set; }
+
+    public int monthlyDuration { get; set; }
 }

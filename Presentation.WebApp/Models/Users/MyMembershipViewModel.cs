@@ -8,5 +8,7 @@ public class MyMembershipViewModel
 
     public string Description { get; set; } = null!;
 
+    public string status { get; set; } = null!;
+
     public List<string> Benefits { get; set; } = null!;
 }

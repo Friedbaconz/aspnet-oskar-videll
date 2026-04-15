@@ -64,22 +64,32 @@ public sealed class UpdateMembershipService(IMembershipRepository repo, IUserRep
 
             if(updatebenefit != null)
             {
-                updatebenefit.UpdateBenefit(updatebenefit.Benefit);
+                if(updatebenefit.MembershipId == input.id)
+                {
+                    updatebenefit.UpdateBenefit(updatebenefit.Benefit);
 
-                benefitlist.Add(updatebenefit.Benefit);
+                    benefitlist.Add(updatebenefit.Benefit);
 
-                await BenefitRepo.UpdateAsync(updatebenefit);
+                    await BenefitRepo.UpdateAsync(updatebenefit);
+                }
+                else
+                {
+                    updatebenefit.UpdateBenefit(updatebenefit.Benefit);
+
+                    benefitlist.Remove(updatebenefit.Benefit);
+
+                    await BenefitRepo.UpdateAsync(updatebenefit);
+                }
             }
             else
             {
-                var newbenefit = MembershipBenefits.Create
+                var newbenefit = MembershipBenefits.create
                     (
-                       id: benefit.id,
                        benefit: benefit.benefit,
                        membershipId: input.id
                     );
 
-                BenefitRepo?.AddAsync(newbenefit, ct);
+                await BenefitRepo.AddAsync(newbenefit, ct);
 
                 benefitlist.Add(newbenefit.Benefit);
             }

@@ -15,7 +15,7 @@ using Presentation.WebApp.Models.Users;
 
 namespace Presentation.WebApp.Controllers
 {
-    public class MemeberShipController(IMembershipService service, IUpdateMembershipService updateservice, UserManager<ApplicationUser> userManager, IBenefitService benefitService) : Controller
+    public class MemeberShipController(IDeleteMembershipService deleteMembershipService,IRegisterMembershipService registerMembership,IMembershipService service, IUpdateMembershipService updateservice, UserManager<ApplicationUser> userManager, IBenefitService benefitService) : Controller
     {
         public async Task<IActionResult> Index()
         {
@@ -155,13 +155,58 @@ namespace Presentation.WebApp.Controllers
                 return BadRequest();
             }
 
-            return RedirectToAction("Index", "MemeberShip");
+            return RedirectToAction("MyMembership", "My");
         }
 
-
-        public IActionResult MembershipStatus()
+        [HttpPost("RemoveMembership")]
+        public async Task<IActionResult> Delete(string id, CancellationToken ct = default)
         {
-            return View();
+
+            var result = await deleteMembershipService.ExecuteAsync(id);
+            if (!result.Success)
+            {
+                ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during Deletion";
+                return View();
+            }
+
+            return View("Index", "Home");
+
+        }
+
+        [HttpPost("CreateMembership")]
+        public async Task<IActionResult> Create(NewMembershipForm form, CancellationToken ct = default)
+        {
+            if (form is null)
+            {
+                throw new ArgumentNullException("form is empty, please redo");
+            }
+
+            var membership = new RegisterMemebershipInput
+                    (
+                        name: form.MembershipName,
+                        description: form.description,
+                        benefits: new List<RegisterBenfitsInput>(),
+                        status: "Active",
+                        type: "Monthly",
+                        pricing: form.pricing,
+                        monthlyDuration: form.monthlyDuration
+                    );
+            foreach (var benefit in form.Benefits) {
+                membership.benefits.Add(
+                new RegisterBenfitsInput
+                (
+                benefit: benefit.benefit
+                ));
+            }
+
+            var result = await registerMembership.ExecuteAsync(membership);
+            if (!result.Success)
+            {
+                ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during registration.";
+                return View(form);
+            }
+
+            return View("Index", "Home");
         }
     }
 }
