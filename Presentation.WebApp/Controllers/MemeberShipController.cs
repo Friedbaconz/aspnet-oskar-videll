@@ -30,17 +30,6 @@ namespace Presentation.WebApp.Controllers
             return View(model);
         }
 
-        public IActionResult NewMembership()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult NewMembership(string username)
-        {
-            return RedirectToAction("ConnectMembership");
-        }
-
         [HttpPost("ConnectToUser")]
         public async Task<IActionResult> ConnectMembershiptoUser(MyAccountViewModel viewModel, string id, CancellationToken ct = default)
         {
@@ -97,6 +86,65 @@ namespace Presentation.WebApp.Controllers
 
             return RedirectToAction("Index", "MemeberShip");
         }
+
+        [HttpPost("UpdateMembership")]
+        public async Task<IActionResult> UpdateMembership(NewMembershipForm form, string id, CancellationToken ct = default)
+        {
+            if (form is null)
+            {
+                throw new ArgumentNullException("form is empty, please redo");
+            }
+
+            var update = await service.GetMembershipByIdAsync(id);
+            var exsist = await benefitService.GetBenefitsAsync();
+            var benefitlist = new List<UpdateMembershipBenefitInput>();
+
+            var membership = new UpdateMembershipInput
+                    (
+                        id: update.Id,
+                        name: form.MembershipName,
+                        description: form.description,
+                        benefits: new List<string>(),
+                        status: update.Status,
+                        type: update.Type,
+                        pricing: form.pricing,
+                        monthlyDuration: form.monthlyDuration,
+                        userid: update.Userid,
+                        users: update.Users
+                    );
+
+            foreach (var benefit in form.Benefits)
+            {
+                foreach (var ex in exsist)
+                {
+                    if (ex.Benefit == benefit.benefit)
+                    {
+                        benefitlist.Add(new UpdateMembershipBenefitInput
+                            (
+                            ex.Id,
+                            benefit.benefit,
+                            membership.id
+                            ));
+
+                        membership.benefits.ToList().Add(
+                            new string
+                            (
+                            benefit.benefit
+                            ));
+                    }
+                }
+
+            }
+
+            var result = await updateservice.ExecuteAsync(membership, benefitlist);
+            if (!result.Success)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("Index", "MemeberShip");
+        }
+
 
         [HttpPost("DeleteMembership")]
 
