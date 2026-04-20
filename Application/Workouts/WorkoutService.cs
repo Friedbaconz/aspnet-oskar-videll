@@ -1,4 +1,4 @@
-﻿using Application.Workouts.Services;
+﻿using Application.Workouts.Abstractions;
 using Domain.Abstractions.Repositories.Workouts;
 using Domain.Aggregates.Workouts;
 

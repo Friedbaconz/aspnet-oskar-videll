@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Workouts.Services;
+namespace Application.Workouts.Abstractions;
 
 public interface IWorkoutService
 {

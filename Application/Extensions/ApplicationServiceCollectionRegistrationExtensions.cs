@@ -3,12 +3,12 @@ using Application.Bookings.Services;
 using Application.Memberships;
 using Application.Memberships.Services;
 using Application.Workouts;
-using Application.Workouts.Services;
 using Domain.Aggregates.Workouts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Application.Memberships.Abstractions;
+using Application.Workouts.Abstractions;
 namespace Application.Extensions;
 
 public static class ApplicationServiceCollectionRegistrationExtensions
@@ -19,9 +19,9 @@ public static class ApplicationServiceCollectionRegistrationExtensions
         services.AddScoped<IWorkoutService, WorkoutService>();
         services.AddScoped<IBookingService, BookingService>();
         services.AddScoped<IBenefitService, BenefitService>();
-        services.AddScoped<IUpdateMembershipService, UpdateMembershipService>();
-        services.AddScoped<IRegisterMembershipService, RegisterMembershipService>();
-        services.AddScoped<IDeleteMembershipService, DeleteMembershipService>();
+
+        services.AddMemberShipService();
+        services.AddWorkoutService();
         services.AddUserSevice();
         return services;
     }

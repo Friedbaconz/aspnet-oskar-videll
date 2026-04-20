@@ -8,4 +8,8 @@ public class WorkoutViewModel
     public IEnumerable<Workout> Workouts { get; set; } = [];
 
     public IEnumerable<Booking> Bookings { get; set; } = [];
+
+    public RegisterWorkoutForm RegisterWorkoutForm { get; set; } = null!;
+
+    public UpdateWorkoutForm UpdateWorkoutForm { get; set; } = null!;
 }
