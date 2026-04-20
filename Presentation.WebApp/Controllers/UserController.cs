@@ -4,11 +4,13 @@ using Application.Memberships.Inputs;
 using Application.Users.Abstractions;
 using Application.Users.Inputs;
 using Application.Users.Services;
+using Application.Workouts.Abstractions;
 using Domain.Aggregates.Memberships;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.WebApp.Models.CostumerService;
 using Presentation.WebApp.Models.Memberships;
 using Presentation.WebApp.Models.Users;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -17,7 +19,7 @@ namespace Presentation.WebApp.Controllers;
 
 [Authorize]
 [Route("User")]
-public class UserController(UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService, IMembershipService membershipservice) : Controller
+public class UserController(UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService, IMembershipService membershipservice, IWorkoutService workoutService) : Controller
 {
     [HttpGet("My")]
     public async Task<IActionResult> My(CancellationToken ct = default)
@@ -163,7 +165,72 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
 
     }
 
-    
+    [HttpGet("MyBooking")]
+    public async Task<IActionResult> MyBookings(CancellationToken ct = default)
+    {
+        var user = await userManager.GetUserAsync(User);
+
+        if (user is null)
+        {
+            return Challenge();
+        }
+
+        var profile = await getUserProfileService.ExecuteAsync(user.Id, ct);
+        if (profile is null)
+        {
+            return NotFound();
+        }
+
+        var workouts = await workoutService.GetWorkoutsAsync();
+        if (workouts is null)
+        {
+            return NotFound();
+        }
+
+        if (profile.Value.WorkoutsId.ToString() == string.Empty)
+        {
+            var Viewmodel = new WorkoutViewModel
+            {
+                MyWorkout = new MyWorkoutViewModel
+                {
+                    Id = null,
+                    Name = null,
+                    Category = null,
+                    Instructions = null,
+                    Date = DateTime.Now,
+                    Time = TimeSpan.Zero,
+                },
+
+                WorkoutIDs = workouts.Select(m => m.Id),
+                Workouts = workouts
+            };
+            return View(Viewmodel);
+        }
+        else
+        {
+            var Workouts = await workoutService.GetWorkoutByIdAsync(profile.Value.WorkoutsId.ToString());
+
+            var Viewmodel = new WorkoutViewModel
+            {
+                 MyWorkout = new MyWorkoutViewModel
+                 {
+                     Id = profile.Value.WorkoutsId.ToString(),
+                     Name = Workouts.Name,
+                     Category = Workouts.Category,
+                     Instructions = Workouts.Instructions,
+                     Date = Workouts.Date,
+                     Time = Workouts.Time,
+                 },
+
+                WorkoutIDs = workouts.Select(m => m.Id),
+                Workouts = workouts
+
+            };
+
+            return View(Viewmodel);
+        }
+    }
+
 
     [HttpPost("DeleteUser")]
     [ValidateAntiForgeryToken]

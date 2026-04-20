@@ -11,4 +11,16 @@ public sealed class WorkoutService(IWorkoutRepository repo) : IWorkoutService
         var workouts = await repo.GetAllAsync(ct);
         return workouts;
     }
+
+    public async Task<Workout?> GetWorkoutByIdAsync(string id, CancellationToken ct = default)
+    {
+        var workout = await repo.GetByIdAsync(id, ct);
+
+        if(workout == null)
+        {
+            throw new ArgumentNullException(nameof(workout));
+        }
+
+        return workout;
+    }
 }
