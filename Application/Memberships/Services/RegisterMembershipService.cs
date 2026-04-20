@@ -50,7 +50,8 @@ public class RegisterMembershipService(IBenefitRepository benfitrepo, IMembershi
 
             foreach (var benfit in input.benefits)
             {
-                    var newbenefits = MembershipBenefits.create(
+                    var newbenefits = MembershipBenefits.Create(
+                        id: Guid.NewGuid().ToString(),
                         membershipId: membership.Id,
                         benefit: benfit.benefit
                     );

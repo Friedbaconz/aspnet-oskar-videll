@@ -1,14 +1,15 @@
 ﻿using Application.Abstractions.Identity;
 using Application.Memberships.Abstractions;
 using Application.Memberships.Inputs;
-using Application.Memberships.Services;
 using Application.Users.Abstractions;
 using Application.Users.Inputs;
 using Application.Users.Services;
+using Domain.Aggregates.Memberships;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.WebApp.Models.Memberships;
 using Presentation.WebApp.Models.Users;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -104,15 +105,27 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
             return NotFound();
         }
 
-        if(profile.Value.MembershipId == string.Empty)
+        var memberships = await membershipservice.GetMembershipsAsync();
+        if (memberships is null)
         {
-            var Viewmodel = new MyMembershipViewModel
+            return NotFound();
+        }
+
+        if (profile.Value.MembershipId == string.Empty)
+        {
+            var Viewmodel = new MembershipViewModel
             {
-                MembershipId = null,
-                MembershipName = null,
-                Description = null,
-                status = null,
-                Benefits = null
+                MyMembership = new MyMembershipViewModel
+                {
+                    MembershipId = null,
+                    MembershipName = null,
+                    Description = null,
+                    status = null,
+                    Benefits = null,
+                },
+
+                MembershipIDs = memberships.Select(m => m.Id),
+                Memberships = memberships
             };
             return View(Viewmodel);
         }
@@ -129,18 +142,23 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
                     Benefit.Add(benefit);
                 }
             }
-
-            var viewmodel = new MyMembershipViewModel
+            var Viewmodel = new MembershipViewModel
             {
-                MembershipId = membership.Id,
-                MembershipName = membership.Name,
-                Description = membership.Description,
-                status = membership.Status,
-                Benefits = Benefit
+                MyMembership = new MyMembershipViewModel
+                {
+                    MembershipId = membership.Id,
+                    MembershipName = membership.Name,
+                    Description = membership.Description,
+                    status = membership.Status,
+                    Benefits = Benefit
+                },
+
+                MembershipIDs = memberships.Select(m => m.Id),
+                Memberships = memberships
+
             };
 
-
-            return View(viewmodel);
+            return View(Viewmodel);
         }
 
     }

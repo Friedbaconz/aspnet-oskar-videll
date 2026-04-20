@@ -1,4 +1,4 @@
-﻿@model MyMembershipViewModel
+﻿@model MembershipViewModel
 
 @{
     ViewData["Title"] = "My Membership";
@@ -20,7 +20,9 @@
                 </div>
 
                 <section><form asp-controller="User" asp-action="DeleteUser" method="post"><input type="submit" value="Delete" /></form></section>
-                            
+                 <div>
+                    <partial name="Partials/_EditMemberShipSection" model="Model" />
+                 </div>            
             </aside>
 
             <section>
@@ -44,30 +46,29 @@
                         }
                     }
 
-                    @if (Model.Benefits != null)
+                    @if (Model.MyMembership.Benefits != null)
                     {
-                        var status = Model.status;
-                        var header = Model.MembershipName;
-                        var text = Model.Description;
+                        var status = Model.MyMembership.status;
+                        var header = Model.MyMembership.MembershipName;
+                        var text = Model.MyMembership.Description;
                         <div>
                             <p> @header </p>
                             <p> @status </p>
                             <p> @text </p>
-                            @foreach (var Benefit in Model.Benefits)
+                            @foreach (var Benefit in Model.MyMembership.Benefits)
                             {
                                 <p>@Benefit</p>
                             }
                         </div>
                     }
-                    @if (Model.Benefits is null) 
+                    @if (Model.MyMembership.Benefits is null)
                     {
                         <p>You Have No MemberShip</p>
                     }
-                       
                 </form>
-                    @if (Model.Benefits != null)
+                @if (Model.Benefits != null)
                 {
-                    <section><form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><input type="submit" name="id" value="@Model.MembershipId" /></form></section>
+                    <section><form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><input type="submit" name="id" value="@Model.MyMembership.MembershipId" /></form></section>
                 }
             </section>
         </div>

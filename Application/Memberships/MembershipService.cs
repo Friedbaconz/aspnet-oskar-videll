@@ -1,4 +1,4 @@
-﻿using Application.Memberships.Services;
+﻿using Application.Memberships.Abstractions;
 using Domain.Abstractions.Repositories.Memberships;
 using Domain.Aggregates.Memberships;
 

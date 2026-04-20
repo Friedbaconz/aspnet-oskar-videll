@@ -58,39 +58,21 @@ public sealed class UpdateMembershipService(IMembershipRepository repo, IUserRep
             userlists = input.users.ToList();
         }
 
+
         foreach (var benefit in benefits)
         {
-            var updatebenefit = await BenefitRepo.GetByIdAsync(benefit.id);
+            string newid = Guid.NewGuid().ToString();
 
-            if(updatebenefit != null)
-            {
-                if(updatebenefit.MembershipId == input.id)
-                {
-                    updatebenefit.UpdateBenefit(updatebenefit.Benefit);
+            var newbenefit = MembershipBenefits.Create
+            (
+                id: newid,
+                benefit: benefit.benefit,
+                membershipId: input.id
+            );
 
-                    benefitlist.Add(updatebenefit.Benefit);
+            await BenefitRepo.AddAsync(newbenefit, ct);
 
-                    await BenefitRepo.UpdateAsync(updatebenefit);
-                }
-                else
-                {
-                    benefitlist.Remove(updatebenefit.Benefit);
-
-                    await BenefitRepo.RemoveAsync(updatebenefit);
-                }
-            }
-            else
-            {
-                var newbenefit = MembershipBenefits.create
-                    (
-                       benefit: benefit.benefit,
-                       membershipId: input.id
-                    );
-
-                await BenefitRepo.AddAsync(newbenefit, ct);
-
-                benefitlist.Add(newbenefit.Benefit);
-            }
+            benefitlist.Add(benefit.benefit);
 
         }
 

@@ -1,5 +1,5 @@
 ﻿using Domain.Aggregates.Memberships;
-namespace Application.Memberships.Services;
+namespace Application.Memberships.Abstractions;
 
 public interface IMembershipService
 {

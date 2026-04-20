@@ -1,0 +1,166 @@
+﻿@model MembershipViewModel
+<section class="body-wrapper">
+
+                    <form asp-controller="MemeberShip" asp-action="CreateMembership" asp-area="" method="post">
+                    <h2>New Membership</h2>
+                    <div class="signin-bar">
+                        <label asp-for="MembershipForm.MembershipName"></label>
+                        <input asp-for="MembershipForm.MembershipName" />
+                        <span asp-validation-for="MembershipForm.MembershipName"></span>
+                    </div>
+                    <div class="signin-bar">
+                        <label asp-for="MembershipForm.description"></label>
+                        <input asp-for="MembershipForm.description" />
+                        <span asp-validation-for="MembershipForm.description"></span>
+                    </div>
+                    <div class="signin-bar">
+                        <label asp-for="MembershipForm.pricing"></label>
+                        <input asp-for="MembershipForm.pricing" />
+                        <span asp-validation-for="MembershipForm.pricing"></span>
+                    </div>
+                    <div class="signin-bar">
+                        <label asp-for="MembershipForm.monthlyDuration"></label>
+                        <input asp-for="MembershipForm.monthlyDuration" />
+                        <span asp-validation-for="MembershipForm.monthlyDuration"></span>
+                    </div>
+                        <button type="button" id="add-benefit">Add Benefit</button>
+
+                        <div id="new-benefits-container">
+                            @if (Model.MembershipForm?.Benefits != null)
+                            {
+                                for (var i = 0; i < Model.MembershipForm.Benefits.Count; i++)
+                                {
+                                    <div class="signin-bar benefit-item">
+                                        <label>Benefit</label>
+                                        <input type="text" name="MembershipForm.Benefits[@i].benefit" value="@Model.MembershipForm.Benefits[i].benefit" />
+                                        <button type="button" class="remove-benefit">Remove</button>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <button type="submit">Create</button>
+                    </form>
+                    <hr />
+                    <div>
+                        <h2>Edit Membership</h2>
+                        @foreach (var membership in Model.Memberships)
+                    {
+                        <hr />
+                        <form asp-controller="MemeberShip" asp-action="UpdateMembership" asp-area="" method="post">
+
+                            <div class="signin-bar">
+                                <label asp-for="UpdateMembershipForm.MembershipName"></label>
+                                <input asp-for="UpdateMembershipForm.MembershipName" value="@membership.Name"/>
+                                <span asp-validation-for="UpdateMembershipForm.MembershipName"></span>
+                            </div>
+                            <div class="signin-bar">
+                                <label asp-for="UpdateMembershipForm.description"></label>
+                                <input asp-for="UpdateMembershipForm.description" value="@membership.Description"/>
+                                <span asp-validation-for="UpdateMembershipForm.description"></span>
+                            </div>
+                            <div class="signin-bar">
+                                <label asp-for="UpdateMembershipForm.pricing"></label>
+                                <input asp-for="UpdateMembershipForm.pricing" value="@membership.Pricing"/>
+                                <span asp-validation-for="UpdateMembershipForm.pricing"></span>
+                            </div>
+                            <div class="signin-bar">
+                                <label asp-for="UpdateMembershipForm.monthlyDuration"></label>
+                                <input asp-for="UpdateMembershipForm.monthlyDuration" value="@membership.MonthlyDuration"/>
+                                <span asp-validation-for="UpdateMembershipForm.monthlyDuration"></span>
+                            </div>
+
+                            <div class="benefits-list">
+                                @if (membership.Benefits != null)
+                                {
+                                    var idx = 0;
+                                    foreach (var benefit in membership.Benefits)
+                                    {
+                                        <div class="signin-bar benefit-item">
+                                            <label>Benefit</label>
+                                            <input type="text" name="MembershipForm.Benefits[@idx].benefit" value="@benefit" />
+                                            <button type="button" class="remove-benefit">Remove</button>
+                                        </div>
+                                        idx++;
+                                    }
+                                }
+                            </div>
+
+                            <button type="button" class="add-benefit-btn">Add Benefit</button>
+
+                
+                            <button type="submit" name="id" value="@membership.Id">Update</button>
+                        </form>
+                        <form asp-controller="MemeberShip" asp-action="RemoveMembership" method="post"><input type="submit" name="id" value="@membership.Id" /></form>
+                    }
+                    </div>
+</section>
+
+<script>
+            (function () {
+        function createBenefitElement(index, value) {
+            var div = document.createElement('div');
+            div.className = 'signin-bar benefit-item';
+
+            var label = document.createElement('label');
+            label.textContent = 'Benefit';
+
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'MembershipForm.Benefits[' + index + '].benefit';
+            input.value = value || '';
+
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'remove-benefit';
+            btn.textContent = 'Remove';
+
+            div.appendChild(label);
+            div.appendChild(input);
+            div.appendChild(btn);
+
+            return div;
+        }
+
+        function renumber(container) {
+            var inputs = container.querySelectorAll('.benefit-item input[type="text"]');
+            inputs.forEach(function (input, i) {
+                input.name = 'MembershipForm.Benefits[' + i + '].benefit';
+            });
+        }
+
+        // New membership add button
+        var addNewBtn = document.getElementById('add-benefit');
+        if (addNewBtn) {
+            addNewBtn.addEventListener('click', function () {
+                var container = document.getElementById('new-benefits-container');
+                if (container) {
+                    var nextIndex = container.querySelectorAll('.benefit-item').length;
+                    container.appendChild(createBenefitElement(nextIndex, ''));
+                }
+            });
+        }
+
+        // Edit forms: each .add-benefit-btn adds a benefit to its owning form's .benefits-list
+        document.querySelectorAll('.add-benefit-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var form = btn.closest('form');
+                if (!form) return;
+                var container = form.querySelector('.benefits-list');
+                if (!container) return;
+                var nextIndex = container.querySelectorAll('.benefit-item').length;
+                container.appendChild(createBenefitElement(nextIndex, ''));
+            });
+        });
+
+        // Delegate remove clicks and renumber after removal
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.classList && e.target.classList.contains('remove-benefit')) {
+                var item = e.target.closest('.benefit-item');
+                if (!item) return;
+                var container = item.closest('#new-benefits-container') || item.closest('.benefits-list');
+                item.remove();
+                if (container) renumber(container);
+            }
+        });
+    })();
+</script>

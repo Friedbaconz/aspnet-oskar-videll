@@ -61,15 +61,15 @@ using (var scope = app.Services.CreateScope())
                     basicmember.benefits.AddRange(
                     new RegisterBenfitsInput
                     (
-                        benefit: "new benefit"
+                        benefit: "new benefit 1"
                     ),
                     new RegisterBenfitsInput
                     (
-                        benefit: "new benefit"
+                        benefit: "new benefit 2"
                     ),
                     new RegisterBenfitsInput
                     (
-                        benefit: "new benefit"
+                        benefit: "new benefit 3"
                     ));
 
                     await ServiceMembership.ExecuteAsync(basicmember);
@@ -89,15 +89,15 @@ using (var scope = app.Services.CreateScope())
                     Premiummember.benefits.AddRange(
                     new RegisterBenfitsInput
                     (
-                        benefit: "new benefit"
+                        benefit: "new benefit 4"
                     ),
                     new RegisterBenfitsInput
                     (
-                        benefit: "new benefit"
+                        benefit: "new benefit 5"
                     ),
                     new RegisterBenfitsInput
                     (
-                        benefit: "new benefit"
+                        benefit: "new benefit 6"
                     ));
 
                     await ServiceMembership.ExecuteAsync(Premiummember);

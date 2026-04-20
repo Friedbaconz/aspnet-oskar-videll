@@ -2,7 +2,6 @@
 using Application.Memberships.Abstractions;
 using Application.Memberships.Inputs;
 using Application.Memberships.Inputs;
-using Application.Memberships.Services;
 using Application.Users.Abstractions;
 using Application.Users.Services;
 using Domain.Abstractions.Repositories.Memberships;
@@ -56,7 +55,6 @@ namespace Presentation.WebApp.Controllers
                     {
                         benefitlist.Add(new UpdateMembershipBenefitInput
                             (
-                            ex.Id,
                             ex.Benefit,
                             membership.Id
                             ));
@@ -88,52 +86,52 @@ namespace Presentation.WebApp.Controllers
         }
 
         [HttpPost("UpdateMembership")]
-        public async Task<IActionResult> UpdateMembership(NewMembershipForm form, string id, CancellationToken ct = default)
+        public async Task<IActionResult> UpdateMembership(MembershipViewModel form, string id, CancellationToken ct = default)
         {
             if (form is null)
             {
                 throw new ArgumentNullException("form is empty, please redo");
             }
 
-            var update = await service.GetMembershipByIdAsync(id);
-            var exsist = await benefitService.GetBenefitsAsync();
+            var update = await service.GetMembershipByIdAsync(id, ct);
             var benefitlist = new List<UpdateMembershipBenefitInput>();
 
             var membership = new UpdateMembershipInput
                     (
                         id: update.Id,
-                        name: form.MembershipName,
-                        description: form.description,
+                        name: form.UpdateMembershipForm.MembershipName,
+                        description: form.UpdateMembershipForm.description,
                         benefits: new List<string>(),
                         status: update.Status,
                         type: update.Type,
-                        pricing: form.pricing,
-                        monthlyDuration: form.monthlyDuration,
+                        pricing: form.UpdateMembershipForm.pricing,
+                        monthlyDuration: form.UpdateMembershipForm.monthlyDuration,
                         userid: update.Userid,
                         users: update.Users
                     );
 
-            foreach (var benefit in form.Benefits)
-            {
-                foreach (var ex in exsist)
-                {
-                    if (ex.Benefit == benefit.benefit)
-                    {
-                        benefitlist.Add(new UpdateMembershipBenefitInput
-                            (
-                            ex.Id,
-                            benefit.benefit,
-                            membership.id
-                            ));
+            var exsist = await benefitService.GetBenefitsAsync();
 
-                        membership.benefits.ToList().Add(
-                            new string
-                            (
-                            benefit.benefit
-                            ));
+            foreach ( var ex in exsist )
+            {
+                foreach ( var benefit in update.Benefits )
+                {
+                    if ( ex.MembershipId == update.Id && ex.Benefit == benefit)
+                    {
+                        var deletebenefit = await deleteMembershipService.DeleteBenefit(ex.Id, ct);
                     }
                 }
+            }
 
+            foreach (var newbenefit in form.MembershipForm.Benefits)
+            {
+
+                benefitlist.Add(new UpdateMembershipBenefitInput
+                    (
+                    benefit: newbenefit.benefit,
+                    membershipId: update.Id
+                     )
+                    );
             }
 
             var result = await updateservice.ExecuteAsync(membership, benefitlist);
@@ -142,7 +140,7 @@ namespace Presentation.WebApp.Controllers
                 return BadRequest();
             }
 
-            return RedirectToAction("Index", "MemeberShip");
+            return RedirectToAction("MyMembership", "My");
         }
 
 
@@ -173,7 +171,6 @@ namespace Presentation.WebApp.Controllers
                     {
                         benefitlist.Add(new UpdateMembershipBenefitInput
                             (
-                            ex.Id,
                             ex.Benefit,
                             membership.Id
                             ));
@@ -207,7 +204,7 @@ namespace Presentation.WebApp.Controllers
         }
 
         [HttpPost("RemoveMembership")]
-        public async Task<IActionResult> Delete(string id, CancellationToken ct = default)
+        public async Task<IActionResult> RemoveMembership(string id, CancellationToken ct = default)
         {
 
             var result = await deleteMembershipService.ExecuteAsync(id);
@@ -222,7 +219,7 @@ namespace Presentation.WebApp.Controllers
         }
 
         [HttpPost("CreateMembership")]
-        public async Task<IActionResult> Create(NewMembershipForm form, CancellationToken ct = default)
+        public async Task<IActionResult> CreateMembership(MembershipViewModel form, CancellationToken ct = default)
         {
             if (form is null)
             {
@@ -231,15 +228,15 @@ namespace Presentation.WebApp.Controllers
 
             var membership = new RegisterMemebershipInput
                     (
-                        name: form.MembershipName,
-                        description: form.description,
+                        name: form.MembershipForm.MembershipName,
+                        description: form.MembershipForm.description,
                         benefits: new List<RegisterBenfitsInput>(),
                         status: "Active",
                         type: "Monthly",
-                        pricing: form.pricing,
-                        monthlyDuration: form.monthlyDuration
+                        pricing: form.MembershipForm.pricing,
+                        monthlyDuration: form.MembershipForm.monthlyDuration
                     );
-            foreach (var benefit in form.Benefits) {
+            foreach (var benefit in form.MembershipForm.Benefits) {
                 membership.benefits.Add(
                 new RegisterBenfitsInput
                 (
@@ -254,7 +251,7 @@ namespace Presentation.WebApp.Controllers
                 return View(form);
             }
 
-            return View("Index", "Home");
+            return RedirectToAction("MyMembership", "My");
         }
     }
 }

@@ -1,11 +1,13 @@
 ﻿
 
+using Domain.Aggregates.Users;
+
 namespace Domain.Aggregates.Memberships;
 
 public sealed class MembershipBenefits
 {
 
-    public int Id { get; private set; }
+    public string Id { get; private set; }
 
     public string MembershipId { get; private set; }
 
@@ -17,24 +19,24 @@ public sealed class MembershipBenefits
 
     }
 
-    private MembershipBenefits(int id)
+    private MembershipBenefits(string id)
     {
         Id = id;
     }
 
-    public static MembershipBenefits create(string membershipId, string benefit)
+    public static MembershipBenefits Create(string id)
     {
-        var request = new MembershipBenefits
-        {
-            Benefit = benefit,
-            MembershipId = membershipId,
-        };
 
-        return request;
+        var benefit = new MembershipBenefits
+            (
+                Guid.NewGuid().ToString()
+            );
+
+        return benefit;
     }
 
 
-    public static MembershipBenefits Create(int id,string membershipId, string benefit)
+    public static MembershipBenefits Create(string id, string membershipId, string benefit)
     {
         var membershipbenefit = new MembershipBenefits(id)
         {

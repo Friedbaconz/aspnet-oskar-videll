@@ -5,9 +5,9 @@ namespace Presentation.WebApp.Models.Memberships;
 public class NewMembershipForm
 {
 
-    public string MembershipName { get; set; }
+    public string MembershipName { get; set; } = null!;
 
-    public string description { get; set; }
+    public string description { get; set; } = null!;
 
     public List<NewMembershipBenefitForm> Benefits { get; set; } = new List<NewMembershipBenefitForm>();
 

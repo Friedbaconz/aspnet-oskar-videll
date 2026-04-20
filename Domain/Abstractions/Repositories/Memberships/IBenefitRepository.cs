@@ -5,6 +5,6 @@ using System.Text;
 
 namespace Domain.Abstractions.Repositories.Memberships;
 
-public interface IBenefitRepository : IRepositoryBase<MembershipBenefits, int>
+public interface IBenefitRepository : IRepositoryBase<MembershipBenefits, string>
 {
 }

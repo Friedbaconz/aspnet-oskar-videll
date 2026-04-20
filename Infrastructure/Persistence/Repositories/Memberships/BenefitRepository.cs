@@ -8,9 +8,9 @@ using System.Text;
 
 namespace Infrastructure.Persistence.Repositories.Memberships;
 
-public sealed class BenefitRepository(CoreFitnessDbContext context) : RepositoryBase<MembershipBenefits, int, MembershipBenefitEntity, CoreFitnessDbContext>(context), IBenefitRepository
+public sealed class BenefitRepository(CoreFitnessDbContext context) : RepositoryBase<MembershipBenefits, string, MembershipBenefitEntity, CoreFitnessDbContext>(context), IBenefitRepository
 {
-    public override int GetId(MembershipBenefits model)
+    public override string GetId(MembershipBenefits model)
     {
         return model.Id;
     }
@@ -20,7 +20,7 @@ public sealed class BenefitRepository(CoreFitnessDbContext context) : Repository
 
         var entity = new MembershipBenefitEntity
         {
-            MembershipBenefitID = context.MembershipBenefits.Count() +1,
+            MembershipBenefitID = model.Id,
             Benefit = model.Benefit,
             MembershipID = model.MembershipId,
             Membership = context.Memberships.FirstOrDefault(m => m.MembershipID == model.MembershipId)
