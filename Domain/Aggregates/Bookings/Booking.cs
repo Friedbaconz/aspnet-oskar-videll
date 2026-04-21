@@ -5,18 +5,18 @@ namespace Domain.Aggregates.Bookings;
 public sealed class Booking
 {
 
-    public Booking(int id, string userId, string workoutId)
+    public Booking(string id, string userId, string workoutId)
     {
-        Id = RequiredInt(id, nameof(Id));
+        Id = RequiredString(id, nameof(Id));
         UserId = RequiredString(userId, nameof(UserId));
         WorkoutId = RequiredString(workoutId, nameof(WorkoutId));
     }
 
-    public int Id { get; }
+    public string Id { get; private set; }
 
-    public string UserId { get; }
+    public string UserId { get; private set; }
 
-    public string WorkoutId { get; }
+    public string WorkoutId { get; private set; }
 
     private static int RequiredInt(int value, string propertyName)
     {
@@ -32,18 +32,15 @@ public sealed class Booking
         return value.Trim();
     }
 
-    public static Booking Create(int id, string userId, string workoutId)
+    public static Booking Create(string id, string userId, string workoutId)
     {
         return new Booking(id, userId, workoutId);
     }
 
-    public static Booking Rehydrate(int id, string userId, string workoutId)
+    public void Update(string id, string userId, string workoutId)
     {
-        return new Booking(id, userId, workoutId);
-    }
-
-    public void Update(int userId, string workoutId)
-    {
-
+        Id = RequiredString(id, nameof(Id));
+        UserId = RequiredString(userId, nameof(UserId));
+        WorkoutId = RequiredString(workoutId, nameof(WorkoutId));
     }
 }

@@ -1,4 +1,4 @@
-﻿using Application.Bookings.Services;
+﻿using Application.Bookings.Abstractions;
 using Application.Memberships.Abstractions;
 using Application.Users.Abstractions;
 using Application.Workouts.Abstractions;
@@ -6,11 +6,12 @@ using Application.Workouts.Inputs;
 using Domain.Abstractions.Repositories.Workouts;
 using Domain.Aggregates.Workouts;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.WebApp.Models.Bookings;
 using Presentation.WebApp.Models.CostumerService;
 
 namespace Presentation.WebApp.Controllers;
 
-public class CostumerServiceController(IWorkoutService service, IRegisterWorkoutService register, IDeleteWorkoutService Delete, IUpdateWorkoutService Update ,IBookingService booking, IGetUserProfileService getUserProfileService) : Controller
+public class CostumerServiceController(IWorkoutService service, IRegisterWorkoutService register, IDeleteWorkoutService Delete, IUpdateWorkoutService Update ,IBookingService booking) : Controller
 {
     public async Task<IActionResult> Index()
     {

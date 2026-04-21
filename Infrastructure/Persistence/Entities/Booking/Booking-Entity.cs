@@ -5,7 +5,7 @@ namespace Infrastructure.Persistence.Entities.Booking;
 
 public class BookingEntity
 {
-    public int BookingID { get; set; }
+    public string BookingID { get; set; } = null!;
 
     public string UserID { get; set; } = null!;
 

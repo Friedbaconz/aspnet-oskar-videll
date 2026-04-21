@@ -28,7 +28,8 @@ public sealed class UpdateWorkoutService(IWorkoutRepository repo, IUserRepositor
                 if (user is not null)
                 {
                     input.Users.Add(user.UserId);
-                    user.UpdateProfile(user.FirstName, user.LastName, user.Phonenumber, user.ProfileImageUri, user.MembershipId, user.WorkoutsId.Where(w => w != workout.Id));
+                    user.UpdateProfile(user.FirstName, user.LastName, user.Phonenumber, user.ProfileImageUri, user.MembershipId, user.WorkoutsId);
+
                     await userRepo.UpdateAsync(user, ct);
                 }
             }

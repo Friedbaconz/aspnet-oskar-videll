@@ -21,7 +21,7 @@ public sealed class RegisterWorkoutService(IWorkoutRepository repo) : IRegisterW
 
             string id = Guid.NewGuid().ToString();
 
-            var membership = Workout.Create(
+            var workout = Workout.Create(
                 id,
                 name: input.Name,
                 category: input.Category,
@@ -31,9 +31,9 @@ public sealed class RegisterWorkoutService(IWorkoutRepository repo) : IRegisterW
                 Enumerable.Empty<string>()
             );
 
-            await repo.UpdateAsync(membership, ct);
+            await repo.AddAsync(workout, ct);
 
-            return Result<string?>.Ok(membership.Id);
+            return Result<string?>.Ok(workout.Id);
         }
         catch (Exception ex)
         {

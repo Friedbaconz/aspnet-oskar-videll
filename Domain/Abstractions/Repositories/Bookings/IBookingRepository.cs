@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Domain.Abstractions.Repositories.Bookings;
 
-public interface IBookingRepository : IRepositoryBase<Booking, int>
+public interface IBookingRepository : IRepositoryBase<Booking, string>
 {
+    Task<List<Booking>> GetAllByUserId(string userid, CancellationToken ct = default);
 }

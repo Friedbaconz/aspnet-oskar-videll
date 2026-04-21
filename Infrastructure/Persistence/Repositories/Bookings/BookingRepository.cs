@@ -6,15 +6,29 @@ using Infrastructure.Persistence.Contexts;
 using Infrastructure.Persistence.Entities.Booking;
 using Infrastructure.Persistence.Entities.Users;
 using Infrastructure.Persistence.Entities.Workouts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Infrastructure.Persistence.Repositories.Bookings;
 
-public sealed class BookingRepository(CoreFitnessDbContext context) : RepositoryBase<Booking, int, BookingEntity, CoreFitnessDbContext>(context), IBookingRepository
+public sealed class BookingRepository(CoreFitnessDbContext context) : RepositoryBase<Booking, string, BookingEntity, CoreFitnessDbContext>(context), IBookingRepository
 {
-    public override int GetId(Booking model)
+    public async Task<List<Booking>> GetAllByUserId(string userid, CancellationToken ct = default)
+    {
+        var List = new List<Booking>();
+        var entities = await context.Bookings.Where(b => b.UserID == userid).ToListAsync(ct);
+
+        foreach (var entity in entities)
+        {
+            var model = ToDomainModel(entity);
+            List.Add(model);
+        }
+        return List;
+    }
+
+    public override string GetId(Booking model)
     {
         return model.Id;
     }
@@ -47,7 +61,7 @@ public sealed class BookingRepository(CoreFitnessDbContext context) : Repository
         }
 
 
-
+        entity.BookingID = model.Id;
         entity.WorkoutID = model.WorkoutId;
         entity.UserID = model.UserId;
     }
@@ -63,4 +77,6 @@ public sealed class BookingRepository(CoreFitnessDbContext context) : Repository
 
         return model;
     }
+
+
 }

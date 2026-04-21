@@ -1,5 +1,4 @@
 ﻿using Application.Bookings;
-using Application.Bookings.Services;
 using Application.Memberships;
 using Application.Memberships.Services;
 using Application.Workouts;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Application.Memberships.Abstractions;
 using Application.Workouts.Abstractions;
+using Application.Bookings.Abstractions;
 namespace Application.Extensions;
 
 public static class ApplicationServiceCollectionRegistrationExtensions
@@ -20,6 +20,8 @@ public static class ApplicationServiceCollectionRegistrationExtensions
         services.AddScoped<IBookingService, BookingService>();
         services.AddScoped<IBenefitService, BenefitService>();
 
+
+        services.AddBookingService();
         services.AddMemberShipService();
         services.AddWorkoutService();
         services.AddUserSevice();

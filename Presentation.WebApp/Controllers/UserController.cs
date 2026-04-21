@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Identity;
+using Application.Bookings.Abstractions;
 using Application.Memberships.Abstractions;
 using Application.Memberships.Inputs;
 using Application.Users.Abstractions;
@@ -19,7 +20,7 @@ namespace Presentation.WebApp.Controllers;
 
 [Authorize]
 [Route("User")]
-public class UserController(UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService, IMembershipService membershipservice, IWorkoutService workoutService) : Controller
+public class UserController(UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService, IMembershipService membershipservice, IWorkoutService workoutService, IBookingService bookingService) : Controller
 {
     [HttpGet("My")]
     public async Task<IActionResult> My(CancellationToken ct = default)
@@ -176,59 +177,37 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
         }
 
         var profile = await getUserProfileService.ExecuteAsync(user.Id, ct);
+
         if (profile is null)
         {
             return NotFound();
         }
 
-        var workouts = await workoutService.GetWorkoutsAsync();
-        if (workouts is null)
+        var bookings = await bookingService.GetAllBookingByUserIdAsync(user.Id, ct);
+
+        if (bookings is null)
         {
-            return NotFound();
+            return BadRequest();
         }
 
-        if (profile.Value.WorkoutsId.ToString() == string.Empty)
+        var viewmodels = new List<MyWorkoutViewModel>();
+
+        foreach (var booking in bookings)
         {
-            var Viewmodel = new WorkoutViewModel
+            var workout = await workoutService.GetWorkoutByIdAsync(booking.WorkoutId, ct);
+
+            viewmodels.Add(new MyWorkoutViewModel
             {
-                MyWorkout = new MyWorkoutViewModel
-                {
-                    Id = null,
-                    Name = null,
-                    Category = null,
-                    Instructions = null,
-                    Date = DateTime.Now,
-                    Time = TimeSpan.Zero,
-                },
-
-                WorkoutIDs = workouts.Select(m => m.Id),
-                Workouts = workouts
-            };
-            return View(Viewmodel);
+                Id = workout.Id,
+                Name = workout.Name,
+                Category = workout.Category,
+                Instructions = workout.Instructions,
+                Date = workout.Date,
+                Time = workout.Time
+            });
         }
-        else
-        {
-            var Workouts = await workoutService.GetWorkoutByIdAsync(profile.Value.WorkoutsId.ToString());
 
-            var Viewmodel = new WorkoutViewModel
-            {
-                 MyWorkout = new MyWorkoutViewModel
-                 {
-                     Id = profile.Value.WorkoutsId.ToString(),
-                     Name = Workouts.Name,
-                     Category = Workouts.Category,
-                     Instructions = Workouts.Instructions,
-                     Date = Workouts.Date,
-                     Time = Workouts.Time,
-                 },
-
-                WorkoutIDs = workouts.Select(m => m.Id),
-                Workouts = workouts
-
-            };
-
-            return View(Viewmodel);
-        }
+        return View(viewmodels);
     }
 
 

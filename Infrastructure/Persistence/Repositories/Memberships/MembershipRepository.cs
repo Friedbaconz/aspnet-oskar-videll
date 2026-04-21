@@ -12,32 +12,6 @@ namespace Infrastructure.Persistence.Repositories.Memberships;
 
 public sealed class MembershipRepository(CoreFitnessDbContext context) : RepositoryBase<Membership, string, MembershipEntity, CoreFitnessDbContext>(context), IMembershipRepository
 {
-    public async Task<Membership> Connectwithuserasync(string userid, Membership Membership)
-    {
-
-        var list = new List<string>();
-
-        list = context.UserEntites
-            .Where(u => u.MembershipID == Membership.Id)
-            .Select(u => u.UserId)
-            .ToList();
-
-        list.Add(userid);
-
-        var model = Membership.Create(
-            Membership.Id,
-            Membership.Name,
-            Membership.Description,
-            Membership.Benefits,
-            Membership.Status,
-            Membership.Type,
-            Membership.Pricing,
-            Membership.MonthlyDuration,
-            list
-        );
-
-        return model;
-    }
 
     public override string GetId(Membership model)
     {
