@@ -4,43 +4,49 @@ namespace Domain.Aggregates.Bookings;
 
 public sealed class Booking
 {
+    public string Id { get; private set; } = null!;
 
-    public Booking(string id, string userId, string workoutId)
+    public string UserId { get; private set; } = null!;
+
+    public string WorkoutId { get; private set; } = null!;
+
+    private Booking()
     {
-        Id = RequiredString(id, nameof(Id));
-        UserId = RequiredString(userId, nameof(UserId));
-        WorkoutId = RequiredString(workoutId, nameof(WorkoutId));
     }
 
-    public string Id { get; private set; }
-
-    public string UserId { get; private set; }
-
-    public string WorkoutId { get; private set; }
-
-    private static int RequiredInt(int value, string propertyName)
+    private Booking(string id)
     {
-        if (value <= 0)
-            throw new ArgumentException($"{propertyName} must be a positive integer.", propertyName);
-        return value;
+       Id = id;
     }
-    private static string RequiredString(string value, string propertyName)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException($"{propertyName} is required.", propertyName);
 
-        return value.Trim();
+    public static Booking Create()
+    {
+        var booking = new Booking()
+        {
+            Id = Guid.NewGuid().ToString(),
+        };
+
+        return booking;
     }
 
     public static Booking Create(string id, string userId, string workoutId)
     {
-        return new Booking(id, userId, workoutId);
+        var booking = new Booking(id)
+        {
+            UserId = userId,
+            WorkoutId = workoutId
+        };
+
+        return booking;
     }
 
     public void Update(string id, string userId, string workoutId)
     {
-        Id = RequiredString(id, nameof(Id));
-        UserId = RequiredString(userId, nameof(UserId));
-        WorkoutId = RequiredString(workoutId, nameof(WorkoutId));
+        if(string.IsNullOrWhiteSpace(id)) 
+            throw new ArgumentNullException("Booking id is required");
+
+        Id = id;
+        UserId = userId;
+        WorkoutId = workoutId;
     }
 }

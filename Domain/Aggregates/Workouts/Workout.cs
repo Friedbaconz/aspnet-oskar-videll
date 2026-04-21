@@ -4,18 +4,8 @@ namespace Domain.Aggregates.Workouts;
 
 public sealed class Workout
 {
-    public Workout(string id, string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
-    {
-        Id = RequiredString(id.ToString(), nameof(Id));
-        Name = RequiredString(name, nameof(Name));
-        Category = RequiredString(category, nameof(Category));
-        Instructions = RequiredString(instructions, nameof(Instructions));
-        Date = date;
-        Time = time;
-        Users = users;
-    }
 
-    public string Id { get; }
+    public string Id { get; private set; } = null!;
 
     public string Name { get; private set; }
 
@@ -29,49 +19,49 @@ public sealed class Workout
 
     public IEnumerable<string> Users { get; private set; }
 
-    private static int RequiredInt(int value, string propertyName)
+    private Workout()
     {
-        if (value <= 0)
-            throw new ArgumentException($"{propertyName} must be a positive integer.", propertyName);
-        return value;
-    }
-    private static string RequiredString(string value, string propertyName)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException($"{propertyName} is required.", propertyName);
 
-        return value.Trim();
     }
-    private static DateTime RequiredDateTime(DateTime value, string propertyName)
+
+    private Workout(string id)
     {
-        if (value == default)
-            throw new ArgumentException($"{propertyName} is required.", propertyName);
-        return value;
+        Id = id;
     }
-    private static TimeSpan RequiredTimeSpan(TimeSpan value, string propertyName)
+
+    public static Workout Create()
     {
-        if (value == default)
-            throw new ArgumentException($"{propertyName} is required.", propertyName);
-        return value;
+        var workout = new Workout()
+        {
+            Id = Guid.NewGuid().ToString().ToString()
+        };
+
+        return workout;
     }
+
 
     public static Workout Create(string id, string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
     {
-        return new Workout(id = Guid.NewGuid().ToString(), name, category, instructions, date, time, users);
-    }
-
-    public static Workout Rehydrate(string id, string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
-    {
-        return new Workout(id = Guid.NewGuid().ToString(), name, category, instructions, date, time, users);
+        var workout = new Workout(id)
+        {
+            Name = name,
+            Category = category,
+            Instructions = instructions,
+            Date = date,
+            Time = time,
+            Users = users
+        };
+        
+        return workout;
     }
 
     public void Update(string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
     {
-        Name = RequiredString(name, nameof(Name));
-        Category = RequiredString(category, nameof(Category));
-        Instructions = RequiredString(instructions, nameof(Instructions));
-        Date = RequiredDateTime(date, nameof(Date));
-        Time = RequiredTimeSpan(time, nameof(Time));
+        Name = name.Trim();
+        Category = category.Trim();
+        Instructions = instructions.Trim();
+        Date = date.Date;
+        Time = time.Add(TimeSpan.FromSeconds(-time.Seconds));
         Users = users;
     }
 }
