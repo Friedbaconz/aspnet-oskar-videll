@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Application.Bookings.Services;
 
-public sealed class UpdateBookingService(IBookingRepository repo, IWorkoutRepository workoutrepo, IUserRepository userrepo) : IUpdateBookingService
+public sealed class UpdateBookingService(IBookingRepository repo) : IUpdateBookingService
 {
     public async Task<Result<Booking>> ExecuteAsync(UpdateBookingInput input, CancellationToken ct = default)
     {

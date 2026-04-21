@@ -1,6 +1,7 @@
 ﻿using Application.Bookings.Abstractions;
 using Application.Bookings.Inputs;
 using Application.Workouts.Inputs;
+using Domain.Abstractions.Repositories.Workouts;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApp.Models.Bookings;
 using Presentation.WebApp.Models.CostumerService;
@@ -8,17 +9,18 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Presentation.WebApp.Controllers;
 
-public class BookingController(IBookingService service, IDeleteBookingService Delete, IRegisterBookingService register, IUpdateBookingService update) : Controller
+public class BookingController(IBookingService service, IDeleteBookingService Delete, IRegisterBookingService register, IUpdateBookingService update, IWorkoutRepository workout) : Controller
 {
     public async Task<IActionResult> Index()
     {
         var bookings = await service.GetBookingsAsync();
-        var model = new WorkoutViewModel()
+        var model = new BookingViewModel()
         {
             Bookings = bookings
         };
         return View(model);
     }
+
 
     [HttpPost("RegisterBooking")]
     public async Task<IActionResult> RegisterBooking(BookingViewModel form, CancellationToken ct = default)

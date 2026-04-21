@@ -55,10 +55,7 @@ public sealed class RegisterBookingService(IBookingRepository repo, IWorkoutRepo
                 throw new ApplicationException("Failed to update user with new booking");
             }
 
-            string id = Guid.NewGuid().ToString();
-
             var booking = Booking.Create(
-                id,
                 userId: input.userId,
                 workoutId: input.workoutId
             );

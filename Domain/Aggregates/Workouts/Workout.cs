@@ -31,18 +31,18 @@ public sealed class Workout
 
     public static Workout Create()
     {
-        var workout = new Workout()
-        {
-            Id = Guid.NewGuid().ToString().ToString()
-        };
+        var workout = new Workout
+        (
+            Guid.NewGuid().ToString().ToString()
+        );
 
         return workout;
     }
 
 
-    public static Workout Create(string id, string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
+    public static Workout Create(string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
     {
-        var workout = new Workout(id)
+        var workout = new Workout()
         {
             Name = name,
             Category = category,

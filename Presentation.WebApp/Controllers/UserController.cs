@@ -7,10 +7,13 @@ using Application.Users.Inputs;
 using Application.Users.Services;
 using Application.Workouts.Abstractions;
 using Domain.Aggregates.Memberships;
+using Domain.Aggregates.Workouts;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Presentation.WebApp.Models.Bookings;
 using Presentation.WebApp.Models.CostumerService;
 using Presentation.WebApp.Models.Memberships;
 using Presentation.WebApp.Models.Users;
@@ -190,21 +193,13 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
             return BadRequest();
         }
 
-        var viewmodels = new List<MyWorkoutViewModel>();
+        var viewmodels = new MyBookingViewModel();
 
         foreach (var booking in bookings)
         {
             var workout = await workoutService.GetWorkoutByIdAsync(booking.WorkoutId, ct);
 
-            viewmodels.Add(new MyWorkoutViewModel
-            {
-                Id = workout.Id,
-                Name = workout.Name,
-                Category = workout.Category,
-                Instructions = workout.Instructions,
-                Date = workout.Date,
-                Time = workout.Time
-            });
+            viewmodels.Workouts.ToList().Add(workout);
         }
 
         return View(viewmodels);

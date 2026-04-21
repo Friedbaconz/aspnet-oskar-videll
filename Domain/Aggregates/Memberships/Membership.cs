@@ -26,15 +26,12 @@ public sealed class Membership
         Id = id;
     }
 
-    public static Membership Create (string id)
+    public static Membership Create ()
     {
-        if (string.IsNullOrWhiteSpace(id))
-            throw new ArgumentNullException("membership id is required");
-
         var membership = new Membership
-            (
-                Guid.NewGuid().ToString()
-            );
+        (
+            Guid.NewGuid().ToString()
+        );
 
         return membership;
     }

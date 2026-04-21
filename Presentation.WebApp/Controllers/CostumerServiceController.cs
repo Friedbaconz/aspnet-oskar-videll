@@ -11,7 +11,7 @@ using Presentation.WebApp.Models.CostumerService;
 
 namespace Presentation.WebApp.Controllers;
 
-public class CostumerServiceController(IWorkoutService service, IRegisterWorkoutService register, IDeleteWorkoutService Delete, IUpdateWorkoutService Update ,IBookingService booking) : Controller
+public class CostumerServiceController(IWorkoutService service, IRegisterWorkoutService register, IDeleteWorkoutService Delete, IUpdateWorkoutService Update) : Controller
 {
     public async Task<IActionResult> Index()
     {

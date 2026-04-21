@@ -21,17 +21,17 @@ public sealed class Booking
 
     public static Booking Create()
     {
-        var booking = new Booking()
-        {
-            Id = Guid.NewGuid().ToString(),
-        };
+        var booking = new Booking
+        (
+            Guid.NewGuid().ToString()
+        );
 
         return booking;
     }
 
-    public static Booking Create(string id, string userId, string workoutId)
+    public static Booking Create(string userId, string workoutId)
     {
-        var booking = new Booking(id)
+        var booking = new Booking()
         {
             UserId = userId,
             WorkoutId = workoutId

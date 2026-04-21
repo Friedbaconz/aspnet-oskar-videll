@@ -19,10 +19,7 @@ public sealed class RegisterWorkoutService(IWorkoutRepository repo) : IRegisterW
             if (input is null)
                 return Result<string?>.BadRequest("Input must be provided");
 
-            string id = Guid.NewGuid().ToString();
-
             var workout = Workout.Create(
-                id,
                 name: input.Name,
                 category: input.Category,
                 instructions: input.Instructions,

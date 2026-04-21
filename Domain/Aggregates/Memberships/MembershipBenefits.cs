@@ -24,13 +24,13 @@ public sealed class MembershipBenefits
         Id = id;
     }
 
-    public static MembershipBenefits Create(string id)
+    public static MembershipBenefits Create()
     {
 
         var benefit = new MembershipBenefits
-            (
-                Guid.NewGuid().ToString()
-            );
+        (
+            Guid.NewGuid().ToString()
+        );
 
         return benefit;
     }
