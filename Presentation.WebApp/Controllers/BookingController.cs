@@ -5,6 +5,7 @@ using Domain.Abstractions.Repositories.Workouts;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApp.Models.Bookings;
 using Presentation.WebApp.Models.CostumerService;
+using Presentation.WebApp.Models.Users;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Presentation.WebApp.Controllers;
@@ -23,7 +24,7 @@ public class BookingController(IBookingService service, IDeleteBookingService De
 
 
     [HttpPost("RegisterBooking")]
-    public async Task<IActionResult> RegisterBooking(BookingViewModel form, CancellationToken ct = default)
+    public async Task<IActionResult> RegisterBooking(MyAccountViewModel form, CancellationToken ct = default)
     {
 
         if (form == null)
@@ -33,8 +34,8 @@ public class BookingController(IBookingService service, IDeleteBookingService De
 
         var booking = new RegisterBookingInput
             (
-                workoutId: form.RegisterBookingForm.WorkoutId,
-                userId: form.RegisterBookingForm.UserId
+                workoutId: form.MyBookingViewModel.BookingViewModel.RegisterBookingForm.WorkoutId,
+                userId: form.MyBookingViewModel.BookingViewModel.RegisterBookingForm.UserId
             );
 
         var result = await register.ExecuteAsync(booking, ct);
@@ -69,7 +70,7 @@ public class BookingController(IBookingService service, IDeleteBookingService De
     }
 
     [HttpPost("UpdateBooking")]
-    public async Task<IActionResult> UpdateBooking(BookingViewModel form, CancellationToken ct = default)
+    public async Task<IActionResult> UpdateBooking(MyAccountViewModel form, CancellationToken ct = default)
     {
 
         if (form == null)
@@ -79,9 +80,9 @@ public class BookingController(IBookingService service, IDeleteBookingService De
 
         var booking = new UpdateBookingInput
             (
-                Id: form.UpdateBookingForm.Id,
-                WorkoutId: form.RegisterBookingForm.WorkoutId,
-                UserId: form.RegisterBookingForm.UserId
+                Id: form.MyBookingViewModel.BookingViewModel.UpdateBookingForm.Id,
+                WorkoutId: form.MyBookingViewModel.BookingViewModel.UpdateBookingForm.WorkoutId,
+                UserId: form.MyBookingViewModel.BookingViewModel.UpdateBookingForm.UserId
             );
 
         var result = await update.ExecuteAsync(booking, ct);

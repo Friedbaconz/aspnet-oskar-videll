@@ -22,9 +22,9 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
     {
         var benefits = new List<MembershipBenefitEntity>();
 
-        foreach (var benefit in model.Benefits)
+        foreach (var benefitid in model.Benefits.ToList())
         {
-            var existing = context.MembershipBenefits.FirstOrDefault(e => e.MembershipID == model.Id && e.Benefit == benefit);
+            var existing = context.MembershipBenefits.FirstOrDefault(e => e.MembershipID == model.Id && e.MembershipBenefitID == benefitid.Id);
             
             if (existing != null)
             {
@@ -113,8 +113,14 @@ public sealed class MembershipRepository(CoreFitnessDbContext context) : Reposit
     {
         var benefits = context.MembershipBenefits
             .Where(b => b.MembershipID == entity.MembershipID)
-            .Select(b => b.Benefit)
+            .Select(b => MembershipBenefits.Create
+            (
+                id: b.MembershipBenefitID,
+                membershipId: b.MembershipID,
+                benefit: b.Benefit
+            ))
             .ToList();
+
 
         var users = context.UserEntites
             .Where(u => u.MembershipID == entity.MembershipID)

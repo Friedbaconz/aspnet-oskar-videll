@@ -1,4 +1,4 @@
-﻿@model MembershipViewModel
+﻿@model MyAccountViewModel
 
 @{
     ViewData["Title"] = "My Membership";
@@ -12,17 +12,15 @@
         <div class="sigin-container">
             <aside>
                 <div>
-                    <p>Menu Options</p>
-                    <section><a asp-area="" asp-action="My" asp-controller="User">About Us</a></section>
-                    <section><a asp-area="" asp-action="MyMembership" asp-controller="User">My Membership</a></section>
-                    <section><a asp-area="" asp-action="User" asp-controller="Bookings">My Bookings</a></section>
-                    <section><form asp-area="" asp-action="SignOut" asp-controller="Auth" method="post"><input type="submit" value="Logout" /></form></section>
+                    else
+                    {
+                        <div class="profile-placeholder">No Profile Image</div>
+                    }
                 </div>
-
-                <section><form asp-controller="User" asp-action="DeleteUser" method="post"><input type="submit" value="Delete" /></form></section>
+                <partial name="Partials/_MySideMenuSection" model="Model" />
                  <div>
                     <partial name="Partials/_EditMemberShipSection" model="Model" />
-                 </div>            
+                 </div>
             </aside>
 
             <section>
@@ -46,30 +44,35 @@
                         }
                     }
 
-                    @if (Model.MyMembership.Benefits != null)
+                    @if (Model.MyMembershipViewModel.MembershipName != string.Empty)
                     {
-                        var status = Model.MyMembership.status;
-                        var header = Model.MyMembership.MembershipName;
-                        var text = Model.MyMembership.Description;
+                        var status = Model.MyMembershipViewModel.status;
+                        var header = Model.MyMembershipViewModel.MembershipName;
+                        var text = Model.MyMembershipViewModel.Description;
                         <div>
                             <p> @header </p>
                             <p> @status </p>
                             <p> @text </p>
-                            @foreach (var Benefit in Model.MyMembership.Benefits)
-                            {
-                                <p>@Benefit</p>
-                            }
+                                @if(Model.MyMembershipViewModel.Benefits.Count() != 0)
+                                {
+                                    @foreach (var Benefit in Model.MyMembershipViewModel.Benefits)
+                                    {
+                                        <p>@Benefit</p>
+                                    }
+                                }
+                                else 
+                                {
+                                    <p>No Benefits</p>
+                                }
+
                         </div>
+                        <form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><input type="submit" name="id" value="@Model.MyMembershipViewModel.MembershipId" /></form>
                     }
-                    @if (Model.MyMembership.Benefits is null)
+                    @if (Model.MyMembershipViewModel.MembershipName == string.Empty)
                     {
                         <p>You Have No MemberShip</p>
                     }
                 </form>
-                @if (Model.Benefits != null)
-                {
-                    <section><form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><input type="submit" name="id" value="@Model.MyMembership.MembershipId" /></form></section>
-                }
             </section>
         </div>
     </div>

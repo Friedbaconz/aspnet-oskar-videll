@@ -11,12 +11,12 @@ namespace Application.Memberships.Services;
 
 public sealed class UpdateMembershipService(IMembershipRepository repo, IUserRepository urepo, IBenefitRepository BenefitRepo) : IUpdateMembershipService
 {
-    public async Task<Result<Membership>> ExecuteAsync(UpdateMembershipInput input, List<UpdateMembershipBenefitInput> benefits, CancellationToken ct = default)
+    public async Task<Result<Membership>> ExecuteAsync(UpdateMembershipInput input, CancellationToken ct = default)
     {
         if (input is null)
             throw new ArgumentException("input must be provided");
 
-        var benefitlist = new List<string>();
+        var benefitlist = new List<MembershipBenefits>();
 
         var userlists = new List<string>();
 
@@ -58,22 +58,43 @@ public sealed class UpdateMembershipService(IMembershipRepository repo, IUserRep
             userlists = input.users.ToList();
         }
 
-
-        foreach (var benefit in benefits)
+        foreach (var benefit in input.benefits)
         {
-            string newid = Guid.NewGuid().ToString();
+            var exsistingbenefit = await BenefitRepo.GetByIdAsync(benefit.id, ct);
 
-            var newbenefit = MembershipBenefits.Create
-            (
-                id: newid,
+            if( exsistingbenefit != null)
+            {
+                exsistingbenefit.UpdateBenefit(benefit.benefit);
+                await BenefitRepo.UpdateAsync(exsistingbenefit, ct);
+                benefitlist.Add(exsistingbenefit);
+            }
+            else
+            {
+                var newbenefit = MembershipBenefits.Create
+                (
+                id: benefit.id,
                 benefit: benefit.benefit,
-                membershipId: input.id
-            );
+                membershipId: benefit.membershipId
+                );
 
-            await BenefitRepo.AddAsync(newbenefit, ct);
+                await BenefitRepo.AddAsync(newbenefit, ct);
+                benefitlist.Add(newbenefit);
+            }
+        }
 
-            benefitlist.Add(benefit.benefit);
+        var existingMembership = await repo.GetByIdAsync(input.id, ct);
 
+        foreach (var benefit in existingMembership.Benefits.ToList())
+        {
+            if (!benefitlist.Select(b => b.Id).Contains(benefit.Id))
+            {
+                var benefitToDelete = await BenefitRepo.GetByIdAsync(benefit.Id, ct);
+
+                if (benefitToDelete != null)
+                {
+                    await BenefitRepo.RemoveAsync(benefitToDelete, ct);
+                }
+            }
         }
 
         var membership = await repo.GetByIdAsync(input.id);

@@ -66,11 +66,6 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
             return Challenge();
         }
 
-        if (!ModelState.IsValid)
-        {
-            return View(viewmodel);
-        }
-
         viewmodel.Email = user.Email ?? string.Empty;
 
         var input = new UpdateUserProfileInput
@@ -99,6 +94,20 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
     [HttpGet("MyMembership")]
     public async Task<IActionResult> MyMembership(CancellationToken ct = default)
     {
+        var getmemberships = await membershipservice.GetMembershipsAsync(ct);
+        var Viewmodels = new MyAccountViewModel
+        {
+            MyMembershipViewModel = new MyMembershipViewModel
+            {
+                MembershipName = string.Empty,
+                Benefits = new List<string>(),
+                MembershipViewModel = new MembershipViewModel
+                {
+                    Memberships = getmemberships
+                }
+            }
+        };
+
         var user = await userManager.GetUserAsync(User);
         if (user is null)
         {
@@ -106,73 +115,52 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
         }
 
         var profile = await getUserProfileService.ExecuteAsync(user.Id, ct);
+
         if (profile is null)
         {
             return NotFound();
         }
 
-        var memberships = await membershipservice.GetMembershipsAsync();
-        if (memberships is null)
-        {
-            return NotFound();
-        }
+        var memberships = await membershipservice.GetMembershipByIdAsync(profile.Value.MembershipId, ct);
 
-        if (profile.Value.MembershipId == string.Empty)
+        if (memberships == null)
         {
-            var Viewmodel = new MembershipViewModel
-            {
-                MyMembership = new MyMembershipViewModel
-                {
-                    MembershipId = null,
-                    MembershipName = null,
-                    Description = null,
-                    status = null,
-                    Benefits = null,
-                },
-
-                MembershipIDs = memberships.Select(m => m.Id),
-                Memberships = memberships
-            };
-            return View(Viewmodel);
+            return View(Viewmodels);
         }
         else
         {
-            var membership = await membershipservice.GetMembershipByIdAsync(profile.Value.MembershipId);
+            Viewmodels.MyMembershipViewModel.MembershipId = memberships.Id;
+            Viewmodels.MyMembershipViewModel.MembershipName = memberships.Name;
+            Viewmodels.MyMembershipViewModel.Description = memberships.Description;
+            Viewmodels.MyMembershipViewModel.status = memberships.Status.ToString();
+            Viewmodels.MyMembershipViewModel.Benefits = memberships.Benefits.Select(b => b.Benefit);
 
-            var Benefit = new List<string>();
-
-            foreach (var benefit in membership.Benefits)
-            {
-                if (benefit is not null)
-                {
-                    Benefit.Add(benefit);
-                }
-            }
-            var Viewmodel = new MembershipViewModel
-            {
-                MyMembership = new MyMembershipViewModel
-                {
-                    MembershipId = membership.Id,
-                    MembershipName = membership.Name,
-                    Description = membership.Description,
-                    status = membership.Status,
-                    Benefits = Benefit
-                },
-
-                MembershipIDs = memberships.Select(m => m.Id),
-                Memberships = memberships
-
-            };
-
-            return View(Viewmodel);
+            return View(Viewmodels);
         }
-
     }
 
     [HttpGet("MyBooking")]
     public async Task<IActionResult> MyBookings(CancellationToken ct = default)
     {
         var user = await userManager.GetUserAsync(User);
+        var getbookings = await bookingService.GetBookingsAsync(ct);
+        var getworkouts = await workoutService.GetWorkoutsAsync(ct);
+        var viewmodels = new MyAccountViewModel
+        {
+            MyBookingViewModel = new MyBookingViewModel
+            {
+                Workouts = new List<Workout>(),
+                BookingViewModel = new BookingViewModel
+                {
+                    Bookings = getbookings,
+                },
+                workoutViewModels = new WorkoutViewModel
+                {
+                    Workouts = getworkouts,
+                }
+
+            }
+        };
 
         if (user is null)
         {
@@ -188,21 +176,21 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
 
         var bookings = await bookingService.GetAllBookingByUserIdAsync(user.Id, ct);
 
-        if (bookings is null)
+        if (bookings.Count() == 0)
         {
-            return BadRequest();
+            return View(viewmodels);
         }
-
-        var viewmodels = new MyBookingViewModel();
-
-        foreach (var booking in bookings)
+        else
         {
-            var workout = await workoutService.GetWorkoutByIdAsync(booking.WorkoutId, ct);
+            foreach (var booking in bookings)
+            {
+                var workout = await workoutService.GetWorkoutByIdAsync(booking.WorkoutId, ct);
 
-            viewmodels.Workouts.ToList().Add(workout);
+                viewmodels.MyBookingViewModel.Workouts.ToList().Add(workout);
+            }
+
+            return View(viewmodels);
         }
-
-        return View(viewmodels);
     }
 
 

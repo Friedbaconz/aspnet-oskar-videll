@@ -14,5 +14,11 @@ namespace Application.Memberships
             var benefits = await repo.GetAllAsync(ct);
             return benefits;
         }
+
+        public async Task<MembershipBenefits?> GetBenefitByIdAsync(string id, CancellationToken ct = default)
+        {
+            var benefit = await repo.GetByIdAsync(id, ct);
+            return benefit;
+        }
     }
 }

@@ -70,7 +70,6 @@ public sealed class BookingRepository(CoreFitnessDbContext context) : Repository
     {
         var model = Booking.Create
             (
-                entity.BookingID,
                 entity.UserID,
                 entity.WorkoutID
             );

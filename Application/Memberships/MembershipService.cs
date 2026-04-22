@@ -17,10 +17,6 @@ public sealed class MembershipService(IMembershipRepository repo) : IMembershipS
     public async Task<Membership?> GetMembershipByIdAsync(string id, CancellationToken ct = default)
     {
         var membership = await repo.GetByIdAsync(id, ct);
-        if(membership == null)
-        {
-            throw new ArgumentException("Membership not found.");
-        }
 
         return membership;
     }

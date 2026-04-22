@@ -6,6 +6,6 @@ namespace Application.Memberships.Abstractions
 {
     public interface IUpdateMembershipService
     {
-        Task<Result<Membership>> ExecuteAsync(UpdateMembershipInput input, List<UpdateMembershipBenefitInput> benefits, CancellationToken ct = default);
+        Task<Result<Membership>> ExecuteAsync(UpdateMembershipInput input, CancellationToken ct = default);
     }
 }

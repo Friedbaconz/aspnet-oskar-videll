@@ -1,4 +1,6 @@
-﻿namespace Presentation.WebApp.Models.Users;
+﻿using Presentation.WebApp.Models.Memberships;
+
+namespace Presentation.WebApp.Models.Users;
 
 public class MyMembershipViewModel
 {
@@ -9,6 +11,7 @@ public class MyMembershipViewModel
     public string Description { get; set; } = null!;
 
     public string status { get; set; } = null!;
+    public IEnumerable<string> Benefits { get; set; } = new List<string>();
 
-    public List<string> Benefits { get; set; } = null!;
+    public MembershipViewModel MembershipViewModel { get; set; } = new MembershipViewModel();
 }

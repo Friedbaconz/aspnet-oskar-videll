@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApp.Models.Memberships;
 using Presentation.WebApp.Models.Users;
+using System.Net.NetworkInformation;
 
 namespace Presentation.WebApp.Controllers
 {
@@ -30,44 +31,30 @@ namespace Presentation.WebApp.Controllers
         }
 
         [HttpPost("ConnectToUser")]
-        public async Task<IActionResult> ConnectMembershiptoUser(MyAccountViewModel viewModel, string id, CancellationToken ct = default)
+        public async Task<IActionResult> ConnectMembershiptoUser(string id, CancellationToken ct = default)
         {
             var user = await userManager.GetUserAsync(User);
+
             if(user == null)
             {
                 return NotFound();
             }
 
             var membership = await service.GetMembershipByIdAsync(id);
+
             if(membership == null)
             {
                 return NotFound();
             }
 
             var benefitlist = new List<UpdateMembershipBenefitInput>();
-            var exsist = await benefitService.GetBenefitsAsync();
-
-            foreach(var benefit in membership.Benefits)
-            {
-                foreach(var ex in exsist)
-                {
-                    if(ex.Benefit == benefit)
-                    {
-                        benefitlist.Add(new UpdateMembershipBenefitInput
-                            (
-                            ex.Benefit,
-                            membership.Id
-                            ));
-                    }
-                }
-            }
 
             var entity = new UpdateMembershipInput
             (
             membership.Id,
             membership.Name,
             membership.Description,
-            membership.Benefits,
+            null,
             membership.Status,
             membership.Type,
             membership.Pricing,
@@ -76,7 +63,24 @@ namespace Presentation.WebApp.Controllers
             membership.Users
             );
 
-            var result = await updateservice.ExecuteAsync(entity, benefitlist);
+            foreach (var benefitid in membership.Benefits)
+            {
+                var exsist = await benefitService.GetBenefitByIdAsync(benefitid.Id, ct);
+
+                if (exsist.Id == benefitid.Id)
+                {
+                    entity.benefits.ToList().Add(new UpdateMembershipBenefitInput
+                     (
+                      exsist.Id,
+                      exsist.Benefit,
+                      exsist.MembershipId
+                     ));
+                }
+
+            }
+
+            var result = await updateservice.ExecuteAsync(entity, ct);
+
             if (!result.Success)
             {
                 return BadRequest();
@@ -86,7 +90,7 @@ namespace Presentation.WebApp.Controllers
         }
 
         [HttpPost("UpdateMembership")]
-        public async Task<IActionResult> UpdateMembership(MembershipViewModel form, string id, CancellationToken ct = default)
+        public async Task<IActionResult> UpdateMembership(MyAccountViewModel form, string id, CancellationToken ct = default)
         {
             if (form is null)
             {
@@ -94,47 +98,57 @@ namespace Presentation.WebApp.Controllers
             }
 
             var update = await service.GetMembershipByIdAsync(id, ct);
+
             var benefitlist = new List<UpdateMembershipBenefitInput>();
 
-            var membership = new UpdateMembershipInput
+            foreach ( var benefitid in form.MyMembershipViewModel.MembershipViewModel.UpdateMembershipForm.Benefits)
+            {
+                if (benefitid.id == null)
+                {
+                    var it = new UpdateMembershipBenefitInput
                     (
-                        id: update.Id,
-                        name: form.UpdateMembershipForm.MembershipName,
-                        description: form.UpdateMembershipForm.description,
-                        benefits: new List<string>(),
-                        status: update.Status,
-                        type: update.Type,
-                        pricing: form.UpdateMembershipForm.pricing,
-                        monthlyDuration: form.UpdateMembershipForm.monthlyDuration,
-                        userid: update.Userid,
-                        users: update.Users
+                        id: string.Empty,
+                        benefit: benefitid.benefit,
+                        membershipId: update.Id
                     );
 
-            var exsist = await benefitService.GetBenefitsAsync();
-
-            foreach ( var ex in exsist )
-            {
-                foreach ( var benefit in update.Benefits )
+                    benefitlist.Add(it);
+                }
+                else
                 {
-                    if ( ex.MembershipId == update.Id && ex.Benefit == benefit)
+                    var exsist = await benefitService.GetBenefitByIdAsync(benefitid.id, ct);
+
+                    if (exsist.Id != null)
                     {
-                        var deletebenefit = await deleteMembershipService.DeleteBenefit(ex.Id, ct);
+
+                        var it = new UpdateMembershipBenefitInput
+                        (
+                        id: benefitid.id,
+                        benefit: exsist.Benefit,
+                        membershipId: update.Id
+                        );
+
+                        benefitlist.Add(it);
                     }
                 }
             }
 
-            foreach (var newbenefit in form.MembershipForm.Benefits)
-            {
-
-                benefitlist.Add(new UpdateMembershipBenefitInput
+            var membership = new UpdateMembershipInput
                     (
-                    benefit: newbenefit.benefit,
-                    membershipId: update.Id
-                     )
+                        id: update.Id,
+                        name: form.MyMembershipViewModel.MembershipViewModel.UpdateMembershipForm.MembershipName,
+                        description: form.MyMembershipViewModel.MembershipViewModel.UpdateMembershipForm.description,
+                        benefits: benefitlist,
+                        status: update.Status,
+                        type: update.Type,
+                        pricing: form.MyMembershipViewModel.MembershipViewModel.UpdateMembershipForm.pricing,
+                        monthlyDuration: form.MyMembershipViewModel.MembershipViewModel.UpdateMembershipForm.monthlyDuration,
+                        userid: update.Userid,
+                        users: update.Users
                     );
-            }
 
-            var result = await updateservice.ExecuteAsync(membership, benefitlist);
+            var result = await updateservice.ExecuteAsync(membership);
+
             if (!result.Success)
             {
                 return BadRequest();
@@ -146,7 +160,7 @@ namespace Presentation.WebApp.Controllers
 
         [HttpPost("DeleteMembership")]
 
-        public async Task<IActionResult> DeleteMembership(MyAccountViewModel viewModel, string id, CancellationToken ct = default)
+        public async Task<IActionResult> DeleteMembership( string id, CancellationToken ct = default)
         {
             var user = await userManager.GetUserAsync(User);
             if (user == null)
@@ -160,24 +174,6 @@ namespace Presentation.WebApp.Controllers
                 return NotFound();
             }
 
-            var benefitlist = new List<UpdateMembershipBenefitInput>();
-            var exsist = await benefitService.GetBenefitsAsync();
-
-            foreach (var benefit in membership.Benefits)
-            {
-                foreach (var ex in exsist)
-                {
-                    if (ex.Benefit == benefit)
-                    {
-                        benefitlist.Add(new UpdateMembershipBenefitInput
-                            (
-                            ex.Benefit,
-                            membership.Id
-                            ));
-                    }
-                }
-            }
-
             var status = "Delete";
 
             var entity = new UpdateMembershipInput
@@ -185,7 +181,7 @@ namespace Presentation.WebApp.Controllers
             membership.Id,
             membership.Name,
             membership.Description,
-            membership.Benefits,
+            null,
             status,
             membership.Type,
             membership.Pricing,
@@ -194,7 +190,23 @@ namespace Presentation.WebApp.Controllers
             membership.Users
             );
 
-            var result = await updateservice.ExecuteAsync(entity, benefitlist);
+            foreach (var benefitid in membership.Benefits)
+            {
+                var exsist = await benefitService.GetBenefitByIdAsync(benefitid.Id, ct);
+
+                if (exsist.Id == benefitid.Id)
+                {
+                    entity.benefits.ToList().Add(new UpdateMembershipBenefitInput
+                     (
+                      exsist.Id,
+                      exsist.Benefit,
+                      exsist.MembershipId
+                     ));
+                }
+
+            }
+
+            var result = await updateservice.ExecuteAsync(entity, ct);
             if (!result.Success)
             {
                 return BadRequest();
@@ -219,7 +231,7 @@ namespace Presentation.WebApp.Controllers
         }
 
         [HttpPost("CreateMembership")]
-        public async Task<IActionResult> CreateMembership(MembershipViewModel form, CancellationToken ct = default)
+        public async Task<IActionResult> CreateMembership(MyAccountViewModel form, CancellationToken ct = default)
         {
             if (form is null)
             {
@@ -228,15 +240,15 @@ namespace Presentation.WebApp.Controllers
 
             var membership = new RegisterMemebershipInput
                     (
-                        name: form.MembershipForm.MembershipName,
-                        description: form.MembershipForm.description,
+                        name: form.MyMembershipViewModel.MembershipViewModel.MembershipForm.MembershipName,
+                        description: form.MyMembershipViewModel.MembershipViewModel.MembershipForm.description,
                         benefits: new List<RegisterBenfitsInput>(),
                         status: "Active",
                         type: "Monthly",
-                        pricing: form.MembershipForm.pricing,
-                        monthlyDuration: form.MembershipForm.monthlyDuration
+                        pricing: form.MyMembershipViewModel.MembershipViewModel.MembershipForm.pricing,
+                        monthlyDuration: form.MyMembershipViewModel.MembershipViewModel.MembershipForm.monthlyDuration
                     );
-            foreach (var benefit in form.MembershipForm.Benefits) {
+            foreach (var benefit in form.MyMembershipViewModel.MembershipViewModel.MembershipForm.Benefits) {
                 membership.benefits.Add(
                 new RegisterBenfitsInput
                 (

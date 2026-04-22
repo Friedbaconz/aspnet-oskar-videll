@@ -8,7 +8,7 @@ public sealed class Membership
     public string Id { get; }
     public string? Name { get; private set; }
     public string? Description { get; private set; }
-    public IEnumerable<string> Benefits {  get; private set; }
+    public IEnumerable<MembershipBenefits> Benefits {  get; private set; }
     public string Status { get; private set; }
     public string Type {  get; private set; }
     public decimal Pricing { get; private set; }
@@ -36,7 +36,7 @@ public sealed class Membership
         return membership;
     }
 
-    public static Membership Create(string id, string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
+    public static Membership Create(string id, string name, string? description, IEnumerable<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
     {
         var membership = new Membership(id)
         {
@@ -54,7 +54,7 @@ public sealed class Membership
         return membership;
     }
 
-    public void Update(string name, string? description, IEnumerable<string> benefits, string status, string type, decimal pricing, int monthlyDuration, string userid,IEnumerable<string> users)
+    public void Update(string name, string? description, IEnumerable<MembershipBenefits> benefits,string status, string type, decimal pricing, int monthlyDuration, string userid,IEnumerable<string> users)
     {
         if (string.IsNullOrWhiteSpace(Name))
             throw new ArgumentException("First name is required");

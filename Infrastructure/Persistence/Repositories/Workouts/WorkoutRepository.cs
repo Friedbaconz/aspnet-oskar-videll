@@ -77,7 +77,6 @@ public sealed class WorkoutRepository(CoreFitnessDbContext context) : Repository
 
         var model = Workout.Create
             (
-                entity.WorkoutID,
                 entity.WorkoutName,
                 entity.Category,
                 entity.Instructor,

@@ -18,20 +18,16 @@ public sealed class DeleteMembershipService(IMembershipRepository repo, IBenefit
             throw new Exception("no membership by that id");
         }
 
-        var BenefitListAsync = await BenefitRepo.GetAllAsync();
-
-        if(BenefitListAsync == null)
+        foreach(var benefitid in result.Benefits.ToList())
         {
-            throw new Exception("no benefits");
-        }
+            var benefitresult = await BenefitRepo.GetByIdAsync(benefitid.Id);
 
-            foreach (var BenefitEntity in BenefitListAsync)
+            if (benefitresult != null)
             {
-                if (BenefitEntity.MembershipId == id)
-                {
-                    BenefitRepo?.RemoveAsync(BenefitEntity);
-                }
+                var delete = await BenefitRepo.RemoveAsync(benefitresult);
             }
+
+        }
         
         var success = await repo.RemoveAsync(result);
 

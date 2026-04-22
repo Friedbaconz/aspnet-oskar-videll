@@ -11,31 +11,21 @@
         <div class="sigin-wrapper">
             <div class="sigin-container">
                 <aside class="aside-controller">
-                            <div>
-                                @if (!string.IsNullOrWhiteSpace(Model.ProfileForm.ProfileImageUri))
-                                {
-                                    <img src="@Model.ProfileForm.ProfileImageUri" alt="Profile Image" class="profile-image"/>
-                                }
-                                else
-                                {
-                                    <div class="profile-placeholder">No Profile Image</div>
-                                }
-                            </div>
-                            <div class="my-sidecontroller">
-                                <p>Menu Options</p>
-                                <section><a class="my-text" asp-area="" asp-action="My" asp-controller="User">About Me</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
-                                <hr />
-                                <section><a class="my-text" asp-area="" asp-action="MyMembership" asp-controller="User">My Membership</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
-                                <hr />
-                                <section><a class="my-text" asp-area="" asp-action="User" asp-controller="Bookings">My Bookings</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
-                                <hr />
-                                <section><form class="my-text" asp-area="" asp-action="SignOut" asp-controller="Auth" method="post"><input type="submit" value="Logout" /></form><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
-                            </div>
-                            <div class="delete-section">
-                                <p>If you like to cancel your account click below</p>
-                                <section><form asp-controller="User" asp-action="DeleteUser" method="post"><input type="submit" value="Remove Account" /></form></section>
-                            </div>
-                            
+                    <div>
+                        @if (!string.IsNullOrWhiteSpace(Model.ProfileForm.ProfileImageUri))
+                        {
+                            <img src="@Model.ProfileForm.ProfileImageUri" alt="Profile Image" class="profile-image" />
+                        }
+                        else
+                        {
+                            <div class="profile-placeholder">No Profile Image</div>
+                        }
+                    </div>
+                    <partial name="Partials/_MySideMenuSection" model="Model" />  
+                    <div class="delete-section">
+                        <p>If you like to cancel your account click below</p>
+                        <section><form asp-controller="User" asp-action="DeleteUser" method="post"><input type="submit" value="Remove Account" /></form></section>
+                    </div>
                 </aside>
 
                 <section class="main-menu-My">

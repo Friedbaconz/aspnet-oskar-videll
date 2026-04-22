@@ -14,6 +14,7 @@ public sealed class MembershipBenefits
     public string Benefit { get; private set; }
 
 
+
     private MembershipBenefits()
     {
 

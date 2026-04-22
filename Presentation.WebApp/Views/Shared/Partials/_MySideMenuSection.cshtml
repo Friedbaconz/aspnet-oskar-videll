@@ -1,0 +1,15 @@
+﻿@model MyAccountViewModel
+
+
+<section>
+    <div class="my-sidecontroller">
+        <p>Menu Options</p>
+        <section><a class="my-text" asp-area="" asp-action="My" asp-controller="User">About Me</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
+        <hr />
+        <section><a class="my-text" asp-area="" asp-action="MyMembership" asp-controller="User">My Membership</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
+        <hr />
+        <section><a class="my-text" asp-area="" asp-action="MyBooking" asp-controller="User">My Bookings</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
+        <hr />
+        <section><form class="my-text" asp-area="" asp-action="SignOut" asp-controller="Auth" method="post"><input type="submit" value="Logout" /></form><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
+    </div>
+</section>

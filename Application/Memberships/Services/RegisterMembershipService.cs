@@ -27,7 +27,7 @@ public class RegisterMembershipService(IBenefitRepository benfitrepo, IMembershi
 
             var name = input.name.Trim();
             var description = input.description?.Trim();
-            var benefitlist = new List<string>();
+            var benefitlist = new List<MembershipBenefits>();
             var status = input.status;
             var type = input.type;
             var pricing = input.pricing;
@@ -58,7 +58,7 @@ public class RegisterMembershipService(IBenefitRepository benfitrepo, IMembershi
 
                     var update = benfitrepo?.AddAsync(newbenefits, ct);
 
-                    benefitlist.Add(benfit.benefit);
+                    benefitlist.Add(newbenefits);
             }
 
             await repo.UpdateAsync(membership, ct);
