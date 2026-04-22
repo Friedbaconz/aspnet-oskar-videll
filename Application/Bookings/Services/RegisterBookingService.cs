@@ -56,6 +56,7 @@ public sealed class RegisterBookingService(IBookingRepository repo, IWorkoutRepo
             }
 
             var booking = Booking.Create(
+                id: Guid.NewGuid().ToString(),
                 userId: input.userId,
                 workoutId: input.workoutId
             );

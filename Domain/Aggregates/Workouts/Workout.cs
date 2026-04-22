@@ -40,9 +40,9 @@ public sealed class Workout
     }
 
 
-    public static Workout Create(string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
+    public static Workout Create(string id,string name, string category, string instructions, DateTime date, TimeSpan time, IEnumerable<string> users)
     {
-        var workout = new Workout()
+        var workout = new Workout(id)
         {
             Name = name,
             Category = category,

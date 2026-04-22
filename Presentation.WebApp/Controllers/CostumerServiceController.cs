@@ -8,6 +8,7 @@ using Domain.Aggregates.Workouts;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApp.Models.Bookings;
 using Presentation.WebApp.Models.CostumerService;
+using Presentation.WebApp.Models.Users;
 
 namespace Presentation.WebApp.Controllers;
 
@@ -24,7 +25,7 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
     }
 
     [HttpPost("RegisterWorkout")]
-    public async Task<IActionResult> RegisterWorkout(WorkoutViewModel form, CancellationToken ct = default)
+    public async Task<IActionResult> RegisterWorkout(MyAccountViewModel form, CancellationToken ct = default)
     {
 
             if (form == null)
@@ -34,11 +35,11 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
 
             var workout = new RegisterWorkoutInput
                 (
-                Name: form.RegisterWorkoutForm.Name,
-                Category: form.RegisterWorkoutForm.Category,
-                Instructions: form.RegisterWorkoutForm.Instructions,
-                Date: form.RegisterWorkoutForm.Date,
-                Time: form.RegisterWorkoutForm.Time
+                Name: form.MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Name,
+                Category: form.MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Category,
+                Instructions: form.MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Instructions,
+                Date: form.MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Date,
+                Time: form.MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Time
                 );
 
             var result = await register.ExecuteAsync(workout, ct);
@@ -49,7 +50,7 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
                 return View(form);
             }
 
-            return RedirectToAction("MyBooking", "My");
+            return View();
     }
 
     [HttpPost("DeleteWorkout")]
@@ -69,11 +70,11 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
             return View();
         }
 
-        return RedirectToAction("MyBooking", "My");
+        return View();
     }
 
     [HttpPost("UpdateWorkout")]
-    public async Task<IActionResult> UpdateWorkout(WorkoutViewModel form, CancellationToken ct = default)
+    public async Task<IActionResult> UpdateWorkout(MyAccountViewModel form, CancellationToken ct = default)
     {
 
         if (form == null)
@@ -83,13 +84,13 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
 
         var workout = new UpdateWorkoutInput
             (
-            Id: form.UpdateWorkoutForm.Id,
-            Name: form.UpdateWorkoutForm.Name,
-            Category: form.UpdateWorkoutForm.Category,
-            Instructions: form.UpdateWorkoutForm.Instructions,
-            Date: form.UpdateWorkoutForm.Date,
-            Time: form.UpdateWorkoutForm.Time,
-            Users: form.UpdateWorkoutForm.Users
+            Id: form.MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Id,
+            Name: form.MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Name,
+            Category: form.MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Category,
+            Instructions: form.MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Instructions,
+            Date: form.MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Date,
+            Time: form.MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Time,
+            Users: form.MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Users
             );
 
         var result = await Update.ExecuteAsync(workout, ct);
@@ -100,6 +101,6 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
             return View();
         }
 
-        return RedirectToAction("MyBooking", "My");
+        return View();
     }
 }

@@ -2,6 +2,8 @@ using Application.Extensions;
 using Application.Memberships.Abstractions;
 using Application.Memberships.Inputs;
 using Application.Memberships.Services;
+using Application.Workouts.Abstractions;
+using Application.Workouts.Inputs;
 using Infrastructure.Extensions;
 using Infrastructure.Identity;
 using Infrastructure.Persistence.Contexts;
@@ -43,6 +45,8 @@ using (var scope = app.Services.CreateScope())
         using (var sscope = app.Services.CreateScope())
         {
             var ServiceMembership = scope.ServiceProvider.GetRequiredService<IRegisterMembershipService>();
+
+            var workoutService = scope.ServiceProvider.GetRequiredService<IRegisterWorkoutService>();
 
             if (!context.Memberships.Any())
             {
@@ -105,24 +109,16 @@ using (var scope = app.Services.CreateScope())
 
                 if (!context.Workouts.Any())
             {
-                context.Workouts.AddRange(
-                    new WorkoutEntity
-                    {
-                        WorkoutID = Guid.NewGuid().ToString(),
-                        WorkoutName = "Morning Yoga",
-                        Category = "Yoga",
-                        Instructor = "Alice",
-                        Date = DateTime.SpecifyKind(DateTime.Today.AddDays(1), DateTimeKind.Utc)
-                    },
-                    new WorkoutEntity
-                    {
-                        WorkoutID = Guid.NewGuid().ToString(),
-                        WorkoutName = "Evening HIIT",
-                        Category = "HIIT",
-                        Instructor = "Bob",
-                        Date = DateTime.SpecifyKind(DateTime.Today.AddDays(1), DateTimeKind.Utc)
-                    }
+                var workout1 = new RegisterWorkoutInput
+                (
+                    Name: "Morning Yoga",
+                    Category: "Yoga",
+                    Instructions: "Start your",
+                    Date: DateTime.Today,
+                    Time: TimeSpan.FromHours(7)
                 );
+
+                await workoutService.ExecuteAsync(workout1);
             }
 
             await context.SaveChangesAsync();

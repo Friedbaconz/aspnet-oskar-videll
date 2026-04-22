@@ -29,9 +29,9 @@ public sealed class Booking
         return booking;
     }
 
-    public static Booking Create(string userId, string workoutId)
+    public static Booking Create(string id, string userId, string workoutId)
     {
-        var booking = new Booking()
+        var booking = new Booking(id)
         {
             UserId = userId,
             WorkoutId = workoutId

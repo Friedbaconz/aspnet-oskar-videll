@@ -13,7 +13,7 @@
             <aside>
                 <partial name="Partials/_MySideMenuSection" model="Model" />
                 <div>
-
+                    <partial name="Partials/_EditBookingSection" model="Model" />
                 </div>
             </aside>
 
@@ -57,7 +57,6 @@
                                 </div>
 
                                 <section><form asp-controller="Booking" asp-action="DeleteBooking" method="post"><input type="submit" name="id" value="@workout.Id" /></form></section>
-
                             }
                         }
                     }
