@@ -47,37 +47,34 @@ namespace Presentation.WebApp.Controllers
                 return NotFound();
             }
 
-            var benefitlist = new List<UpdateMembershipBenefitInput>();
-
-            var entity = new UpdateMembershipInput
-            (
-            membership.Id,
-            membership.Name,
-            membership.Description,
-            null,
-            membership.Status,
-            membership.Type,
-            membership.Pricing,
-            membership.MonthlyDuration,
-            user.Id,
-            membership.Users
-            );
+            var benefitList = new List<UpdateMembershipBenefitInput>();
 
             foreach (var benefitid in membership.Benefits)
             {
                 var exsist = await benefitService.GetBenefitByIdAsync(benefitid.Id, ct);
-
-                if (exsist.Id == benefitid.Id)
+                if (exsist != null && exsist.Id == benefitid.Id)
                 {
-                    entity.benefits.ToList().Add(new UpdateMembershipBenefitInput
-                     (
-                      exsist.Id,
-                      exsist.Benefit,
-                      exsist.MembershipId
-                     ));
+                    benefitList.Add(new UpdateMembershipBenefitInput(
+                        exsist.Id,
+                        exsist.Benefit,
+                        exsist.MembershipId
+                    ));
                 }
-
             }
+
+
+            var entity = new UpdateMembershipInput(
+                membership.Id,
+                membership.Name,
+                membership.Description,
+                benefitList,
+                membership.Status,
+                membership.Type,
+                membership.Pricing,
+                membership.MonthlyDuration,
+                user.Id,
+                membership.Users
+            );
 
             var result = await updateservice.ExecuteAsync(entity, ct);
 
@@ -154,7 +151,7 @@ namespace Presentation.WebApp.Controllers
                 return BadRequest();
             }
 
-            return RedirectToAction("MyMembership", "My");
+            return View();
         }
 
 
@@ -175,20 +172,7 @@ namespace Presentation.WebApp.Controllers
             }
 
             var status = "Delete";
-
-            var entity = new UpdateMembershipInput
-            (
-            membership.Id,
-            membership.Name,
-            membership.Description,
-            null,
-            status,
-            membership.Type,
-            membership.Pricing,
-            membership.MonthlyDuration,
-            user.Id,
-            membership.Users
-            );
+            var benefitList = new List<UpdateMembershipBenefitInput>();
 
             foreach (var benefitid in membership.Benefits)
             {
@@ -196,7 +180,7 @@ namespace Presentation.WebApp.Controllers
 
                 if (exsist.Id == benefitid.Id)
                 {
-                    entity.benefits.ToList().Add(new UpdateMembershipBenefitInput
+                    benefitList.Add(new UpdateMembershipBenefitInput
                      (
                       exsist.Id,
                       exsist.Benefit,
@@ -206,13 +190,27 @@ namespace Presentation.WebApp.Controllers
 
             }
 
+            var entity = new UpdateMembershipInput
+            (
+            membership.Id,
+            membership.Name,
+            membership.Description,
+            benefitList,
+            status,
+            membership.Type,
+            membership.Pricing,
+            membership.MonthlyDuration,
+            user.Id,
+            membership.Users
+            );
+
             var result = await updateservice.ExecuteAsync(entity, ct);
             if (!result.Success)
             {
                 return BadRequest();
             }
 
-            return RedirectToAction("MyMembership", "My");
+            return View();
         }
 
         [HttpPost("RemoveMembership")]
@@ -263,7 +261,7 @@ namespace Presentation.WebApp.Controllers
                 return View(form);
             }
 
-            return RedirectToAction("MyMembership", "My");
+            return View();
         }
     }
 }

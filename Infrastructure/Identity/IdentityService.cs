@@ -20,6 +20,7 @@ public class IdentityService(UserManager<ApplicationUser> userManager, SignInMan
 
         var user = ApplicationUser.Create(email);
 
+
         var result = await userManager.CreateAsync(user, password);
         return !result.Succeeded 
             ? Result<string?>.Error("Failed to create user.") 

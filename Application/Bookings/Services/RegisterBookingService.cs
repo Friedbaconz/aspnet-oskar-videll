@@ -7,6 +7,7 @@ using Domain.Abstractions.Repositories.Bookings;
 using Domain.Abstractions.Repositories.Users;
 using Domain.Abstractions.Repositories.Workouts;
 using Domain.Aggregates.Bookings;
+using Domain.Aggregates.Users;
 using Domain.Aggregates.Workouts;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,18 @@ public sealed class RegisterBookingService(IBookingRepository repo, IWorkoutRepo
             if (input is null)
                 return Result<string?>.BadRequest("Input must be provided");
 
+            var user = await userrepo.GetUserByUserIdAsync(input.userId, ct);
+
+            var existingBooking = await repo.GetAllByUserId(user.Id, ct);
+
+            foreach(var bookings in existingBooking)
+            {
+                if (bookings.WorkoutId == input.workoutId)
+                {
+                    return Result<string?>.Conflict("User already has a booking for this workout");
+                }
+            }
+
             var workout = await workoutrepo.GetByIdAsync(input.workoutId, ct);
 
             if (workout == null)
@@ -38,8 +51,6 @@ public sealed class RegisterBookingService(IBookingRepository repo, IWorkoutRepo
             {
                 throw new ApplicationException("Failed to update workout with new booking");
             }
-
-            var user = await userrepo.GetUserByUserIdAsync(input.userId, ct);
 
             if (user == null) 
             { 
@@ -62,6 +73,8 @@ public sealed class RegisterBookingService(IBookingRepository repo, IWorkoutRepo
             );
 
             await repo.AddAsync(booking, ct);
+
+            await repo.UpdateAsync(booking, ct);
 
             return Result<string?>.Ok(booking.Id);
         }

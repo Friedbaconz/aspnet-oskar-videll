@@ -1,7 +1,10 @@
 ﻿using Application.Bookings.Abstractions;
 using Application.Bookings.Inputs;
+using Application.Users.Abstractions;
 using Application.Workouts.Inputs;
 using Domain.Abstractions.Repositories.Workouts;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebApp.Models.Bookings;
 using Presentation.WebApp.Models.CostumerService;
@@ -10,7 +13,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Presentation.WebApp.Controllers;
 
-public class BookingController(IBookingService service, IDeleteBookingService Delete, IRegisterBookingService register, IUpdateBookingService update, IWorkoutRepository workout) : Controller
+public class BookingController(IGetUserProfileService getUserProfileService, UserManager<ApplicationUser> userManager, IBookingService service, IDeleteBookingService Delete, IRegisterBookingService register, IUpdateBookingService update, IWorkoutRepository workout) : Controller
 {
     public async Task<IActionResult> Index()
     {
@@ -24,18 +27,26 @@ public class BookingController(IBookingService service, IDeleteBookingService De
 
 
     [HttpPost("RegisterBooking")]
-    public async Task<IActionResult> RegisterBooking(MyAccountViewModel form, CancellationToken ct = default)
+    public async Task<IActionResult> RegisterBooking(string id, CancellationToken ct = default)
     {
 
-        if (form == null)
+        if (id == null)
         {
-            throw new ArgumentNullException(nameof(form));
+            throw new ArgumentNullException(nameof(id));
+        }
+
+        var user = userManager.GetUserId(User);
+
+        if(user == null)
+        {
+            ViewData["ErrorMessage"] = "An error occurred during registration.";
+            return View();
         }
 
         var booking = new RegisterBookingInput
             (
-                workoutId: form.MyBookingViewModel.BookingViewModel.RegisterBookingForm.WorkoutId,
-                userId: form.MyBookingViewModel.BookingViewModel.RegisterBookingForm.UserId
+                workoutId: id,
+                userId: user
             );
 
         var result = await register.ExecuteAsync(booking, ct);
@@ -43,10 +54,10 @@ public class BookingController(IBookingService service, IDeleteBookingService De
         if (!result.Success)
         {
             ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during registration.";
-            return View(form);
+            return View();
         }
 
-        return RedirectToAction("MyBooking", "My");
+        return RedirectToAction("Index", "CostumerService");
     }
 
     [HttpPost("DeleteBooking")]
@@ -58,15 +69,41 @@ public class BookingController(IBookingService service, IDeleteBookingService De
             throw new ArgumentNullException(nameof(id));
         }
 
-        var result = await Delete.ExecuteAsync(id, ct);
+        var getuser = userManager.GetUserId(User);
 
-        if (!result.Success)
+        var userprofile = await getUserProfileService.ExecuteAsync(getuser, ct);
+
+        if(userprofile == null)
         {
-            ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during Deletion";
+            ViewData["ErrorMessage"] = "An error occurred during Deletion.";
             return View();
         }
 
-        return RedirectToAction("MyBooking", "My");
+        var booking = await service.GetAllBookingByUserIdAsync(userprofile.Value.Id, ct);
+
+        if(booking == null) { 
+            ViewData["ErrorMessage"] = "An error occurred during Deletion.";
+            return View();
+        }
+
+        foreach(var bookings in booking)
+        {
+            if(bookings.WorkoutId == id)
+            {
+                var result = await Delete.ExecuteAsync(bookings.Id, ct);
+
+                if (!result.Success)
+                {
+                    ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during Deletion";
+                    return View();
+                }
+
+                return View();
+            }
+
+        }
+
+        return View();
     }
 
     [HttpPost("UpdateBooking")]
@@ -93,6 +130,6 @@ public class BookingController(IBookingService service, IDeleteBookingService De
             return View();
         }
 
-        return RedirectToAction("MyBooking", "My");
+        return View();
     }
 }

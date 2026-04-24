@@ -68,6 +68,7 @@ public sealed class BookingRepository(CoreFitnessDbContext context) : Repository
 
     protected override Booking ToDomainModel(BookingEntity entity)
     {
+
         var model = Booking.Create
             (
                 entity.BookingID,

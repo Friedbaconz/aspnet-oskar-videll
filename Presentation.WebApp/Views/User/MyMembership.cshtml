@@ -4,6 +4,7 @@
     ViewData["Title"] = "My Membership";
 }
 
+
 <section class="body-wrapper">
     <div class="section-header-wrapper">
         <h1 class="section-header">My Account</h1>
@@ -13,14 +14,14 @@
             <aside>
                 <partial name="Partials/_MySideMenuSection" model="Model" />
                  <div>
-                    <partial name="Partials/_EditMemberShipSection" model="Model" />
-                 </div>
+                        <partial name="Partials/_EditMemberShipSection" model="Model" />
+                </div>
             </aside>
 
             <section>
-                <form class="signin-form" asp-action="MyMemberShip" asp-controller="User" novalidate>
-                    <h1>My Membership</h1>
-                    <hr />
+                    <div class="signin-form">
+                        <h1>My Membership</h1>
+                        <hr />
 
                     @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
                     {
@@ -58,15 +59,14 @@
                                 {
                                     <p>No Benefits</p>
                                 }
-
+                            <form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><input type="submit" name="id" value="@Model.MyMembershipViewModel.MembershipId" /></form>
                         </div>
-                        <form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><input type="submit" name="id" value="@Model.MyMembershipViewModel.MembershipId" /></form>
                     }
                     @if (Model.MyMembershipViewModel.MembershipName == string.Empty)
                     {
                         <p>You Have No MemberShip</p>
                     }
-                </form>
+                    </div>
             </section>
         </div>
     </div>

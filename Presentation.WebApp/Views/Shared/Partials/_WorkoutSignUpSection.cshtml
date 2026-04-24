@@ -1,0 +1,36 @@
+﻿@model WorkoutViewModel
+
+<section>
+    <div>
+        @foreach(var workout in Model.Workouts)
+        {
+            <div class="workout-signup-container">
+                <h3 class="workout-signup-title">@workout.Name</h3>
+                <p class="workout-signup-description">@workout.Category</p>
+                <p class="workout-signup-description">@workout.Instructions</p>
+                <p class="workout-signup-description">@workout.Date</p>
+                <p class="workout-signup-description">@workout.Time</p>
+
+                @if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <form method="post" asp-action="RegisterBooking" asp-controller="Booking" asp-area="">
+                        <input type="hidden" name="id" value="@workout.Id" />
+                        <button type="submit" class="workout-signup-button">Sign Up</button>
+                    </form>
+                }
+                else
+                {
+                    <ul class="mb2hero">
+                        <li class="mb2container">
+                            <a class="mb2text" asp-area="" asp-controller="User" asp-action="My">
+                                Sign Up
+                                <img src="~/Images/sidearrow.svg" class="img-logo" />
+                            </a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        }
+        )
+    </div>
+</section>

@@ -29,7 +29,13 @@ public sealed class DeleteBookingService(IBookingRepository repo, IWorkoutReposi
             throw new ApplicationException("Workout not found");
         }
 
-        workout.Users.ToList().Remove(result.UserId);
+        var newuserlist = workout.Users.ToList();
+
+        newuserlist.Remove(result.UserId);
+
+        var EnumbrableListUser = newuserlist.AsEnumerable();
+
+        workout.Update(workout.Name, workout.Category, workout.Instructions, workout.Date, workout.Time, EnumbrableListUser);
 
         var workoutresult = await workoutrepo.UpdateAsync(workout, ct);
 
@@ -38,14 +44,20 @@ public sealed class DeleteBookingService(IBookingRepository repo, IWorkoutReposi
             throw new ApplicationException("Failed to update workout with new booking");
         }
 
-        var user = await userrepo.GetUserByUserIdAsync(result.UserId, ct);
+        var user = await userrepo.GetByIdAsync(result.UserId, ct);
 
         if (user == null)
         {
             throw new ApplicationException("User not found");
         }
 
-        user.WorkoutsId.ToList().Remove(result.WorkoutId);
+        var newworkoutlist = user.WorkoutsId.ToList();
+
+        newworkoutlist.Remove(result.WorkoutId);
+
+        var EnumbrableListWorkout = newworkoutlist.AsEnumerable();
+
+        user.UpdateProfile(user.FirstName, user.LastName, user.Phonenumber, user.ProfileImageUri, user.MembershipId, EnumbrableListWorkout);
 
         var userresult = await userrepo.UpdateAsync(user, ct);
 

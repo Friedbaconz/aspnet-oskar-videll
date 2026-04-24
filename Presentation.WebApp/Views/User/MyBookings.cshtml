@@ -13,12 +13,12 @@
             <aside>
                 <partial name="Partials/_MySideMenuSection" model="Model" />
                 <div>
-                    <partial name="Partials/_EditBookingSection" model="Model" />
+                        <partial name="Partials/_EditBookingSection" model="Model" />
                 </div>
             </aside>
 
             <section>
-                <form class="signin-form" asp-action="MyBooking" asp-controller="User" novalidate>
+                <div class="signin-form">
                     <h1>My Booking</h1>
                     <hr />
 
@@ -37,7 +37,7 @@
                             </div>
                         }
                     }
-                    @if(Model.MyBookingViewModel is not null)
+                    @if (Model.MyBookingViewModel is not null)
                     {
                         @if (Model.MyBookingViewModel.Workouts.Count() == 0)
                         {
@@ -48,6 +48,7 @@
                         {
                             foreach (var workout in Model.MyBookingViewModel.Workouts)
                             {
+                                
                                 <div>
                                     <p> @workout.Name </p>
                                     <p> @workout.Category </p>
@@ -56,11 +57,16 @@
                                     <p> @workout.Time </p>
                                 </div>
 
-                                <section><form asp-controller="Booking" asp-action="DeleteBooking" method="post"><input type="submit" name="id" value="@workout.Id" /></form></section>
+                                <section>
+                                    <form asp-controller="Booking" asp-action="DeleteBooking" method="post">
+                                        <input type="hidden" value="@workout.Id" name="id" />
+                                        <input type="submit" value="delete" />
+                                    </form>
+                                </section>
                             }
                         }
                     }
-                </form>
+                </div>
             </section>
         </div>
     </div>

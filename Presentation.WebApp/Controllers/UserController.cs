@@ -25,6 +25,8 @@ namespace Presentation.WebApp.Controllers;
 [Route("User")]
 public class UserController(UserManager<ApplicationUser> userManager, IGetUserProfileService getUserProfileService, IUpdateUserService updateUserService, IRemoveUserService removeUserService, IidentityService iidentityService, IMembershipService membershipservice, IWorkoutService workoutService, IBookingService bookingService) : Controller
 {
+    private readonly UserManager<ApplicationUser> userManager = userManager;
+
     [HttpGet("My")]
     public async Task<IActionResult> My(CancellationToken ct = default)
     {
@@ -57,7 +59,6 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
     }
 
     [HttpPost("My")]
-
     public async Task<IActionResult> My(MyAccountViewModel viewmodel, CancellationToken ct = default)
     {
         var user = await userManager.GetUserAsync(User);
@@ -78,10 +79,20 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
         );
 
         var result = await updateUserService.ExecuteAsync(input, ct);
+
         if (!result.Success)
         {
             ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred while updating your profile.";
             ViewData["ErrorType"] = "error";
+            return View(viewmodel);
+        }
+
+        var roleresult = await userManager.AddToRoleAsync(user, "User");
+
+        if(!roleresult.Succeeded)
+        {
+            ViewData["ErrorMessage"] = "Profile updated, but failed to assign user role.";
+            ViewData["ErrorType"] = "warning";
             return View(viewmodel);
         }
 
@@ -174,7 +185,7 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
             return NotFound();
         }
 
-        var bookings = await bookingService.GetAllBookingByUserIdAsync(user.Id, ct);
+        var bookings = await bookingService.GetAllBookingByUserIdAsync(profile.Value.Id, ct);
 
         if (bookings.Count() == 0)
         {
@@ -186,7 +197,7 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
             {
                 var workout = await workoutService.GetWorkoutByIdAsync(booking.WorkoutId, ct);
 
-                viewmodels.MyBookingViewModel.Workouts.ToList().Add(workout);
+                viewmodels.MyBookingViewModel.Workouts.Add(workout);
             }
 
             return View(viewmodels);

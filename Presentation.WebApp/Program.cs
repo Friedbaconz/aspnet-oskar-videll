@@ -1,9 +1,14 @@
+using Application.Abstractions.Identity;
 using Application.Extensions;
 using Application.Memberships.Abstractions;
 using Application.Memberships.Inputs;
 using Application.Memberships.Services;
+using Application.Users.Abstractions;
+using Application.Users.Inputs;
 using Application.Workouts.Abstractions;
 using Application.Workouts.Inputs;
+using Domain.Abstractions.Repositories.Users;
+using Domain.Aggregates.Users;
 using Infrastructure.Extensions;
 using Infrastructure.Identity;
 using Infrastructure.Persistence.Contexts;
@@ -15,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Presentation.WebApp.Controllers;
 using Presentation.WebApp.Models.Memberships;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -30,26 +36,34 @@ builder.Services.AddSession();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddApplication(builder.Configuration, builder.Environment);
 
+
 var app = builder.Build();
 app.MapControllers();
 await PersistenceDatabaseInitializer.InitializeAsync(app.Services, app.Environment);
 
 StaticWebAssetsLoader.UseStaticWebAssets(app.Environment, app.Configuration);
 
-//make a couple of memberships and workouts for testing
-using (var scope = app.Services.CreateScope())
+if (!app.Environment.IsDevelopment())
 {
-    var context = scope.ServiceProvider.GetRequiredService<CoreFitnessDbContext>();
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
 
-    if (!context.Memberships.Any())
-        using (var sscope = app.Services.CreateScope())
-        {
-            var ServiceMembership = scope.ServiceProvider.GetRequiredService<IRegisterMembershipService>();
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<CoreFitnessDbContext>();
 
-            var workoutService = scope.ServiceProvider.GetRequiredService<IRegisterWorkoutService>();
-
-            if (!context.Memberships.Any())
+        if (!context.Memberships.Any())
+            using (var sscope = app.Services.CreateScope())
             {
+                var ServiceMembership = scope.ServiceProvider.GetRequiredService<IRegisterMembershipService>();
+
+                var workoutService = scope.ServiceProvider.GetRequiredService<IRegisterWorkoutService>();
+
+                if (!context.Memberships.Any())
+                {
                     //Basic
                     var basicmember = new RegisterMemebershipInput
                     (
@@ -105,25 +119,27 @@ using (var scope = app.Services.CreateScope())
                     ));
 
                     await ServiceMembership.ExecuteAsync(Premiummember);
-            }
+                }
 
                 if (!context.Workouts.Any())
-            {
-                var workout1 = new RegisterWorkoutInput
-                (
-                    Name: "Morning Yoga",
-                    Category: "Yoga",
-                    Instructions: "Start your",
-                    Date: DateTime.Today,
-                    Time: TimeSpan.FromHours(7)
-                );
+                {
+                    var workout1 = new RegisterWorkoutInput
+                    (
+                        Name: "Morning Yoga",
+                        Category: "Yoga",
+                        Instructions: "Start your",
+                        Date: DateTime.Today,
+                        Time: TimeSpan.FromHours(7)
+                    );
 
-                await workoutService.ExecuteAsync(workout1);
+                    await workoutService.ExecuteAsync(workout1);
+                }
+
+                await context.SaveChangesAsync();
             }
-
-            await context.SaveChangesAsync();
-        }
+    }
 }
+
 
 app.UseHsts();
 app.UseHttpsRedirection();
@@ -136,17 +152,21 @@ app.UseAuthorization();
 using(var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
     string[] roleNames = { "Admin", "User" };
 
     foreach(var roleName in roleNames)
     {
         var exsist = await roleManager.RoleExistsAsync(roleName);
+
         if (!exsist)
         {
             await roleManager.CreateAsync(new IdentityRole(roleName));
         }
     }
 }
+
+
 
 app.MapStaticAssets();
 
