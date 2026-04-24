@@ -1,9 +1,11 @@
-﻿namespace Presentation.WebApp.Models.Bookings
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Presentation.WebApp.Models.Bookings
 {
     public class RegisterBookingForm
     {
-        public string UserId { get; set; } = null!;
 
+        [Required(ErrorMessage = "Workout is required")]
         public string WorkoutId { get; set; } = null!;
     }
 }

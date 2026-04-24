@@ -61,6 +61,9 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
     [HttpPost("My")]
     public async Task<IActionResult> My(MyAccountViewModel viewmodel, CancellationToken ct = default)
     {
+        if (!ModelState.IsValid)
+            return View(viewmodel);
+
         var user = await userManager.GetUserAsync(User);
         if (user is null)
         {
@@ -156,21 +159,18 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
         var user = await userManager.GetUserAsync(User);
         var getbookings = await bookingService.GetBookingsAsync(ct);
         var getworkouts = await workoutService.GetWorkoutsAsync(ct);
-        var viewmodels = new MyAccountViewModel
+        var viewmodels = new MyBookingViewModel
         {
-            MyBookingViewModel = new MyBookingViewModel
+            MyWorkouts = new List<Workout>(),
+            BookingViewModel = new BookingViewModel
             {
-                Workouts = new List<Workout>(),
-                BookingViewModel = new BookingViewModel
-                {
-                    Bookings = getbookings,
-                },
-                workoutViewModels = new WorkoutViewModel
-                {
-                    Workouts = getworkouts,
-                }
-
+                Bookings = getbookings,
+            },
+            workoutViewModels = new WorkoutViewModel
+            {
+                Workouts = getworkouts,
             }
+
         };
 
         if (user is null)
@@ -197,7 +197,7 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
             {
                 var workout = await workoutService.GetWorkoutByIdAsync(booking.WorkoutId, ct);
 
-                viewmodels.MyBookingViewModel.Workouts.Add(workout);
+                viewmodels.MyWorkouts.Add(workout);
             }
 
             return View(viewmodels);

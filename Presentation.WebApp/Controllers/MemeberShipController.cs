@@ -15,12 +15,12 @@ using System.Net.NetworkInformation;
 
 namespace Presentation.WebApp.Controllers
 {
-    public class MemeberShipController(IDeleteMembershipService deleteMembershipService,IRegisterMembershipService registerMembership,IMembershipService service, IUpdateMembershipService updateservice, UserManager<ApplicationUser> userManager, IBenefitService benefitService) : Controller
+    public class MemeberShipController(IGetUserProfileService getUserProfileService, IDeleteMembershipService deleteMembershipService,IRegisterMembershipService registerMembership,IMembershipService service, IUpdateMembershipService updateservice, UserManager<ApplicationUser> userManager, IBenefitService benefitService) : Controller
     {
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken ct = default)
         {
 
-            var memberships = await service.GetMembershipsAsync();
+            var memberships = await service.GetMembershipsAsync(ct);
             var model = new MembershipViewModel()
             {
                 MembershipIDs = memberships.Select(m => m.Id),
@@ -33,9 +33,18 @@ namespace Presentation.WebApp.Controllers
         [HttpPost("ConnectToUser")]
         public async Task<IActionResult> ConnectMembershiptoUser(string id, CancellationToken ct = default)
         {
+
             var user = await userManager.GetUserAsync(User);
 
-            if(user == null)
+            var profile = await getUserProfileService.ExecuteAsync(user.Id, ct);
+
+            if (profile.Value.FirstName == null || profile.Value.LastName == null)
+            {
+                ViewData["ErrorMessage"] = profile.ErrorMessage ?? "An error occurred during sign-in.";
+                return View(profile);
+            }
+
+            if (user == null)
             {
                 return NotFound();
             }
@@ -80,7 +89,7 @@ namespace Presentation.WebApp.Controllers
 
             if (!result.Success)
             {
-                return BadRequest();
+                return RedirectToAction("Index", "MemeberShip");
             }
 
             return RedirectToAction("Index", "MemeberShip");
@@ -89,6 +98,9 @@ namespace Presentation.WebApp.Controllers
         [HttpPost("UpdateMembership")]
         public async Task<IActionResult> UpdateMembership(MyAccountViewModel form, string id, CancellationToken ct = default)
         {
+            if (!ModelState.IsValid)
+                return RedirectToAction("MyMembership", "User", form);
+
             if (form is null)
             {
                 throw new ArgumentNullException("form is empty, please redo");
@@ -148,10 +160,10 @@ namespace Presentation.WebApp.Controllers
 
             if (!result.Success)
             {
-                return BadRequest();
+                return RedirectToAction("MyMembership", "User", form);
             }
 
-            return View();
+            return RedirectToAction("MyMembership", "User", form);
         }
 
 
@@ -159,6 +171,7 @@ namespace Presentation.WebApp.Controllers
 
         public async Task<IActionResult> DeleteMembership( string id, CancellationToken ct = default)
         {
+
             var user = await userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -207,10 +220,10 @@ namespace Presentation.WebApp.Controllers
             var result = await updateservice.ExecuteAsync(entity, ct);
             if (!result.Success)
             {
-                return BadRequest();
+                return RedirectToAction("MyMembership", "User");
             }
 
-            return View();
+            return RedirectToAction("MyMembership", "User");
         }
 
         [HttpPost("RemoveMembership")]
@@ -221,16 +234,19 @@ namespace Presentation.WebApp.Controllers
             if (!result.Success)
             {
                 ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during Deletion";
-                return View();
+                return RedirectToAction("MyMembership", "User");
             }
 
-            return View("Index", "Home");
+            return RedirectToAction("MyMembership", "User");
 
         }
 
         [HttpPost("CreateMembership")]
         public async Task<IActionResult> CreateMembership(MyAccountViewModel form, CancellationToken ct = default)
         {
+            if (!ModelState.IsValid)
+                return RedirectToAction("MyMembership", "User", form);
+
             if (form is null)
             {
                 throw new ArgumentNullException("form is empty, please redo");
@@ -258,10 +274,10 @@ namespace Presentation.WebApp.Controllers
             if (!result.Success)
             {
                 ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during registration.";
-                return View(form);
+                return RedirectToAction("MyMembership", "User", form);
             }
 
-            return View();
+            return RedirectToAction("MyMembership", "User", form);
         }
     }
 }

@@ -13,8 +13,8 @@
 
                 @if (User.Identity?.IsAuthenticated ?? false)
                 {
-                    <form method="post" asp-action="RegisterBooking" asp-controller="Booking" asp-area="">
-                        <input type="hidden" name="id" value="@workout.Id" />
+                    <form method="post" asp-action="RegisterBooking" asp-controller="Booking" asp-area="Identity">
+                        <input type="hidden" name="WorkoutId" value="@workout.Id" />
                         <button type="submit" class="workout-signup-button">Sign Up</button>
                     </form>
                 }

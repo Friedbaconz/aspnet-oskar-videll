@@ -1,8 +1,5 @@
-﻿@model MyAccountViewModel
+﻿@model MyBookingViewModel
 
-@{
-    ViewData["Title"] = "My Booking";
-}
 
 <section>
     <div class="section-header-wrapper">
@@ -11,9 +8,9 @@
     <div class="sigin-wrapper">
         <div class="sigin-container">
             <aside>
-                <partial name="Partials/_MySideMenuSection" model="Model" />
+                <partial name="Partials/_MySideMenuSection" />
                 <div>
-                        <partial name="Partials/_EditBookingSection" model="Model" />
+                        <partial name="Partials/_EditBookingSection" model="Model.workoutViewModels" />
                 </div>
             </aside>
 
@@ -21,32 +18,16 @@
                 <div class="signin-form">
                     <h1>My Booking</h1>
                     <hr />
-
-                    @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+                    @if (Model is not null)
                     {
-                        if (ViewData["MessageType"]?.ToString() == "error")
-                        {
-                            <div class="error-in-text">
-                                @ViewData["Message"]
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="success-in-text">
-                                @ViewData["Message"]
-                            </div>
-                        }
-                    }
-                    @if (Model.MyBookingViewModel is not null)
-                    {
-                        @if (Model.MyBookingViewModel.Workouts.Count() == 0)
+                        @if (Model.MyWorkouts.Count() == 0)
                         {
                             <p>You Have No Booked Passes</p>
                         }
 
-                        @if (Model.MyBookingViewModel.Workouts.Count() != 0)
+                        @if (Model.MyWorkouts.Count() != 0)
                         {
-                            foreach (var workout in Model.MyBookingViewModel.Workouts)
+                            foreach (var workout in Model.MyWorkouts)
                             {
                                 
                                 <div>

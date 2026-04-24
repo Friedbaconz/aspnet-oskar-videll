@@ -1,66 +1,81 @@
-﻿@model MyAccountViewModel
+﻿@model WorkoutViewModel
 
 <section>
+    @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+    {
+        if (ViewData["MessageType"]?.ToString() == "error")
+        {
+            <div class="error-in-text">
+                @ViewData["Message"]
+            </div>
+        }
+        else
+        {
+            <div class="success-in-text">
+                @ViewData["Message"]
+            </div>
+        }
+    }
     <form asp-controller="CostumerService" asp-action="RegisterWorkout" asp-area="" method="post">
         <h2>New Workout</h2>
         <div class="signin-bar">
-            <label asp-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Name"></label>
-            <input asp-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Name" />
-            <span asp-validation-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Name"></span>
+            <label asp-for="RegisterWorkoutForm.Name"></label>
+            <input asp-for="RegisterWorkoutForm.Name" />
+            <span asp-validation-for="RegisterWorkoutForm.Name"></span>
         </div>
         <div class="signin-bar">
-            <label asp-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Category"></label>
-            <input asp-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Category" />
-            <span asp-validation-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Category"></span>
+            <label asp-for="RegisterWorkoutForm.Category"></label>
+            <input asp-for="RegisterWorkoutForm.Category" />
+            <span asp-validation-for="RegisterWorkoutForm.Category"></span>
         </div>
         <div class="signin-bar">
-            <label asp-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Instructions"></label>
-            <input asp-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Instructions" />
-            <span asp-validation-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Instructions"></span>
+            <label asp-for="RegisterWorkoutForm.Instructions"></label>
+            <input asp-for="RegisterWorkoutForm.Instructions" />
+            <span asp-validation-for="RegisterWorkoutForm.Instructions"></span>
         </div>
         <div class="signin-bar">
-            <label asp-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Date"></label>
-            <input asp-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Date" />
-            <span asp-validation-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Date"></span>
+            <label asp-for="RegisterWorkoutForm.Date"></label>
+            <input asp-for="RegisterWorkoutForm.Date" />
+            <span asp-validation-for="RegisterWorkoutForm.Date"></span>
         </div>
         <div class="signin-bar">
-            <label asp-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Time"></label>
-            <input asp-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Time" />
-            <span asp-validation-for="MyBookingViewModel.workoutViewModels.RegisterWorkoutForm.Time"></span>
+            <label asp-for="RegisterWorkoutForm.Time"></label>
+            <input asp-for="RegisterWorkoutForm.Time" />
+            <span asp-validation-for="RegisterWorkoutForm.Time"></span>
         </div>
 
         <button type="submit">Create</button>
     </form>
     <h2>Update Workout</h2>
-    @foreach (var workout in Model.MyBookingViewModel.workoutViewModels.Workouts)
+    @foreach (var workout in Model.Workouts)
     {
         <form asp-controller="CostumerService" asp-action="UpdateWorkout" asp-area="" method="post">
-            <input type="hidden" value="@workout.Id" asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Id" />
+            <input type="hidden" value="@workout.Id" asp-for="UpdateWorkoutForm.Id" />
 
             <div class="signin-bar">
-                <label asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Name"></label>
-                <input asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Name" value="@workout.Name" />
-                <span asp-validation-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Name"></span>
+                <label asp-for="UpdateWorkoutForm.Name"></label>
+                <input asp-for="UpdateWorkoutForm.Name" value="@workout.Name" />
+                <span asp-validation-for="UpdateWorkoutForm.Name"></span>
             </div>
             <div class="signin-bar">
-                <label asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Category"></label>
-                <input asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Category" value="@workout.Category" />
-                <span asp-validation-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Category"></span>
+                <label asp-for="UpdateWorkoutForm.Category"></label>
+                <input asp-for="UpdateWorkoutForm.Category" value="@workout.Category" />
+                <span asp-validation-for="UpdateWorkoutForm.Category"></span>
             </div>
             <div class="signin-bar">
-                <label asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Instructions"></label>
-                <input asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Instructions" value="@workout.Instructions" />
-                <span asp-validation-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Instructions"></span>
+                <label asp-for="UpdateWorkoutForm.Instructions"></label>
+                <input asp-for="UpdateWorkoutForm.Instructions" value="@workout.Instructions" />
+                <span asp-validation-for="UpdateWorkoutForm.Instructions"></span>
             </div>
             <div class="signin-bar">
-                <label asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Date"></label>
-                <input asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Date" value="@workout.Date" />
-                <span asp-validation-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Date"></span>
+                <label asp-for="UpdateWorkoutForm.Date"></label>
+                <input asp-for="UpdateWorkoutForm.Date" value="@workout.Date" />
+                <span asp-validation-for="UpdateWorkoutForm.Date"></span>
             </div>
             <div class="signin-bar">
-                <label asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Time"></label>
-                <input asp-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Time" value="@workout.Time" />
-                <span asp-validation-for="MyBookingViewModel.workoutViewModels.UpdateWorkoutForm.Time"></span>
+                <label asp-for="UpdateWorkoutForm.Time"></label>
+                <input asp-for="UpdateWorkoutForm.Time" value="@workout.Time" />
+                <span asp-validation-for="UpdateWorkoutForm.Time"></span>
             </div>
             <button type="submit">Update</button>
         </form>

@@ -27,26 +27,31 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
 
 
     [HttpPost("RegisterBooking")]
-    public async Task<IActionResult> RegisterBooking(string id, CancellationToken ct = default)
+    public async Task<IActionResult> RegisterBooking(RegisterBookingForm form, CancellationToken ct = default)
     {
+        if (!ModelState.IsValid)
+            return RedirectToAction("Index", "CostumerService", form);
 
-        if (id == null)
+        if (form.WorkoutId == null)
         {
-            throw new ArgumentNullException(nameof(id));
+            ViewData["ErrorMessage"] = "An error occurred during registration.";
+            return RedirectToAction("Index", "CostumerService", form);
         }
 
         var user = userManager.GetUserId(User);
 
-        if(user == null)
+        var userprofile = await getUserProfileService.ExecuteAsync(user, ct);
+
+        if(userprofile.Value.FirstName == null || userprofile.Value.LastName == null)
         {
             ViewData["ErrorMessage"] = "An error occurred during registration.";
-            return View();
+            return RedirectToAction("Index", "CostumerService", form);
         }
 
         var booking = new RegisterBookingInput
             (
-                workoutId: id,
-                userId: user
+                workoutId: form.WorkoutId,
+                userId: userprofile.Value.UserId
             );
 
         var result = await register.ExecuteAsync(booking, ct);
@@ -54,10 +59,10 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
         if (!result.Success)
         {
             ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during registration.";
-            return View();
+            return RedirectToAction("Index", "CostumerService", form);
         }
 
-        return RedirectToAction("Index", "CostumerService");
+        return RedirectToAction("Index", "CostumerService", form);
     }
 
     [HttpPost("DeleteBooking")]
@@ -76,14 +81,14 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
         if(userprofile == null)
         {
             ViewData["ErrorMessage"] = "An error occurred during Deletion.";
-            return View();
+            return RedirectToAction("MyBooking", "User");
         }
 
         var booking = await service.GetAllBookingByUserIdAsync(userprofile.Value.Id, ct);
 
         if(booking == null) { 
             ViewData["ErrorMessage"] = "An error occurred during Deletion.";
-            return View();
+            return RedirectToAction("MyBooking", "User");
         }
 
         foreach(var bookings in booking)
@@ -95,19 +100,19 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
                 if (!result.Success)
                 {
                     ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during Deletion";
-                    return View();
+                    return RedirectToAction("MyBooking", "User");
                 }
 
-                return View();
+                return RedirectToAction("MyBooking", "User");
             }
 
         }
 
-        return View();
+        return RedirectToAction("MyBooking", "User");
     }
 
     [HttpPost("UpdateBooking")]
-    public async Task<IActionResult> UpdateBooking(MyAccountViewModel form, CancellationToken ct = default)
+    public async Task<IActionResult> UpdateBooking(BookingViewModel form, CancellationToken ct = default)
     {
 
         if (form == null)
@@ -117,9 +122,9 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
 
         var booking = new UpdateBookingInput
             (
-                Id: form.MyBookingViewModel.BookingViewModel.UpdateBookingForm.Id,
-                WorkoutId: form.MyBookingViewModel.BookingViewModel.UpdateBookingForm.WorkoutId,
-                UserId: form.MyBookingViewModel.BookingViewModel.UpdateBookingForm.UserId
+                Id: form.UpdateBookingForm.Id,
+                WorkoutId: form.UpdateBookingForm.WorkoutId,
+                UserId: form.UpdateBookingForm.UserId
             );
 
         var result = await update.ExecuteAsync(booking, ct);

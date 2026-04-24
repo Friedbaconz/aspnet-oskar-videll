@@ -7,7 +7,7 @@ namespace Presentation.WebApp.Models.Users
 {
     public class MyBookingViewModel
     {
-        public List<Workout> Workouts { get; set; } = [];
+        public List<Workout> MyWorkouts { get; set; } = [];
 
         public BookingViewModel? BookingViewModel { get; set; }
 

@@ -1,6 +1,20 @@
 ﻿@model MyAccountViewModel
 <section class="body-wrapper">
-
+    @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+                    {
+                        if (ViewData["MessageType"]?.ToString() == "error")
+                        {
+                            <div class="error-in-text">
+                                @ViewData["Message"]
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="success-in-text">
+                                @ViewData["Message"]
+                            </div>
+                        }
+                    }
     <form asp-controller="MemeberShip" asp-action="CreateMembership" asp-area="" method="post">
         <h2>New Membership</h2>
         <div class="signin-bar">
