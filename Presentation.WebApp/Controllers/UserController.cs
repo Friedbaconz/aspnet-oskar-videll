@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Identity;
 using Application.Bookings.Abstractions;
+using Application.Common.Results;
 using Application.Memberships.Abstractions;
 using Application.Memberships.Inputs;
 using Application.Users.Abstractions;
@@ -7,6 +8,7 @@ using Application.Users.Inputs;
 using Application.Users.Services;
 using Application.Workouts.Abstractions;
 using Domain.Aggregates.Memberships;
+using Domain.Aggregates.Users;
 using Domain.Aggregates.Workouts;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;

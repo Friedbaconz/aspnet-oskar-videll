@@ -24,11 +24,25 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
         return View(model);
     }
 
+    [HttpGet("RegisterWorkout")]
+    public IActionResult RegisterWorkout(CancellationToken ct = default)
+    {
+        var model = new RegisterWorkoutForm
+        {
+            Name = string.Empty,
+            Category = string.Empty,
+            Instructions = string.Empty,
+            Date = DateTime.Now,
+            Time = TimeSpan.Zero,
+        };
+        return View(model);
+    }
+
     [HttpPost("RegisterWorkout")]
-    public async Task<IActionResult> RegisterWorkout(WorkoutViewModel form, CancellationToken ct = default)
+    public async Task<IActionResult> RegisterWorkout(RegisterWorkoutForm form, CancellationToken ct = default)
     {
             if (!ModelState.IsValid)
-                return RedirectToAction("MyBooking", "User", form);
+                return View(form);
 
             if (form == null)
             {
@@ -37,11 +51,11 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
 
             var workout = new RegisterWorkoutInput
                 (
-                Name: form.RegisterWorkoutForm.Name,
-                Category: form.RegisterWorkoutForm.Category,
-                Instructions: form.RegisterWorkoutForm.Instructions,
-                Date: form.RegisterWorkoutForm.Date,
-                Time: form.RegisterWorkoutForm.Time
+                Name: form.Name,
+                Category: form.Category,
+                Instructions: form.Instructions,
+                Date: form.Date,
+                Time: form.Time
                 );
 
             var result = await register.ExecuteAsync(workout, ct);
@@ -49,13 +63,13 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
             if (!result.Success)
             {
                 ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during registration.";
-                return RedirectToAction("MyBooking", "User", form);
+                return View(form);
             }
 
             ViewData["Message"] = result.ErrorMessage;
             ViewData["ErrorType"] = "success";
 
-            return RedirectToAction("MyBooking", "User", form);
+            return View(form);
     }
 
     [HttpPost("DeleteWorkout")]
@@ -72,17 +86,33 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
         if (!result.Success)
         {
             ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during Deletion";
-            return RedirectToAction("MyBooking", "User");
+            return RedirectToAction("UpdateWorkout", "CostumerService");
         }
 
-        return RedirectToAction("MyBooking", "User");
+        return RedirectToAction("UpdateWorkout", "CostumerService");
+    }
+
+    [HttpGet("UpdateWorkout")]
+    public async Task<IActionResult> UpdateWorkout(CancellationToken ct = default) 
+    {
+
+        var workouts = await service.GetWorkoutsAsync();
+
+        var model = new WorkoutViewModel()
+        {
+            Workouts = workouts
+        };
+
+
+        return View(model);
     }
 
     [HttpPost("UpdateWorkout")]
     public async Task<IActionResult> UpdateWorkout(WorkoutViewModel form, CancellationToken ct = default)
     {
+
         if (!ModelState.IsValid)
-            return RedirectToAction("MyBooking", "User", form);
+            return View(form);
 
         if (form == null)
         {
@@ -105,9 +135,9 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
         if (!result.Success)
         {
             ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during Deletion";
-            return RedirectToAction("MyBooking", "User", form);
+            return View(form);
         }
 
-        return RedirectToAction("MyBooking", "User", form);
+        return View(form);
     }
 }

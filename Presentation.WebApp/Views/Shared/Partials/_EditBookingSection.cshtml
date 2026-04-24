@@ -1,84 +1,10 @@
-﻿@model WorkoutViewModel
-
-<section>
-    @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
-    {
-        if (ViewData["MessageType"]?.ToString() == "error")
-        {
-            <div class="error-in-text">
-                @ViewData["Message"]
-            </div>
-        }
-        else
-        {
-            <div class="success-in-text">
-                @ViewData["Message"]
-            </div>
-        }
-    }
-    <form asp-controller="CostumerService" asp-action="RegisterWorkout" asp-area="" method="post">
-        <h2>New Workout</h2>
-        <div class="signin-bar">
-            <label asp-for="RegisterWorkoutForm.Name"></label>
-            <input asp-for="RegisterWorkoutForm.Name" />
-            <span asp-validation-for="RegisterWorkoutForm.Name"></span>
+﻿
+    <section>
+        <div class="my-sidecontroller">
+            <p>Admin Options</p>
+            <hr />
+            <section><a class="my-text" asp-area="" asp-action="UpdateWorkout" asp-controller="CostumerService">Update Workouts</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
+            <hr />
+            <section><a class="my-text" asp-area="" asp-action="RegisterWorkout" asp-controller="CostumerService">Make new Workout</a><img src="~/Images/sidearrow.svg" class="img-logo" /></section>
         </div>
-        <div class="signin-bar">
-            <label asp-for="RegisterWorkoutForm.Category"></label>
-            <input asp-for="RegisterWorkoutForm.Category" />
-            <span asp-validation-for="RegisterWorkoutForm.Category"></span>
-        </div>
-        <div class="signin-bar">
-            <label asp-for="RegisterWorkoutForm.Instructions"></label>
-            <input asp-for="RegisterWorkoutForm.Instructions" />
-            <span asp-validation-for="RegisterWorkoutForm.Instructions"></span>
-        </div>
-        <div class="signin-bar">
-            <label asp-for="RegisterWorkoutForm.Date"></label>
-            <input asp-for="RegisterWorkoutForm.Date" />
-            <span asp-validation-for="RegisterWorkoutForm.Date"></span>
-        </div>
-        <div class="signin-bar">
-            <label asp-for="RegisterWorkoutForm.Time"></label>
-            <input asp-for="RegisterWorkoutForm.Time" />
-            <span asp-validation-for="RegisterWorkoutForm.Time"></span>
-        </div>
-
-        <button type="submit">Create</button>
-    </form>
-    <h2>Update Workout</h2>
-    @foreach (var workout in Model.Workouts)
-    {
-        <form asp-controller="CostumerService" asp-action="UpdateWorkout" asp-area="" method="post">
-            <input type="hidden" value="@workout.Id" asp-for="UpdateWorkoutForm.Id" />
-
-            <div class="signin-bar">
-                <label asp-for="UpdateWorkoutForm.Name"></label>
-                <input asp-for="UpdateWorkoutForm.Name" value="@workout.Name" />
-                <span asp-validation-for="UpdateWorkoutForm.Name"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="UpdateWorkoutForm.Category"></label>
-                <input asp-for="UpdateWorkoutForm.Category" value="@workout.Category" />
-                <span asp-validation-for="UpdateWorkoutForm.Category"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="UpdateWorkoutForm.Instructions"></label>
-                <input asp-for="UpdateWorkoutForm.Instructions" value="@workout.Instructions" />
-                <span asp-validation-for="UpdateWorkoutForm.Instructions"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="UpdateWorkoutForm.Date"></label>
-                <input asp-for="UpdateWorkoutForm.Date" value="@workout.Date" />
-                <span asp-validation-for="UpdateWorkoutForm.Date"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="UpdateWorkoutForm.Time"></label>
-                <input asp-for="UpdateWorkoutForm.Time" value="@workout.Time" />
-                <span asp-validation-for="UpdateWorkoutForm.Time"></span>
-            </div>
-            <button type="submit">Update</button>
-        </form>
-        <section><form asp-controller="CostumerService" asp-action="DeleteWorkout" method="post"><input type="submit" name="id" value="@workout.Id" /></form></section>
-    }
-</section>
+    </section>
