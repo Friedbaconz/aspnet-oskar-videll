@@ -114,6 +114,8 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
     [HttpPost("UpdateBooking")]
     public async Task<IActionResult> UpdateBooking(BookingViewModel form, CancellationToken ct = default)
     {
+        if (!ModelState.IsValid)
+            return View(form);
 
         if (form == null)
         {
@@ -135,6 +137,6 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
             return View();
         }
 
-        return View();
+        return View(form);
     }
 }

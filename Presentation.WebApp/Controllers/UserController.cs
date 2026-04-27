@@ -111,6 +111,7 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
     public async Task<IActionResult> MyMembership(CancellationToken ct = default)
     {
         var getmemberships = await membershipservice.GetMembershipsAsync(ct);
+
         var Viewmodels = new MyMembershipViewModel
         {
             MembershipName = string.Empty,

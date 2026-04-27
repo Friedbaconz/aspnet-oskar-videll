@@ -22,7 +22,6 @@ namespace Tests.Intergration
                 .UseSqlite(_connection)
                 .Options;
 
-            // Ensure database schema is created
             using var context = CreateContext();
             context.Database.EnsureCreated();
         }
