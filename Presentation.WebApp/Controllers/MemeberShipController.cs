@@ -96,10 +96,8 @@ namespace Presentation.WebApp.Controllers
         }
 
         [HttpPost("UpdateMembership")]
-        public async Task<IActionResult> UpdateMembership(MyAccountViewModel form, string id, CancellationToken ct = default)
+        public async Task<IActionResult> UpdateMembership(MyMembershipViewModel form, string id, CancellationToken ct = default)
         {
-            if (!ModelState.IsValid)
-                return RedirectToAction("MyMembership", "User", form);
 
             if (form is null)
             {
@@ -110,7 +108,7 @@ namespace Presentation.WebApp.Controllers
 
             var benefitlist = new List<UpdateMembershipBenefitInput>();
 
-            foreach ( var benefitid in form.MyMembershipViewModel.MembershipViewModel.UpdateMembershipForm.Benefits)
+            foreach ( var benefitid in form.MembershipViewModel.UpdateMembershipForm.Benefits)
             {
                 if (benefitid.id == null)
                 {
@@ -145,13 +143,13 @@ namespace Presentation.WebApp.Controllers
             var membership = new UpdateMembershipInput
                     (
                         id: update.Id,
-                        name: form.MyMembershipViewModel.MembershipViewModel.UpdateMembershipForm.MembershipName,
-                        description: form.MyMembershipViewModel.MembershipViewModel.UpdateMembershipForm.description,
+                        name: form.MembershipViewModel.UpdateMembershipForm.MembershipName,
+                        description: form.MembershipViewModel.UpdateMembershipForm.description,
                         benefits: benefitlist,
                         status: update.Status,
                         type: update.Type,
-                        pricing: form.MyMembershipViewModel.MembershipViewModel.UpdateMembershipForm.pricing,
-                        monthlyDuration: form.MyMembershipViewModel.MembershipViewModel.UpdateMembershipForm.monthlyDuration,
+                        pricing: form.MembershipViewModel.UpdateMembershipForm.pricing,
+                        monthlyDuration: form.MembershipViewModel.UpdateMembershipForm.monthlyDuration,
                         userid: update.Userid,
                         users: update.Users
                     );
@@ -242,10 +240,8 @@ namespace Presentation.WebApp.Controllers
         }
 
         [HttpPost("CreateMembership")]
-        public async Task<IActionResult> CreateMembership(MyAccountViewModel form, CancellationToken ct = default)
+        public async Task<IActionResult> CreateMembership(MyMembershipViewModel form, CancellationToken ct = default)
         {
-            if (!ModelState.IsValid)
-                return RedirectToAction("MyMembership", "User", form);
 
             if (form is null)
             {
@@ -254,15 +250,15 @@ namespace Presentation.WebApp.Controllers
 
             var membership = new RegisterMemebershipInput
                     (
-                        name: form.MyMembershipViewModel.MembershipViewModel.MembershipForm.MembershipName,
-                        description: form.MyMembershipViewModel.MembershipViewModel.MembershipForm.description,
+                        name: form.MembershipViewModel.MembershipForm.MembershipName,
+                        description: form.MembershipViewModel.MembershipForm.description,
                         benefits: new List<RegisterBenfitsInput>(),
                         status: "Active",
                         type: "Monthly",
-                        pricing: form.MyMembershipViewModel.MembershipViewModel.MembershipForm.pricing,
-                        monthlyDuration: form.MyMembershipViewModel.MembershipViewModel.MembershipForm.monthlyDuration
+                        pricing: form.MembershipViewModel.MembershipForm.pricing,
+                        monthlyDuration: form.MembershipViewModel.MembershipForm.monthlyDuration
                     );
-            foreach (var benefit in form.MyMembershipViewModel.MembershipViewModel.MembershipForm.Benefits) {
+            foreach (var benefit in form.MembershipViewModel.MembershipForm.Benefits) {
                 membership.benefits.Add(
                 new RegisterBenfitsInput
                 (

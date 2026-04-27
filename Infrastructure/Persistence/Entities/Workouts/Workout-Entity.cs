@@ -12,9 +12,9 @@ public class WorkoutEntity
 
     public string Instructor { get; set; } = null!;
 
-    public DateTime Date { get; set; }
+    public string Date { get; set; } = null!;
 
-    public TimeSpan Time { get; set; }
+    public string Time { get; set; } = null!;
 
     public ICollection<UserEntity> Users = [];
 }

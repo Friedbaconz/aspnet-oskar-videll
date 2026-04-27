@@ -1,4 +1,4 @@
-﻿@model MyAccountViewModel
+﻿@model MyMembershipViewModel
 
 @{
     ViewData["Title"] = "My Membership";
@@ -39,18 +39,18 @@
                         }
                     }
 
-                    @if (Model.MyMembershipViewModel.MembershipName != string.Empty)
+                    @if (Model.MembershipName != string.Empty)
                     {
-                        var status = Model.MyMembershipViewModel.status;
-                        var header = Model.MyMembershipViewModel.MembershipName;
-                        var text = Model.MyMembershipViewModel.Description;
+                        var status = Model.status;
+                        var header = Model.MembershipName;
+                        var text = Model.Description;
                         <div>
                             <p> @header </p>
                             <p> @status </p>
                             <p> @text </p>
-                                @if(Model.MyMembershipViewModel.Benefits.Count() != 0)
+                                @if(Model.Benefits.Count() != 0)
                                 {
-                                    @foreach (var Benefit in Model.MyMembershipViewModel.Benefits)
+                                    @foreach (var Benefit in Model.Benefits)
                                     {
                                         <p>@Benefit</p>
                                     }
@@ -59,10 +59,10 @@
                                 {
                                     <p>No Benefits</p>
                                 }
-                            <form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><input type="submit" name="id" value="@Model.MyMembershipViewModel.MembershipId" /></form>
+                            <form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><input type="submit" name="id" value="@Model.MembershipId" /></form>
                         </div>
                     }
-                    @if (Model.MyMembershipViewModel.MembershipName == string.Empty)
+                    @if (Model.MembershipName == string.Empty)
                     {
                         <p>You Have No MemberShip</p>
                     }

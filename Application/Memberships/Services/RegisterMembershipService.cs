@@ -56,7 +56,7 @@ public class RegisterMembershipService(IBenefitRepository benfitrepo, IMembershi
                         benefit: benfit.benefit
                     );
 
-                    var update = benfitrepo?.AddAsync(newbenefits, ct);
+                    var update = benfitrepo.AddAsync(newbenefits, ct);
 
                     benefitlist.Add(newbenefits);
             }

@@ -111,16 +111,13 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
     public async Task<IActionResult> MyMembership(CancellationToken ct = default)
     {
         var getmemberships = await membershipservice.GetMembershipsAsync(ct);
-        var Viewmodels = new MyAccountViewModel
+        var Viewmodels = new MyMembershipViewModel
         {
-            MyMembershipViewModel = new MyMembershipViewModel
+            MembershipName = string.Empty,
+            Benefits = new List<string>(),
+            MembershipViewModel = new MembershipViewModel
             {
-                MembershipName = string.Empty,
-                Benefits = new List<string>(),
-                MembershipViewModel = new MembershipViewModel
-                {
-                    Memberships = getmemberships
-                }
+                Memberships = getmemberships
             }
         };
 
@@ -145,11 +142,11 @@ public class UserController(UserManager<ApplicationUser> userManager, IGetUserPr
         }
         else
         {
-            Viewmodels.MyMembershipViewModel.MembershipId = memberships.Id;
-            Viewmodels.MyMembershipViewModel.MembershipName = memberships.Name;
-            Viewmodels.MyMembershipViewModel.Description = memberships.Description;
-            Viewmodels.MyMembershipViewModel.status = memberships.Status.ToString();
-            Viewmodels.MyMembershipViewModel.Benefits = memberships.Benefits.Select(b => b.Benefit);
+            Viewmodels.MembershipId = memberships.Id;
+            Viewmodels.MembershipName = memberships.Name;
+            Viewmodels.Description = memberships.Description;
+            Viewmodels.status = memberships.Status.ToString();
+            Viewmodels.Benefits = memberships.Benefits.Select(b => b.Benefit);
 
             return View(Viewmodels);
         }

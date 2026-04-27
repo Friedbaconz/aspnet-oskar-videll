@@ -34,14 +34,18 @@ public sealed class WorkoutRepository(CoreFitnessDbContext context) : Repository
             }
         }
 
+        var date = model.Date.ToString("yyyy-MM-dd");
+
+        var time = model.Time.ToString(@"hh\:mm\:ss");
+
         var entity = new WorkoutEntity
         {
             WorkoutID = model.Id,
             WorkoutName = model.Name,
-            Date = model.Date,
+            Date = date,
             Category = model.Category,
             Instructor = model.Instructions,
-            Time = model.Time,
+            Time = time,
             Users = Users
         };
 
@@ -61,10 +65,14 @@ public sealed class WorkoutRepository(CoreFitnessDbContext context) : Repository
             entity.Users = new List<UserEntity>();
         }
 
-        entity.Date = model.Date;
+        var date = model.Date.ToString("yyyy-MM-dd");
+
+        var time = model.Time.ToString(@"hh\:mm\:ss");
+
+        entity.Date = date;
         entity.Category = model.Category;
         entity.Instructor = model.Instructions;
-        entity.Time = model.Time;
+        entity.Time = time;
         entity.WorkoutName = model.Name;
     }
 
@@ -75,14 +83,18 @@ public sealed class WorkoutRepository(CoreFitnessDbContext context) : Repository
             .Select(b => b.workoutId)
             .ToList();
 
+        var date = DateTime.ParseExact(entity.Date, "yyyy-MM-dd", null);
+
+        var time = TimeSpan.ParseExact(entity.Time, @"hh\:mm\:ss", null);
+
         var model = Workout.Create
             (
                 entity.WorkoutID,
                 entity.WorkoutName,
                 entity.Category,
                 entity.Instructor,
-                entity.Date,
-                entity.Time,
+                date,
+                time,
                 users
             );
 
