@@ -33,6 +33,10 @@ namespace Presentation.WebApp.Controllers
         [HttpPost("ConnectToUser")]
         public async Task<IActionResult> ConnectMembershiptoUser(string id, CancellationToken ct = default)
         {
+            if(id == null)
+            {
+                throw new ArgumentNullException("id");
+            }
 
             var user = await userManager.GetUserAsync(User);
 
@@ -95,9 +99,84 @@ namespace Presentation.WebApp.Controllers
             return RedirectToAction("Index", "MemeberShip");
         }
 
-        [HttpPost("UpdateMembership")]
-        public async Task<IActionResult> UpdateMembership(MyMembershipViewModel form, string id, CancellationToken ct = default)
+        [HttpGet("UpdateMembership")]
+        public async Task<IActionResult> UpdateMembership(CancellationToken ct = default)
         {
+            var memberships = await service.GetMembershipsAsync(ct);
+            var benefits = await benefitService.GetBenefitsAsync(ct);
+
+            var model = new MembershipViewModel
+            {
+                Benefits = benefits,
+                Memberships = memberships,
+                MembershipIDs = memberships.Select(m => m.Id),
+
+                UpdateMembershipForm = new UpdateMemberShipForm
+                {
+                    Benefits = new List<NewMembershipBenefitForm>(),
+                    MembershipName = string.Empty,
+                    description = string.Empty,
+                    monthlyDuration = 0,
+                    pricing = 0
+                }
+            };
+
+            return View(model);
+        }
+
+        [HttpPost("UpdateMembership")]
+        public async Task<IActionResult> UpdateMembership(MembershipViewModel form, string id, CancellationToken ct = default)
+        {
+            if (!ModelState.IsValid)
+            {
+                var input = form.UpdateMembershipForm;
+
+                var memberships = await service.GetMembershipsAsync(ct);
+
+                if (memberships == null)
+                {
+                    throw new ArgumentNullException(nameof(input));
+                }
+
+                foreach (var membership1 in memberships)
+                {
+                    if(membership1.Id == id) 
+                    {
+                        foreach (var benefits in membership1.Benefits)
+                        {
+                            foreach (var benefit in form.UpdateMembershipForm.Benefits)
+                            {
+                                benefits.UpdateBenefit
+                                (
+                                newBenefit: benefit.benefit
+                                );
+                            }
+                        }
+                    }
+
+                    if (membership1.Id == id)
+                    {
+
+                        membership1.Update(
+                            name: input.MembershipName,
+                            description: input.description,
+                            benefits: membership1.Benefits,
+                            status: membership1.Status,
+                            type: membership1.Type,
+                            pricing: input.pricing,
+                            monthlyDuration: input.monthlyDuration,
+                            userid: membership1.Userid,
+                            users: membership1.Users
+                        );
+
+                        break;
+                    }
+                }
+
+                form.Memberships = memberships;
+
+                return View(form);
+            }
 
             if (form is null)
             {
@@ -108,7 +187,7 @@ namespace Presentation.WebApp.Controllers
 
             var benefitlist = new List<UpdateMembershipBenefitInput>();
 
-            foreach ( var benefitid in form.MembershipViewModel.UpdateMembershipForm.Benefits)
+            foreach ( var benefitid in form.UpdateMembershipForm.Benefits)
             {
                 if (benefitid.id == null)
                 {
@@ -143,13 +222,13 @@ namespace Presentation.WebApp.Controllers
             var membership = new UpdateMembershipInput
                     (
                         id: update.Id,
-                        name: form.MembershipViewModel.UpdateMembershipForm.MembershipName,
-                        description: form.MembershipViewModel.UpdateMembershipForm.description,
+                        name: form.UpdateMembershipForm.MembershipName,
+                        description: form.UpdateMembershipForm.description,
                         benefits: benefitlist,
                         status: update.Status,
                         type: update.Type,
-                        pricing: form.MembershipViewModel.UpdateMembershipForm.pricing,
-                        monthlyDuration: form.MembershipViewModel.UpdateMembershipForm.monthlyDuration,
+                        pricing: form.UpdateMembershipForm.pricing,
+                        monthlyDuration: form.UpdateMembershipForm.monthlyDuration,
                         userid: update.Userid,
                         users: update.Users
                     );
@@ -169,6 +248,10 @@ namespace Presentation.WebApp.Controllers
 
         public async Task<IActionResult> DeleteMembership( string id, CancellationToken ct = default)
         {
+            if (id == null)
+            {
+                throw new ArgumentNullException("id");
+            }
 
             var user = await userManager.GetUserAsync(User);
             if (user == null)
@@ -239,9 +322,26 @@ namespace Presentation.WebApp.Controllers
 
         }
 
-        [HttpPost("CreateMembership")]
-        public async Task<IActionResult> CreateMembership(MyMembershipViewModel form, CancellationToken ct = default)
+        [HttpGet("CreateMembership")]
+        public async Task<IActionResult> CreateMembership(CancellationToken ct = default)
         {
+            var model = new NewMembershipForm
+            {
+                MembershipName = string.Empty,
+                description = string.Empty,
+                pricing = 0,
+                monthlyDuration = 0,
+                Benefits = new List<NewMembershipBenefitForm>()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost("CreateMembership")]
+        public async Task<IActionResult> CreateMembership(NewMembershipForm form, CancellationToken ct = default)
+        {
+            if (!ModelState.IsValid)
+                return View(form);
 
             if (form is null)
             {
@@ -250,15 +350,15 @@ namespace Presentation.WebApp.Controllers
 
             var membership = new RegisterMemebershipInput
                     (
-                        name: form.MembershipViewModel.MembershipForm.MembershipName,
-                        description: form.MembershipViewModel.MembershipForm.description,
+                        name: form.MembershipName,
+                        description: form.description,
                         benefits: new List<RegisterBenfitsInput>(),
                         status: "Active",
                         type: "Monthly",
-                        pricing: form.MembershipViewModel.MembershipForm.pricing,
-                        monthlyDuration: form.MembershipViewModel.MembershipForm.monthlyDuration
+                        pricing: form.pricing,
+                        monthlyDuration: form.monthlyDuration
                     );
-            foreach (var benefit in form.MembershipViewModel.MembershipForm.Benefits) {
+            foreach (var benefit in form.Benefits) {
                 membership.benefits.Add(
                 new RegisterBenfitsInput
                 (

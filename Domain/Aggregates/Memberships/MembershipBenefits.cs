@@ -1,6 +1,7 @@
 ﻿
 
 using Domain.Aggregates.Users;
+using System.Xml.Linq;
 
 namespace Domain.Aggregates.Memberships;
 
@@ -11,7 +12,7 @@ public sealed class MembershipBenefits
 
     public string MembershipId { get; private set; }
 
-    public string Benefit { get; private set; }
+    public string? Benefit { get; private set; }
 
 
 
@@ -42,14 +43,22 @@ public sealed class MembershipBenefits
         var membershipbenefit = new MembershipBenefits(id)
         {
             MembershipId = membershipId,
-            Benefit = benefit
+            Benefit = RequiredString(benefit, nameof(benefit)),
         };
 
         return membershipbenefit;
     }
 
+    private static string RequiredString(string value, string propertyname)
+    {
+        if (string.IsNullOrEmpty(value))
+            throw new ArgumentNullException($"{propertyname} is required.");
+
+        return value;
+    }
+
     public void UpdateBenefit(string newBenefit)
     {
-        Benefit = newBenefit;
+        Benefit = string.IsNullOrWhiteSpace(newBenefit) ? string.Empty : newBenefit.Trim();
     }
 }

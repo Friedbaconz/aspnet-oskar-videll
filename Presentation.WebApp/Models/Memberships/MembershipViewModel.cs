@@ -8,6 +8,5 @@ public class MembershipViewModel
     public IEnumerable<Membership> Memberships { get; set; } = [];
     public IEnumerable<string> MembershipIDs { get; set; } = [];
     public IEnumerable<MembershipBenefits> Benefits { get; set; } = [];
-    public NewMembershipForm MembershipForm { get; set; } = null!;
     public UpdateMemberShipForm UpdateMembershipForm { get; set; } = null!;
 }

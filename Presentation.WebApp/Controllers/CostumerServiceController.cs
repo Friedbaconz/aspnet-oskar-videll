@@ -100,7 +100,18 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
 
         var model = new WorkoutViewModel()
         {
-            Workouts = workouts
+            Workouts = workouts,
+
+            UpdateWorkoutForm = new UpdateWorkoutForm
+            {
+                Id = string.Empty,
+                Name = string.Empty,
+                Category = string.Empty,
+                Instructions = string.Empty,
+                Date = DateTime.Now,
+                Time = TimeSpan.Zero,
+                Users = new List<string>()
+            }
         };
 
 
@@ -110,9 +121,39 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
     [HttpPost("UpdateWorkout")]
     public async Task<IActionResult> UpdateWorkout(WorkoutViewModel form, CancellationToken ct = default)
     {
-
         if (!ModelState.IsValid)
+        {
+            var input = form.UpdateWorkoutForm;
+
+            var workouts = await service.GetWorkoutsAsync();
+
+            if (workouts == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
+            foreach (var work in workouts)
+            {
+                if (work.Id == input?.Id)
+                {
+                    
+                    work.Update (
+                        name: input.Name,
+                        category: input.Category,
+                        instructions: input.Instructions,
+                        date: input.Date,
+                        time: input.Time,
+                        users: input.Users
+                    );
+
+                    break;
+                }
+            }
+
+            form.Workouts = workouts;
+
             return View(form);
+        }
 
         if (form == null)
         {
@@ -138,6 +179,6 @@ public class CostumerServiceController(IWorkoutService service, IRegisterWorkout
             return View(form);
         }
 
-        return View(form);
+        return View(form.UpdateWorkoutForm);
     }
 }

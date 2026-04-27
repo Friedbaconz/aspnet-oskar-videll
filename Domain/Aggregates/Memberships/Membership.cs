@@ -36,17 +36,17 @@ public sealed class Membership
         return membership;
     }
 
-    public static Membership Create(string id, string name, string? description, IEnumerable<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
+    public static Membership Create(string id, string name, string description, IEnumerable<MembershipBenefits> benefits, string status, string type, decimal pricing, int monthlyDuration, IEnumerable<string> users)
     {
         var membership = new Membership(id)
         {
-            Name = name,
-            Description = description,
+            Name = RequiredString(name,nameof(Name)),
+            Description = RequiredString(description, nameof(Description)),
             Benefits = benefits,
             Status = status,
             Type = type,
-            Pricing = pricing,
-            MonthlyDuration = monthlyDuration,
+            Pricing = RequiredDecimal(pricing, nameof(Pricing)),
+            MonthlyDuration = RequiredInt(monthlyDuration, nameof(MonthlyDuration)),
             Users = users
 
         };
@@ -54,13 +54,37 @@ public sealed class Membership
         return membership;
     }
 
+    private static int RequiredInt(int value, string propertyname)
+    {
+        if (value < 0)
+        {
+            throw new ArgumentOutOfRangeException($"{propertyname} is required");
+        }
+
+        return value;
+    }
+
+    private static string RequiredString(string value, string propertyname)
+    {
+        if (string.IsNullOrEmpty(value))
+            throw new ArgumentNullException($"{propertyname} is required.");
+
+        return value;
+    }
+
+    private static decimal RequiredDecimal(decimal value, string propertyname)
+    {
+        if ( value == 0)
+            throw new ArgumentNullException($"value is empty");
+
+        return value;
+    }
+
     public void Update(string name, string? description, IEnumerable<MembershipBenefits> benefits,string status, string type, decimal pricing, int monthlyDuration, string userid,IEnumerable<string> users)
     {
-        if (string.IsNullOrWhiteSpace(Name))
-            throw new ArgumentException("First name is required");
 
-        Name = name.Trim();
-        Description = description;
+        Name = string.IsNullOrWhiteSpace(name) ? string.Empty : name.Trim();
+        Description = string.IsNullOrWhiteSpace(description) ? string.Empty : description.Trim();
         Benefits = benefits;
         Type = type;
         Pricing = pricing;

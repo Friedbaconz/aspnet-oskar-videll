@@ -62,7 +62,7 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
             return RedirectToAction("Index", "CostumerService", form);
         }
 
-        return RedirectToAction("Index", "CostumerService", form);
+        return RedirectToAction("Index", "CostumerService");
     }
 
     [HttpPost("DeleteBooking")]

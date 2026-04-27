@@ -1,0 +1,176 @@
+﻿@model MembershipViewModel
+
+<aside>
+    <partial name="Partials/_MySideMenuSection" />
+    <div>
+        <partial name="Partials/_EditMemberShipSection" model="Model" />
+    </div>
+</aside>
+
+<section>
+    @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+    {
+        if (ViewData["MessageType"]?.ToString() == "error")
+        {
+            <div class="error-in-text">
+                @ViewData["Message"]
+            </div>
+        }
+        else
+        {
+            <div class="success-in-text">
+                @ViewData["Message"]
+            </div>
+        }
+    }
+    <div>
+        <h2>Edit Membership</h2>
+        @foreach (var membership in Model.Memberships)
+        {
+            <hr />
+            <form class="update-membership-form" asp-controller="MemeberShip" asp-action="UpdateMembership" asp-area="" method="post">
+                <input type="hidden" name="id" value="@membership.Id" />
+
+                <div class="signin-bar">
+                    <label asp-for="UpdateMembershipForm.MembershipName"></label>
+                    <input asp-for="UpdateMembershipForm.MembershipName" value="@membership.Name" />
+                    <span asp-validation-for="UpdateMembershipForm.MembershipName"></span>
+                </div>
+                <div class="signin-bar">
+                    <label asp-for="UpdateMembershipForm.description"></label>
+                    <input asp-for="UpdateMembershipForm.description" value="@membership.Description" />
+                    <span asp-validation-for="UpdateMembershipForm.description"></span>
+                </div>
+                <div class="signin-bar">
+                    <label asp-for="UpdateMembershipForm.pricing"></label>
+                    <input asp-for="UpdateMembershipForm.pricing" value="@membership.Pricing" />
+                    <span asp-validation-for="UpdateMembershipForm.pricing"></span>
+                </div>
+                <div class="signin-bar">
+                    <label asp-for="UpdateMembershipForm.monthlyDuration"></label>
+                    <input asp-for="UpdateMembershipForm.monthlyDuration" value="@membership.MonthlyDuration" />
+                    <span asp-validation-for="UpdateMembershipForm.monthlyDuration"></span>
+                </div>
+
+                <div class="benefits-list">
+                    @if (membership.Benefits.Count() != 0)
+                    {
+                        var idx = 0;
+                        foreach (var benefit in membership.Benefits)
+                        {
+                            <div class="signin-bar benefit-item">
+                                <label>Benefit</label>
+                                <input type="hidden" name="UpdateMembershipForm.Benefits[@idx].id" value="@benefit.Id" />
+                                <input type="text" name="UpdateMembershipForm.Benefits[@idx].benefit" value="@benefit.Benefit" />
+                                <button type="button" class="remove-benefit">Remove</button>
+                            </div>
+                            idx++;
+                        }
+                    }
+                </div>
+
+                <button type="button" class="add-benefit-btn">Add Benefit</button>
+
+                <button type="submit">Update</button>
+            </form>
+
+            <form asp-controller="MemeberShip" asp-action="RemoveMembership" method="post">
+                <input type="hidden" name="id" value="@membership.Id" />
+                <input type="submit" value="Delete" />
+            </form>
+        }
+    </div>
+</section>
+
+<script>
+    (function () {
+        // Helper to reindex benefit inputs within a container
+        function reindexBenefits(container, namePrefix, includeId) {
+            const items = container.querySelectorAll('.benefit-item');
+            items.forEach((item, index) => {
+                const textInput = item.querySelector('input[type="text"]');
+                if (textInput) {
+                    textInput.name = `${namePrefix}[${index}].benefit`;
+                }
+                if (includeId) {
+                    let hidden = item.querySelector('input[type="hidden"]');
+                    if (!hidden) {
+                        hidden = document.createElement('input');
+                        hidden.type = 'hidden';
+                        item.insertBefore(hidden, textInput);
+                    }
+                    hidden.name = `${namePrefix}[${index}].id`;
+                }
+            });
+        }
+
+        // Add benefit for Create form
+        const addCreateBtn = document.getElementById('add-benefit');
+        const createContainer = document.getElementById('new-benefits-container');
+        const createNamePrefix = 'MembershipForm.Benefits';
+
+        if (addCreateBtn) {
+            addCreateBtn.addEventListener('click', function () {
+                const index = createContainer.querySelectorAll('.benefit-item').length;
+                const div = document.createElement('div');
+                div.className = 'signin-bar benefit-item';
+                div.innerHTML = '<label>Benefit</label>' +
+                    `<input type="text" name="${createNamePrefix}[${index}].benefit" value="" />` +
+                    '<button type="button" class="remove-benefit">Remove</button>';
+                createContainer.appendChild(div);
+            });
+        }
+
+        // Delegate remove clicks for both create and update containers
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('remove-benefit')) {
+                const item = e.target.closest('.benefit-item');
+                if (!item) return;
+                const benefitsParent = item.parentElement;
+                const form = e.target.closest('form');
+
+                item.remove();
+
+                // Decide which prefix to use based on the form
+                if (form) {
+                    // Update form - use UpdateMembershipForm prefix
+                    const updatePrefix = 'UpdateMembershipForm.Benefits';
+                    const benefitsList = form.querySelector('.benefits-list');
+                    if (benefitsList && benefitsList.contains(benefitsParent)) {
+                        reindexBenefits(benefitsList, updatePrefix, true);
+                        return;
+                    }
+                }
+
+                // Otherwise, assume create container
+                if (createContainer && createContainer.contains(benefitsParent)) {
+                    reindexBenefits(createContainer, createNamePrefix, false);
+                }
+            }
+        });
+
+        // Add benefit for each update form (multiple forms on the page)
+        const updateForms = document.querySelectorAll('form.update-membership-form');
+        updateForms.forEach(form => {
+            const addBtn = form.querySelector('.add-benefit-btn');
+            const benefitsList = form.querySelector('.benefits-list');
+            const updateNamePrefix = 'UpdateMembershipForm.Benefits';
+
+            if (!addBtn || !benefitsList) return;
+
+            addBtn.addEventListener('click', function () {
+                const index = benefitsList.querySelectorAll('.benefit-item').length;
+                const div = document.createElement('div');
+                div.className = 'signin-bar benefit-item';
+
+                // Include hidden id for update forms so model binder can map existing items and new ones have empty id
+                div.innerHTML = '<label>Benefit</label>' +
+                    `<input type="hidden" name="${updateNamePrefix}[${index}].id" value="" />` +
+                    `<input type="text" name="${updateNamePrefix}[${index}].benefit" value="" />` +
+                    '<button type="button" class="remove-benefit">Remove</button>';
+
+                benefitsList.appendChild(div);
+            });
+        });
+    })();
+</script>
