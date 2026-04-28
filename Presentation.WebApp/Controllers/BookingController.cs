@@ -17,25 +17,59 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
 {
     public async Task<IActionResult> Index()
     {
-        var bookings = await service.GetBookingsAsync();
-        var model = new BookingViewModel()
+        var newworkout = await workout.GetAllAsync();
+
+
+        var bookings = new RegisterBookingForm
         {
-            Bookings = bookings
+            FirstName = string.Empty,
+            LastName = string.Empty,
+            PhoneNumber = string.Empty,
+            Email = string.Empty,
+            Message = string.Empty,
+            WorkoutId = string.Empty,
+            Workouts = newworkout.ToList()
         };
-        return View(model);
+
+        return View(bookings);
     }
 
+    [HttpGet("RegisterBooking")]
+    public async Task<IActionResult> RegisterBooking(CancellationToken ct = default)
+    {
+        var newworkout = await workout.GetAllAsync(ct);
+
+
+        var bookings = new RegisterBookingForm
+        {
+            FirstName = string.Empty,
+            LastName = string.Empty,
+            PhoneNumber = string.Empty,
+            Email = string.Empty,
+            Message = string.Empty,
+            WorkoutId = string.Empty,
+            Workouts = newworkout.ToList()
+        };
+
+        return View(bookings);
+    }
 
     [HttpPost("RegisterBooking")]
     public async Task<IActionResult> RegisterBooking(RegisterBookingForm form, CancellationToken ct = default)
     {
         if (!ModelState.IsValid)
-            return RedirectToAction("Index", "CostumerService", form);
+        {
+            var newworkout = await workout.GetAllAsync(ct);
+
+            form.Workouts = newworkout;
+
+            return View(form);
+        }
 
         if (form.WorkoutId == null)
         {
             ViewData["ErrorMessage"] = "An error occurred during registration.";
-            return RedirectToAction("Index", "CostumerService", form);
+            return View(form);
         }
 
         var user = userManager.GetUserId(User);
@@ -45,7 +79,7 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
         if(userprofile.Value.FirstName == null || userprofile.Value.LastName == null)
         {
             ViewData["ErrorMessage"] = "An error occurred during registration.";
-            return RedirectToAction("Index", "CostumerService", form);
+            return View(form);
         }
 
         var booking = new RegisterBookingInput
@@ -59,10 +93,10 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
         if (!result.Success)
         {
             ViewData["ErrorMessage"] = result.ErrorMessage ?? "An error occurred during registration.";
-            return RedirectToAction("Index", "CostumerService", form);
+            return View(form);
         }
 
-        return RedirectToAction("Index", "CostumerService");
+        return View(form);
     }
 
     [HttpPost("DeleteBooking")]

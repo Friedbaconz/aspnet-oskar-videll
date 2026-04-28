@@ -1,36 +1,90 @@
 ﻿@model WorkoutViewModel
 
 <section>
-    <div>
-        @foreach(var workout in Model.Workouts)
-        {
-            <div class="workout-signup-container">
-                <h3 class="workout-signup-title">@workout.Name</h3>
-                <p class="workout-signup-description">@workout.Category</p>
-                <p class="workout-signup-description">@workout.Instructions</p>
-                <p class="workout-signup-description">@workout.Date</p>
-                <p class="workout-signup-description">@workout.Time</p>
+    <section class="Customer-Form-Wrapper">
+        <div class="Costumer-Form-Img-Box">
+            <img src="~/Images/contact-us-image.svg" alt="Costumer-Service-Image" />
+            <div class="Costumer-img-info">
+                <div class="faqaccordion-circle"><img src="~/Images/blackphone.svg" class="img-logo" /></div>
+                <div class="Costumer-text-box">
+                    <h2>Phone Number</h2>
+                    <p>+(46) 8 410 521 00</p>
+                </div>
 
-                @if (User.Identity?.IsAuthenticated ?? false)
-                {
-                    <form method="post" asp-action="RegisterBooking" asp-controller="Booking" asp-area="Identity">
-                        <input type="hidden" name="WorkoutId" value="@workout.Id" />
-                        <button type="submit" class="workout-signup-button">Sign Up</button>
-                    </form>
-                }
-                else
-                {
-                    <ul class="mb2hero">
-                        <li class="mb2container">
-                            <a class="mb2text" asp-area="" asp-controller="User" asp-action="My">
-                                Sign Up
-                                <img src="~/Images/sidearrow.svg" class="img-logo" />
-                            </a>
-                        </li>
-                    </ul>
-                }
+                <div class="faqaccordion-circle"><img src="~/Images/blackmail.svg" class="img-logo" /></div>
+                <div class="Costumer-text-box">
+                    <h2>Email Address</h2>
+                    <p>info@corefitness.se</p>
+                </div>
             </div>
-        }
-        )
-    </div>
+        </div>
+        <form class="Costumer-Form-Input-Wrapper" method="post" asp-action="RegisterBooking" asp-controller="Booking" asp-area="Identity">
+            <div class="costumer-box-text-info">
+                <h1>Contact Us Today</h1>
+                <p>
+                    Ready to begin your fitness journey? Contact GymPro today and let our
+                    expert trainers guide you with the right program and support.
+                </p>
+            </div>
+            <div class="Costumer-Form-Input-box">
+                <div class="signin-bar">
+                    <label asp-for="UpdateWorkoutForm">First Name *</label>
+                    <input type="text" id="firstname" name="firstname" placeholder="Enter First Name" />
+                </div>
+                <div class="signin-bar">
+                    <label for="lastname">Last Name *</label>
+                    <input type="text" name="lastname" placeholder="Enter Last Name" />
+                </div>
+                <div class="signin-bar">
+                    <label for="email">Email Address *</label>
+                    <input type="email" name="email" placeholder="Enter Email Address" />
+                </div>
+                <div class="signin-bar">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" name="phone" placeholder="Enter Phone Number" />
+                </div>
+            </div>
+            <div>
+                <div class="signin-bar">
+                    <label for="message">Message *</label>
+                    <textarea class="message-input-form" name="message"
+                              rows="5" placeholder="Message.."></textarea>
+                </div>
+            </div>
+            <div class="signin-bar">
+                <label for="select">Select Workout</label>
+                <select class="hover-on-me" name="select" onclick="myFuction()" onselect="myFuction()">
+                    <option selected>Select a Option</option>
+                    @foreach (var workout in Model.Workouts)
+                    {
+                        <option value="@workout.Id" label="@workout.Name, @workout.Category">
+                        </option>
+                    }
+                </select>
+            </div>
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <div class="costumer-button-box">
+                    <button type="submit"><p>Submit Message</p><img src="~/Images/sidearrow.svg" class="img-logo" /></button>
+                </div>
+            }
+            else
+            {
+                <ul class="mb2hero">
+                    <li class="mb2container">
+                        <a class="mb2text" asp-area="" asp-controller="User" asp-action="My">
+                            Login
+                            <img src="~/Images/sidearrow.svg" class="img-logo" />
+                        </a>
+                    </li>
+                </ul>
+            }
+        </form>
+    </section>
 </section>
+
+<script>
+    function myFuction() {
+        document.getElementById("workoutinfo").style.display = "block";
+    }
+</script>

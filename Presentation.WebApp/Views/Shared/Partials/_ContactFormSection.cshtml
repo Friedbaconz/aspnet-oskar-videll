@@ -1,5 +1,87 @@
-﻿@model WorkoutViewModel
+﻿@model RegisterBookingForm
 
-<section>
-    <partial name="Partials/_WorkoutSignUpSection" />
+<section class="Customer-Form-Wrapper">
+    <div class="Costumer-Form-Img-Box">
+        <img src="~/Images/contact-us-image.svg" alt="Costumer-Service-Image" />
+        <div class="Costumer-img-info">
+            <div class="faqaccordion-circle"><img src="~/Images/blackphone.svg" class="img-logo" /></div>
+            <div class="Costumer-text-box">
+                <h2>Phone Number</h2>
+                <p>+(46) 8 410 521 00</p>
+            </div>
+
+            <div class="faqaccordion-circle"><img src="~/Images/blackmail.svg" class="img-logo" /></div>
+            <div class="Costumer-text-box">
+                <h2>Email Address</h2>
+                <p>info@corefitness.se</p>
+            </div>
+        </div>
+    </div>
+    <form class="Costumer-Form-Input-Wrapper" method="post" asp-action="RegisterBooking" asp-controller="Booking" asp-area="Identity">
+        <div class="costumer-box-text-info">
+            <h1>Contact Us Today</h1>
+            <p>
+                Ready to begin your fitness journey? Contact GymPro today and let our
+                expert trainers guide you with the right program and support.
+            </p>
+        </div>
+        <div class="Costumer-Form-Input-box">
+            <div class="signin-bar">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" />
+                <span asp-validation-for="FirstName"></span>
+            </div>
+            <div class="signin-bar">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" />
+                <span asp-validation-for="LastName"></span>
+            </div>
+            <div class="signin-bar">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" />
+                <span asp-validation-for="PhoneNumber"></span>
+            </div>
+            <div class="signin-bar">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" />
+                <span asp-validation-for="Email"></span>
+            </div>
+        </div>
+        <div>
+            <div class="signin-bar">
+                <label asp-for="Message"></label>
+                <textarea asp-for="Message" class="message-input-form"
+                          rows="3"></textarea>
+                <span asp-validation-for="Message"> </span>
+            </div>
+        </div>
+        <div class="signin-bar">
+            <label asp-for="WorkoutId"></label>
+            <select class="hover-on-me" asp-for="WorkoutId">
+                <option selected disabled>Select a Option</option>
+                @foreach (var workout in Model.Workouts)
+                        {
+                            <option value="@workout.Id">@workout.Name</option>                    
+                        }
+            </select>
+            <span asp-validation-for="WorkoutId"></span>
+        </div>
+        @if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <div class="costumer-button-box">
+                <button type="submit"><p>Submit Message</p><img src="~/Images/sidearrow.svg" class="img-logo" /></button>
+            </div>
+        }
+        else
+        {
+            <ul class="mb2hero">
+                <li class="mb2container">
+                    <a class="mb2text" asp-area="" asp-controller="User" asp-action="My">
+                        Login
+                        <img src="~/Images/sidearrow.svg" class="img-logo" />
+                    </a>
+                </li>
+            </ul>
+        }
+    </form>
 </section>

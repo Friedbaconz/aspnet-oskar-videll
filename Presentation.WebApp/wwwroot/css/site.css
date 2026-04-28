@@ -915,24 +915,40 @@ program-wrapper {
     border-color: none;
     display: block;
 
+    textarea {
+        border: none;
+        background-color: var(--lightgrey);
+        border-radius: 15px;
+        color: var(--grey);
+        width: 100%;
+        resize: none;
+        padding: 5px;
+        font-family: var(--font-family);
+        font-size:15px;
+    }
+
+    textarea:focus {
+        outline-style: solid;
+        outline-color: var(--yellow-green);
+    }
+
     input {
         padding: 20px;
         border: none;
         background-color: var(--lightgrey);
         border-radius: 15px;
         width: 100%;
-        color:var(--grey);
-
+        color: var(--grey);
     }
-    
+
     span {
         color: red;
     }
 
-        input:focus {
-            outline-style: solid;
-            outline-color: var(--yellow-green);
-        }
+    input:focus {
+        outline-style: solid;
+        outline-color: var(--yellow-green);
+    }
 
     label {
         margin-top: 40px;
@@ -1364,4 +1380,231 @@ program-wrapper {
             font-size:15px;
         }
     }
+}
+
+
+.Customer-Form-Wrapper {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: auto;
+    background-color: var(--white-font);
+    border-radius: 25px;
+    width: 70%;
+    margin-top: 70px;
+    margin-bottom: 70px;
+}
+
+.costumer-box-text-info {
+    margin: auto;
+
+    p {
+        margin: auto;
+        line-height: 25px;
+        color: var(--grey);
+    }
+
+    h1 {
+        margin: auto;
+
+    }
+}
+
+.Costumer-Form-Input-Wrapper {
+    display: grid;
+    grid-template-columns: auto;
+    color: var(--dark-font);
+    margin: auto;
+    align-items: start;
+    margin-left: 100px;
+
+    .signin-bar {
+        margin-right: 20px;
+
+        input {
+            color: var(--grey);
+            background-color: var(--white-bg);
+        }
+
+        textarea {
+            color: var(--grey);
+            font-size: 13px;
+            background-color: var(--white-bg);
+        }
+
+        select {
+            padding: 20px;
+            border: none;
+            background-color: var(--white-bg);
+            border-radius: 15px;
+            width: 100%;
+            color: var(--grey);
+        }
+
+        label {
+            margin-top: 0px;
+            display: box;
+            font-size: 15px;
+        }
+
+        span {
+            font-size: 12px;
+            margin: auto;
+            display: flex;
+        }
+    }
+
+    .costumer-button-box {
+        display: flex;
+        margin: auto;
+        align-self: start;
+        width: 100%;
+    }
+
+    .Costumer-Form-Input-box {
+        display: grid;
+        grid-template-columns: auto auto;
+
+        .signin-bar {
+            margin-right: 20px;
+
+            input {
+                color: var(--grey);
+                background-color: var(--white-bg);
+            }
+
+            textarea {
+                color: var(--grey);
+                background-color: var(--white-bg);
+                line-height: 20px;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+
+            label {
+                margin-top: 10px;
+                display: block;
+            }
+
+            select {
+                padding: 20px;
+                border: 2px solid #dddddd;
+                background-color: var(--lightgrey);
+                border-radius: 15px;
+                width: 100%;
+                color: var(--grey);
+            }
+
+            span {
+                font-size: 12px;
+                margin: auto;
+                display: flex;
+            }
+        }
+    }
+
+    .Costumer-Input-text {
+        p {
+            color: var(--grey);
+        }
+    }
+
+    button {
+        background-color: var(--yellow-green);
+        border: none;
+        padding: 20px;
+        font-size: 15px;
+        border-radius: 40px;
+        width: auto;
+        align-items: center;
+        font-family: var(--font-family);
+        justify-content: center;
+        display: flex;
+        margin-top: 20px;
+        cursor: pointer;
+
+        p {
+            margin: auto;
+            line-height: 20px;
+            margin-right: 20px;
+        }
+    }
+
+        button:hover {
+            background-color: var(--lightgrey);
+        }
+}
+
+.Costumer-Form-Img-Box {
+    display: grid;
+    width: 100%;
+    height: 100%;
+
+    img{
+        margin: auto;
+        height: auto;
+    }
+    .Costumer-img-info {
+        display: flex;
+        background-color: #27252F;
+        opacity: 95%;
+        backdrop-filter:blur(10px);
+        width:auto;
+        border-radius: 20px;
+        position: absolute;
+        align-self: last baseline;
+        justify-self: center;
+        margin: auto;
+        margin-bottom: 30px;
+        color: var(--white-font);
+        padding:30px;
+        padding-left: 30px;
+
+        .faqaccordion-circle {
+            display: flex;
+            margin: auto;
+            width: 50px;
+            height: 50px;
+            background-color: var(--yellow-green);
+            border-radius: 25px;
+            align-content: center;
+            align-items: center;
+
+            img {
+                display:flex;
+                margin: auto;
+                width: 24px;
+                height: 25px;
+            }
+
+            #icon-img {
+                margin: auto;
+            }
+
+            #icon-imgup {
+                display: none;
+            }
+        }
+
+        .Costumer-text-box {
+            opacity: 100%;
+            padding: 20px;
+            padding-left: 10px;
+            margin: auto;
+
+            p {
+                margin: auto;
+                margin-top: 5px;
+                line-height: 20px;
+            }
+
+            h2 {
+                margin: auto;
+                line-height: 20px;
+            }
+        }
+    }
+}
+
+.workoutinfo{
+    display:none;
 }
