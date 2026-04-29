@@ -1,6 +1,9 @@
 ﻿using Application.Abstractions.Identity;
 using Application.Users.Abstractions;
 using Application.Users.Inputs;
+using Azure;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using Presentation.WebApp.Models.Auth;
@@ -8,7 +11,7 @@ using Presentation.WebApp.Models.Auth;
 namespace Presentation.WebApp.Controllers;
 
 [Route("Auth")]
-public class AuthController(IRegisterUserAccountService registerUserAccount, ISignInUserService signInUserService, IidentityService identityService) : Controller
+public class AuthController(UserManager<ApplicationUser> userManager,IRegisterUserAccountService registerUserAccount, ISignInUserService signInUserService, IidentityService identityService) : Controller
 {
     private const string RegisterEmailSessionKey = "RegisterEmail";
 
@@ -24,6 +27,14 @@ public class AuthController(IRegisterUserAccountService registerUserAccount, ISi
     {
         if (!ModelState.IsValid)
             return View(form);
+
+        var user = await userManager.FindByEmailAsync(form.Email);
+
+        if(user == null || !await userManager.CheckPasswordAsync(user, form.Password))
+        {
+            ViewData["ErrorMessage"] = "User with this Email doesn't exsist";
+            return View(form);
+        }
 
         var input = new SignInInput(form.Email, form.Password, form.RememberMe);
 

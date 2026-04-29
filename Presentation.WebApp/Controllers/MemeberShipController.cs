@@ -17,8 +17,11 @@ namespace Presentation.WebApp.Controllers
 {
     public class MemeberShipController(IGetUserProfileService getUserProfileService, IDeleteMembershipService deleteMembershipService,IRegisterMembershipService registerMembership,IMembershipService service, IUpdateMembershipService updateservice, UserManager<ApplicationUser> userManager, IBenefitService benefitService) : Controller
     {
-        public async Task<IActionResult> Index(CancellationToken ct = default)
+        public async Task<IActionResult> Index( CancellationToken ct = default)
         {
+            var message = TempData["ErrorMessage"] as string;
+
+            ViewBag.Message = message;
 
             var memberships = await service.GetMembershipsAsync(ct);
             var model = new MembershipViewModel()
@@ -42,10 +45,10 @@ namespace Presentation.WebApp.Controllers
 
             var profile = await getUserProfileService.ExecuteAsync(user.Id, ct);
 
-            if (profile.Value.FirstName == null || profile.Value.LastName == null)
+            if (string.IsNullOrWhiteSpace(profile.Value.FirstName) || string.IsNullOrWhiteSpace(profile.Value.LastName))
             {
-                ViewData["ErrorMessage"] = profile.ErrorMessage ?? "An error occurred during sign-in.";
-                return View(profile);
+                TempData["ErrorMessage"] = "First Name and Last Name on profile is required";
+                return RedirectToAction("Index", "MemeberShip");
             }
 
             if (user == null)

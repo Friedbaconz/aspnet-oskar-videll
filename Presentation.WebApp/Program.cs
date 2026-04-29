@@ -47,6 +47,7 @@ StaticWebAssetsLoader.UseStaticWebAssets(app.Environment, app.Configuration);
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    app.UseStatusCodePagesWithReExecute("/Home/Error");
     app.UseHsts();
 }
 

@@ -66,6 +66,13 @@
             </select>
             <span asp-validation-for="WorkoutId"></span>
         </div>
+        @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+        {
+            <div class="error-in-text">
+                @ViewData["Message"]
+            </div>
+
+        }
         @if (User.Identity?.IsAuthenticated ?? false)
         {
             <div class="costumer-button-box">

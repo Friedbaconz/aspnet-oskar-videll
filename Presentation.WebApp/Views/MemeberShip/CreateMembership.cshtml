@@ -1,71 +1,85 @@
 ﻿@model NewMembershipForm
 
-<aside>
-    <partial name="Partials/_MySideMenuSection" />
-    <div>
-        <partial name="Partials/_EditMemberShipSection" model="Model" />
+<section class="body-wrapper">
+    <div class="section-header-wrapper">
+        <h1 class="section-header">Admin Options / Membership</h1>
     </div>
-</aside>
+    <div class="sigin-wrapper">
+        <div class="sigin-container">
+            <aside>
+                <partial name="Partials/_MySideMenuSection" />
+                <div>
+                    <partial name="Partials/_EditMemberShipSection" model="Model" />
+                </div>
+            </aside>
 
-<section>
-    @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
-    {
-        if (ViewData["MessageType"]?.ToString() == "error")
-        {
-            <div class="error-in-text">
-                @ViewData["Message"]
-            </div>
-        }
-        else
-        {
-            <div class="success-in-text">
-                @ViewData["Message"]
-            </div>
-        }
-    }
-    <form asp-controller="MemeberShip" asp-action="CreateMembership" asp-area="" method="post">
-        <h2>New Membership</h2>
-        <div class="signin-bar">
-            <label asp-for="MembershipName"></label>
-            <input asp-for="MembershipName" />
-            <span asp-validation-for="MembershipName"></span>
-        </div>
-        <div class="signin-bar">
-            <label asp-for="description"></label>
-            <input asp-for="description" />
-            <span asp-validation-for="description"></span>
-        </div>
-        <div class="signin-bar">
-            <label asp-for="pricing"></label>
-            <input asp-for="pricing" />
-            <span asp-validation-for="pricing"></span>
-        </div>
-        <div class="signin-bar">
-            <label asp-for="monthlyDuration"></label>
-            <input asp-for="monthlyDuration" />
-            <span asp-validation-for="monthlyDuration"></span>
-        </div>
-
-        <button type="button" id="add-benefit">Add Benefit</button>
-
-        <div id="new-benefits-container">
-            @if (Model.Benefits != null)
-            {
-                for (var i = 0; i < Model.Benefits.Count; i++)
+            <section class="main-menu-My">
+                @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
                 {
-                    <div class="signin-bar benefit-item">
-                        <label>Benefit</label>
-                        <input type="text" name="Benefits[@i].benefit" value="@Model.Benefits[i].benefit" />
-                        <button type="button" class="remove-benefit">Remove</button>
-                    </div>
+                    if (ViewData["MessageType"]?.ToString() == "error")
+                    {
+                        <div class="error-in-text">
+                            @ViewData["Message"]
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="success-in-text">
+                            @ViewData["Message"]
+                        </div>
+                    }
                 }
-            }
+                <form asp-controller="MemeberShip" asp-action="CreateMembership" asp-area="" method="post" class="signin-form">
+                    <h1>New Membership</h1>
+                    <hr />
+                    <div class="signin-bar">
+                        <label asp-for="MembershipName"></label>
+                        <input asp-for="MembershipName" />
+                        <span asp-validation-for="MembershipName"></span>
+                    </div>
+                    <div class="signin-bar">
+                        <label asp-for="description"></label>
+                        <input asp-for="description" />
+                        <span asp-validation-for="description"></span>
+                    </div>
+                    <div class="signin-bar">
+                        <label asp-for="pricing"></label>
+                        <input asp-for="pricing" />
+                        <span asp-validation-for="pricing"></span>
+                    </div>
+                    <div class="signin-bar">
+                        <label asp-for="monthlyDuration"></label>
+                        <input asp-for="monthlyDuration" />
+                        <span asp-validation-for="monthlyDuration"></span>
+                    </div>
+
+                    <button type="button" id="add-benefit">Add Benefit</button>
+
+                    <div id="new-benefits-container">
+                        @if (Model.Benefits != null)
+                        {
+                            for (var i = 0; i < Model.Benefits.Count; i++)
+                            {
+                                <div class="signin-bar benefit-item">
+                                    <label>Benefit</label>
+                                    <input type="text" name="Benefits[@i].benefit" value="@Model.Benefits[i].benefit" />
+                                    <button type="button" class="remove-benefit">Remove</button>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <button type="submit">Create</button>
+                </form>
+            </section>
         </div>
-        <button type="submit">Create</button>
-    </form>
+    </div>
 </section>
 
+
+
 <script>
+    //AI was used during the creation of this script. OskarV
+
     (function () {
         // Helper to reindex benefit inputs within a container
         function reindexBenefits(container, namePrefix, includeId) {

@@ -18,7 +18,7 @@
                 </div>
             </aside>
 
-            <section>
+            <section class="main-menu-My">
                     <div class="signin-form">
                         <h1>My Membership</h1>
                         <hr />
@@ -59,7 +59,7 @@
                                 {
                                     <p>No Benefits</p>
                                 }
-                            <form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><input type="submit" name="id" value="@Model.MembershipId" /></form>
+                            <form asp-controller="MemeberShip" asp-action="DeleteMembership" method="post"><button type="submit" name="id" value="@Model.MembershipId">Delete</button></form>
                         </div>
                     }
                     @if (Model.MembershipName == string.Empty)

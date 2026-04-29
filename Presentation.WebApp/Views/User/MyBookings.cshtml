@@ -1,7 +1,7 @@
 ﻿@model MyBookingViewModel
 
 
-<section>
+<section class="body-wrapper">
     <div class="section-header-wrapper">
         <h1 class="section-header">My Account</h1>
     </div>
@@ -14,7 +14,7 @@
                 </div>
             </aside>
 
-            <section>
+            <section class="main-menu-My">
                 <div class="signin-form">
                     <h1>My Booking</h1>
                     <hr />
@@ -41,7 +41,7 @@
                                 <section>
                                     <form asp-controller="Booking" asp-action="DeleteBooking" method="post">
                                         <input type="hidden" value="@workout.Id" name="id" />
-                                        <input type="submit" value="delete" />
+                                        <button type="submit" value="delete">Delete</button>
                                     </form>
                                 </section>
                             }

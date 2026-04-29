@@ -1,59 +1,70 @@
 ﻿@model WorkoutViewModel
-<aside>
-    <partial name="Partials/_MySideMenuSection" />
-    <div>
-        <partial name="Partials/_EditBookingSection" model="Model" />
-    </div>
-</aside>
-<section>
-    <h2>Update Workout</h2>
-    @foreach (var workout in Model.Workouts)
-    {
-        @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
-        {
-            if (ViewData["MessageType"]?.ToString() == "error")
-            {
-                <div class="error-in-text">
-                    @ViewData["Message"]
-                </div>
-            }
-            else
-            {
-                <div class="success-in-text">
-                    @ViewData["Message"]
-                </div>
-            }
-        }
-        <form asp-controller="CostumerService" asp-action="UpdateWorkout" asp-area="" method="post">
-            <input type="hidden" value="@workout.Id" asp-for="UpdateWorkoutForm.Id" />
 
-            <div class="signin-bar">
-                <label asp-for="UpdateWorkoutForm.Name"></label>
-                <input asp-for="UpdateWorkoutForm.Name" value="@workout.Name"/>
-                <span asp-validation-for="UpdateWorkoutForm.Name"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="UpdateWorkoutForm.Category"></label>
-                <input asp-for="UpdateWorkoutForm.Category" value="@workout.Category"/>
-                <span asp-validation-for="UpdateWorkoutForm.Category"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="UpdateWorkoutForm.Instructions"></label>
-                <input asp-for="UpdateWorkoutForm.Instructions" value="@workout.Instructions"/>
-                <span asp-validation-for="UpdateWorkoutForm.Instructions"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="UpdateWorkoutForm.Date"></label>
-                <input asp-for="UpdateWorkoutForm.Date" value="@workout.Date"/>
-                <span asp-validation-for="UpdateWorkoutForm.Date"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="UpdateWorkoutForm.Time"></label>
-                <input asp-for="UpdateWorkoutForm.Time" value="@workout.Time"/>
-                <span asp-validation-for="UpdateWorkoutForm.Time"></span>
-            </div>
-            <button type="submit">Update</button>
-        </form>
-        <section><form asp-controller="CostumerService" asp-action="DeleteWorkout" method="post"><input type="submit" name="id" value="@workout.Id" /></form></section>
-    }
+<section class="body-wrapper">
+    <div class="section-header-wrapper">
+        <h1 class="section-header">Admin Options / Workout</h1>
+    </div>
+    <div class="sigin-wrapper">
+        <div class="sigin-container">
+            <aside class="aside-controller">
+                <partial name="Partials/_MySideMenuSection" />
+                <div>
+                    <partial name="Partials/_EditBookingSection" model="Model" />
+                </div>
+            </aside>
+            <section class="signin-form" id="main-menu-My">
+                <h1>Update Workouts</h1>
+                <hr />
+                @foreach (var workout in Model.Workouts)
+                {
+                    @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+                    {
+                        if (ViewData["MessageType"]?.ToString() == "error")
+                        {
+                            <div class="error-in-text">
+                                @ViewData["Message"]
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="success-in-text">
+                                @ViewData["Message"]
+                            </div>
+                        }
+                    }
+                    <form asp-controller="CostumerService" asp-action="UpdateWorkout" asp-area="" method="post">
+                        <input type="hidden" value="@workout.Id" asp-for="UpdateWorkoutForm.Id" />
+
+                        <div class="signin-bar">
+                            <label asp-for="UpdateWorkoutForm.Name"></label>
+                            <input asp-for="UpdateWorkoutForm.Name" value="@workout.Name" />
+                            <span asp-validation-for="UpdateWorkoutForm.Name"></span>
+                        </div>
+                        <div class="signin-bar">
+                            <label asp-for="UpdateWorkoutForm.Category"></label>
+                            <input asp-for="UpdateWorkoutForm.Category" value="@workout.Category" />
+                            <span asp-validation-for="UpdateWorkoutForm.Category"></span>
+                        </div>
+                        <div class="signin-bar">
+                            <label asp-for="UpdateWorkoutForm.Instructions"></label>
+                            <input asp-for="UpdateWorkoutForm.Instructions" value="@workout.Instructions" />
+                            <span asp-validation-for="UpdateWorkoutForm.Instructions"></span>
+                        </div>
+                        <div class="signin-bar">
+                            <label asp-for="UpdateWorkoutForm.Date"></label>
+                            <input asp-for="UpdateWorkoutForm.Date" value="@workout.Date" />
+                            <span asp-validation-for="UpdateWorkoutForm.Date"></span>
+                        </div>
+                        <div class="signin-bar">
+                            <label asp-for="UpdateWorkoutForm.Time"></label>
+                            <input asp-for="UpdateWorkoutForm.Time" value="@workout.Time" />
+                            <span asp-validation-for="UpdateWorkoutForm.Time"></span>
+                        </div>
+                        <button type="submit">Update</button>
+                    </form>
+                    <section><form asp-controller="CostumerService" asp-action="DeleteWorkout" method="post"><button type="submit" name="id" value="@workout.Id">Delete</button></form></section>
+                }
+            </section>
+        </div>
+    </div>
 </section>

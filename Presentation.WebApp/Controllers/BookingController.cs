@@ -19,7 +19,6 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
     {
         var newworkout = await workout.GetAllAsync();
 
-
         var bookings = new RegisterBookingForm
         {
             FirstName = string.Empty,
@@ -39,6 +38,9 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
     {
         var newworkout = await workout.GetAllAsync(ct);
 
+        var message = TempData["ErrorMessage"] as string;
+
+        ViewBag.Message = message;
 
         var bookings = new RegisterBookingForm
         {
@@ -66,21 +68,22 @@ public class BookingController(IGetUserProfileService getUserProfileService, Use
             return View(form);
         }
 
+        var user = await userManager.GetUserAsync(User);
+
+        var userprofile = await getUserProfileService.ExecuteAsync(user.Id, ct);
+
+        if (string.IsNullOrWhiteSpace(userprofile.Value.FirstName) || string.IsNullOrWhiteSpace(userprofile.Value.LastName))
+        {
+            TempData["ErrorMessage"] = "First Name and Last Name on profile is required";
+            return RedirectToAction("RegisterBooking", "Booking");
+        }
+
         if (form.WorkoutId == null)
         {
             ViewData["ErrorMessage"] = "An error occurred during registration.";
             return View(form);
         }
 
-        var user = userManager.GetUserId(User);
-
-        var userprofile = await getUserProfileService.ExecuteAsync(user, ct);
-
-        if(userprofile.Value.FirstName == null || userprofile.Value.LastName == null)
-        {
-            ViewData["ErrorMessage"] = "An error occurred during registration.";
-            return View(form);
-        }
 
         var booking = new RegisterBookingInput
             (

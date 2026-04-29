@@ -11,7 +11,7 @@
         <div class="sigin-wrapper">
             <div class="sigin-container">
                 <aside class="aside-controller">
-                    <div>
+                    <div class="userimagebox">
                         @if (!string.IsNullOrWhiteSpace(Model.ProfileForm.ProfileImageUri))
                         {
                             <img src="@Model.ProfileForm.ProfileImageUri" alt="Profile Image" class="profile-image" />
@@ -29,7 +29,7 @@
                 </aside>
 
                 <section class="main-menu-My">
-                <form class="signin-form" asp-action="My" asp-controller="User" method="post"  novalidate>
+                <form class="signin-form" asp-action="My" asp-controller="User" method="post" novalidate>
                         <h1>About me</h1>
                         <hr />
 
@@ -77,7 +77,7 @@
 
                         <div class="signin-bar">
                             <label asp-for="ProfileForm.ProfileImageUri"></label>
-                            <input type="file" asp-for="ProfileForm.ProfileImageUri" />
+                            <input type="url" asp-for="ProfileForm.ProfileImageUri"/>
                             <span asp-validation-for="ProfileForm.ProfileImageUri"></span>
                         </div>
 

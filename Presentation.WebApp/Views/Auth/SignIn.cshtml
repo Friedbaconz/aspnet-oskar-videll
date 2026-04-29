@@ -29,18 +29,20 @@
                 </div>
 
                 <div class="signin-bar">
-                    <label asp-for="Password"></label>
+                    <div class="forgotpasswordbox">
+                        <label asp-for="Password"></label>
+                        <a class="forgotpassword" href="...">Forgot Your Password?</a>
+                    </div>
                     <input asp-for="Password" />
                     <span asp-validation-for="Password"></span>
-                    <a href="...">Forgot Your Password?</a>
                 </div>
-
                 <div class="signin-rembar">
-                    <input asp-for="RememberMe" />
-                    <label asp-for="RememberMe"> Remember Me?</label>
+                    <label asp-for="RememberMe" class="rememberMe">
+                        <p class="textalign">Remember Me?</p>
+                        <input asp-for="RememberMe" class="rememberMeCheck" />
+                        <span asp-validation-for="RememberMe" class="rememberMeSpan"></span><i class="bi bi-check-lg" id="checkmark"></i>
+                    </label>
                 </div>
-
-                <button class="sigin-button">Continue<img src="~/Images/sidearrow.svg" class="img-logo" /></button>
 
                 @if (!string.IsNullOrWhiteSpace(ViewData["ErrorMessage"]?.ToString()))
                 {
@@ -49,8 +51,10 @@
                     </div>
                 }
 
+                <button class="sigin-button">Continue<img src="~/Images/sidearrow.svg" class="img-logo" /></button>
+
                 <p>
-                    Not a member? <a asp-action="SignUp" asp-controller="Auth">Become One</a>
+                    Not a member? <a asp-action="SignUp" asp-controller="Auth" class="forgotpassword">Become One</a>
                 </p>
 
             </form>

@@ -48,6 +48,13 @@
                         </div>
                         <hr />
                         <p>Try Any Membership Fre for 1 Week</p>
+                        @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+                        {
+                            <div class="error-in-text">
+                                @ViewData["Message"]
+                            </div>
+
+                        }
                     </div>
                 </form>
             }
@@ -67,7 +74,7 @@
                     <div class="mb2extra">
                         <ul class="mb2hero">
                             <li class="mb2container">
-                                <a class="mb2text" asp-area="" asp-controller="CostumerService" asp-action="Index">
+                                <a class="mb2text" asp-area="" asp-controller="Booking" asp-action="RegisterBooking">
                                     Call Us Today!
                                     <img src="~/Images/sidearrow.svg" class="img-logo" />
                                 </a>

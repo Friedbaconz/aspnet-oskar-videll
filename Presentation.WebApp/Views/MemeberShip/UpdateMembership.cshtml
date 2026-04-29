@@ -1,88 +1,99 @@
 ﻿@model MembershipViewModel
 
-<aside>
-    <partial name="Partials/_MySideMenuSection" />
-    <div>
-        <partial name="Partials/_EditMemberShipSection" model="Model" />
+<section class="body-wrapper">
+    <div class="section-header-wrapper">
+        <h1 class="section-header">Admin Options / Membership</h1>
     </div>
-</aside>
+    <div class="sigin-wrapper">
+        <div class="sigin-container">
+            <aside>
+                <partial name="Partials/_MySideMenuSection" />
+                <div>
+                    <partial name="Partials/_EditMemberShipSection" model="Model" />
+                </div>
+            </aside>
 
-<section>
-    @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
-    {
-        if (ViewData["MessageType"]?.ToString() == "error")
-        {
-            <div class="error-in-text">
-                @ViewData["Message"]
-            </div>
-        }
-        else
-        {
-            <div class="success-in-text">
-                @ViewData["Message"]
-            </div>
-        }
-    }
-    <div>
-        <h2>Edit Membership</h2>
-        @foreach (var membership in Model.Memberships)
-        {
-            <hr />
-            <form class="update-membership-form" asp-controller="MemeberShip" asp-action="UpdateMembership" asp-area="" method="post">
-                <input type="hidden" name="id" value="@membership.Id" />
-
-                <div class="signin-bar">
-                    <label asp-for="UpdateMembershipForm.MembershipName"></label>
-                    <input asp-for="UpdateMembershipForm.MembershipName" value="@membership.Name" />
-                    <span asp-validation-for="UpdateMembershipForm.MembershipName"></span>
-                </div>
-                <div class="signin-bar">
-                    <label asp-for="UpdateMembershipForm.description"></label>
-                    <input asp-for="UpdateMembershipForm.description" value="@membership.Description" />
-                    <span asp-validation-for="UpdateMembershipForm.description"></span>
-                </div>
-                <div class="signin-bar">
-                    <label asp-for="UpdateMembershipForm.pricing"></label>
-                    <input asp-for="UpdateMembershipForm.pricing" value="@membership.Pricing" />
-                    <span asp-validation-for="UpdateMembershipForm.pricing"></span>
-                </div>
-                <div class="signin-bar">
-                    <label asp-for="UpdateMembershipForm.monthlyDuration"></label>
-                    <input asp-for="UpdateMembershipForm.monthlyDuration" value="@membership.MonthlyDuration" />
-                    <span asp-validation-for="UpdateMembershipForm.monthlyDuration"></span>
-                </div>
-
-                <div class="benefits-list">
-                    @if (membership.Benefits.Count() != 0)
+            <section class="signin-form" id="main-menu-My">
+                @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+                {
+                    if (ViewData["MessageType"]?.ToString() == "error")
                     {
-                        var idx = 0;
-                        foreach (var benefit in membership.Benefits)
-                        {
-                            <div class="signin-bar benefit-item">
-                                <label>Benefit</label>
-                                <input type="hidden" name="UpdateMembershipForm.Benefits[@idx].id" value="@benefit.Id" />
-                                <input type="text" name="UpdateMembershipForm.Benefits[@idx].benefit" value="@benefit.Benefit" />
-                                <button type="button" class="remove-benefit">Remove</button>
+                        <div class="error-in-text">
+                            @ViewData["Message"]
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="success-in-text">
+                            @ViewData["Message"]
+                        </div>
+                    }
+                }
+                <div>
+                    <h1>Update Memberships</h1>
+                    <hr />
+                    @foreach (var membership in Model.Memberships)
+                    {
+                        <form class="update-membership-form" asp-controller="MemeberShip" asp-action="UpdateMembership" asp-area="" method="post">
+                            <input type="hidden" name="id" value="@membership.Id" />
+
+                            <div class="signin-bar">
+                                <label asp-for="UpdateMembershipForm.MembershipName"></label>
+                                <input asp-for="UpdateMembershipForm.MembershipName" value="@membership.Name" />
+                                <span asp-validation-for="UpdateMembershipForm.MembershipName"></span>
                             </div>
-                            idx++;
-                        }
+                            <div class="signin-bar">
+                                <label asp-for="UpdateMembershipForm.description"></label>
+                                <input asp-for="UpdateMembershipForm.description" value="@membership.Description" />
+                                <span asp-validation-for="UpdateMembershipForm.description"></span>
+                            </div>
+                            <div class="signin-bar">
+                                <label asp-for="UpdateMembershipForm.pricing"></label>
+                                <input asp-for="UpdateMembershipForm.pricing" value="@membership.Pricing" />
+                                <span asp-validation-for="UpdateMembershipForm.pricing"></span>
+                            </div>
+                            <div class="signin-bar">
+                                <label asp-for="UpdateMembershipForm.monthlyDuration"></label>
+                                <input asp-for="UpdateMembershipForm.monthlyDuration" value="@membership.MonthlyDuration" />
+                                <span asp-validation-for="UpdateMembershipForm.monthlyDuration"></span>
+                            </div>
+
+                            <div class="benefits-list">
+                                @if (membership.Benefits.Count() != 0)
+                                {
+                                    var idx = 0;
+                                    foreach (var benefit in membership.Benefits)
+                                    {
+                                        <div class="signin-bar benefit-item">
+                                            <label>Benefit</label>
+                                            <input type="hidden" name="UpdateMembershipForm.Benefits[@idx].id" value="@benefit.Id" />
+                                            <input type="text" name="UpdateMembershipForm.Benefits[@idx].benefit" value="@benefit.Benefit" />
+                                            <button type="button" class="remove-benefit">Remove</button>
+                                        </div>
+                                        idx++;
+                                    }
+                                }
+                            </div>
+
+                            <button type="button" class="add-benefit-btn">Add Benefit</button>
+
+                            <button type="submit">Update</button>
+                            <hr />
+                        </form>
+
+                        <form asp-controller="MemeberShip" asp-action="RemoveMembership" method="post">
+                            <input type="hidden" name="id" value="@membership.Id" />
+                            <button type="submit" value="Delete">Delete</button>
+                        </form>
                     }
                 </div>
-
-                <button type="button" class="add-benefit-btn">Add Benefit</button>
-
-                <button type="submit">Update</button>
-            </form>
-
-            <form asp-controller="MemeberShip" asp-action="RemoveMembership" method="post">
-                <input type="hidden" name="id" value="@membership.Id" />
-                <input type="submit" value="Delete" />
-            </form>
-        }
+            </section>
+        </div>
     </div>
 </section>
 
 <script>
+    //AI was used during the creation of this script. OskarV
     (function () {
         // Helper to reindex benefit inputs within a container
         function reindexBenefits(container, namePrefix, includeId) {

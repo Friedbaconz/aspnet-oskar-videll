@@ -1,55 +1,65 @@
 ﻿@model RegisterWorkoutForm
 
-<aside>
-    <partial name="Partials/_MySideMenuSection" />
-    <div>
-        <partial name="Partials/_EditBookingSection" model="Model" />
+<section class="body-wrapper">
+    <div class="section-header-wrapper">
+        <h1 class="section-header">Admin Options / Workout</h1>
     </div>
-</aside>
-    <section class="main-menu-My">
-        @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
-        {
-            if (ViewData["MessageType"]?.ToString() == "error")
-            {
-                <div class="error-in-text">
-                    @ViewData["Message"]
+    <div class="sigin-wrapper">
+        <div class="sigin-container">
+            <aside>
+                <partial name="Partials/_MySideMenuSection" />
+                <div>
+                    <partial name="Partials/_EditBookingSection" model="Model" />
                 </div>
-            }
-            else
-            {
-                <div class="success-in-text">
-                    @ViewData["Message"]
-                </div>
-            }
-        }
-        <form asp-controller="CostumerService" asp-action="RegisterWorkout" asp-area="" method="post">
-            <h2>New Workout</h2>
-            <div class="signin-bar">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" />
-                <span asp-validation-for="Name"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="Category"></label>
-                <input asp-for="Category" />
-                <span asp-validation-for="Category"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="Instructions"></label>
-                <input asp-for="Instructions" />
-                <span asp-validation-for="Instructions"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="Date"></label>
-                <input asp-for="Date" />
-                <span asp-validation-for="Date"></span>
-            </div>
-            <div class="signin-bar">
-                <label asp-for="Time"></label>
-                <input asp-for="Time" />
-                <span asp-validation-for="Time"></span>
-            </div>
+            </aside>
+            <section class="main-menu-My">
+                @if (!string.IsNullOrWhiteSpace(ViewData["Message"]?.ToString()))
+                {
+                    if (ViewData["MessageType"]?.ToString() == "error")
+                    {
+                        <div class="error-in-text">
+                            @ViewData["Message"]
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="success-in-text">
+                            @ViewData["Message"]
+                        </div>
+                    }
+                }
+                <form asp-controller="CostumerService" asp-action="RegisterWorkout" asp-area="" method="post" class="signin-form">
+                    <h1>New Workout</h1>
+                    <hr />
+                    <div class="signin-bar">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" />
+                        <span asp-validation-for="Name"></span>
+                    </div>
+                    <div class="signin-bar">
+                        <label asp-for="Category"></label>
+                        <input asp-for="Category" />
+                        <span asp-validation-for="Category"></span>
+                    </div>
+                    <div class="signin-bar">
+                        <label asp-for="Instructions"></label>
+                        <input asp-for="Instructions" />
+                        <span asp-validation-for="Instructions"></span>
+                    </div>
+                    <div class="signin-bar">
+                        <label asp-for="Date"></label>
+                        <input asp-for="Date" />
+                        <span asp-validation-for="Date"></span>
+                    </div>
+                    <div class="signin-bar">
+                        <label asp-for="Time"></label>
+                        <input asp-for="Time" />
+                        <span asp-validation-for="Time"></span>
+                    </div>
 
-            <button type="submit">Create</button>
-        </form>
-    </section>
+                    <button type="submit">Create</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</section>

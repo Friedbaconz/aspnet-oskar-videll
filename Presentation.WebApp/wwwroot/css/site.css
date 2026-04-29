@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+
 * {
     box-sizing: border-box;
 }
@@ -814,7 +816,14 @@ program-wrapper {
     margin: auto;
     align-items: center;
     justify-content: center;
-    margin-top: 200px;
+
+    .main-menu-My {
+        width: 800px;
+    }
+
+    #main-menu-My {
+        width: 800px;
+    }
 }
 
 .sigin-container {
@@ -911,9 +920,43 @@ program-wrapper {
     }
 }
 
+.forgotpassword {
+    text-decoration: none;
+    color: var(--yellow-green);
+    font-size: 15px;
+    transition: ease 0.4s;
+}
+
+.forgotpassword:hover {
+            text-decoration: underline;
+}
+
 .signin-bar {
     border-color: none;
     display: block;
+
+    .forgotpasswordbox {
+        display: grid;
+        grid-template-columns: auto auto;
+        margin-top: 40px;
+
+        label {
+            margin-top: 0px;
+        }
+    }
+
+    .forgotpassword {
+        text-decoration: none;
+        color: var(--yellow-green);
+        font-size: 15px;
+        transition: ease 0.4s;
+        align-self: end;
+        justify-self: end;
+    }
+
+        .forgotpassword:hover {
+            text-decoration: underline;
+        }
 
     textarea {
         border: none;
@@ -924,13 +967,13 @@ program-wrapper {
         resize: none;
         padding: 5px;
         font-family: var(--font-family);
-        font-size:15px;
+        font-size: 15px;
     }
 
-    textarea:focus {
-        outline-style: solid;
-        outline-color: var(--yellow-green);
-    }
+        textarea:focus {
+            outline-style: solid;
+            outline-color: var(--yellow-green);
+        }
 
     input {
         padding: 20px;
@@ -956,9 +999,91 @@ program-wrapper {
     }
 }
 
+.rememberMe .rememberMeCheck {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.rememberMe .rememberMeSpan {
+    left: 9px;
+    top: 5px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+}
+
+.rememberMeSpan {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    border-radius:10px;
+    background-color: var(--lightgrey);
+
+    :after{
+        content:"";
+        position:absolute;
+        display:none;
+    }
+}
+
+#rememberMe2 {
+    margin: auto;
+
+    .textalign {
+        color: var(--dark-font);
+    }
+}
+
+.rememberMe:hover .rememberMeCheck ~ .rememberMeSpan {
+    background-color: var(--grey);
+}
+
+
+.rememberMe .rememberMeCheck:checked ~ .rememberMeSpan {
+    background-color: var(--yellow-green);
+}
+.rememberMe .rememberMeCheck:checked ~ #checkmark {
+    display: block;
+}
+
+.rememberMe .rememberMeCheck:checked ~ .rememberMeSpan:after {
+    display: block;
+}
+
+.rememberMe {
+    transition: ease 0.4s;
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    user-select: none;
+
+    .textalign {
+        color: var(--yellow-green);
+        line-height: normal;
+        margin-bottom: 0px;
+    }
+}
+
+#checkmark
+{
+    position:absolute;
+    left:13px;
+    bottom: 3px;
+    color: var(--white-bg);
+    display:none;
+}
+
 .signin-rembar {
     border-color: none;
-    display: block;
+    display: flex;
+    margin-top: 20px;
 
     input {
         padding: 20px;
@@ -1007,7 +1132,7 @@ program-wrapper {
 
 .error-in-text {
     color: red;
-    font-size: 10px;
+    font-size: 13px;
 }
 
 .terms {
@@ -1209,10 +1334,23 @@ program-wrapper {
     }
 }
 
-.mb2extra{
-    display:flex;
-    margin:auto;
-    margin-top:20px;
+.profile-image {
+    max-width: 400px;
+    max-height: auto;
+    border: 1px hidden black;
+}
+
+.userimagebox .profile-image{
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.mb2extra {
+    display: flex;
+    margin: auto;
+    margin-top: 20px;
 }
 
 .memberoptions-container-end {
@@ -1326,18 +1464,35 @@ program-wrapper {
     margin-right: 50px;
     margin-top: 50px;
 
-    section {
-        width: 100%;
-        display: grid;
-        grid-template-columns: auto auto;
-        margin: auto;
+    .hoverside:hover {
+        .my-text {
+            color: var(--yellow-green);
 
+            button {
+                color:var(--yellow-green);
+            }
+        }
+    }
+
+    .hoverside {
+        width: 100%;
+        display: flex;
+        margin: auto;
+        cursor: pointer;
+        user-select:contain;
         .my-text {
             align-self: center;
             justify-self: start;
-            color:var(--black);
-            text-decoration:none;
-
+            color: var(--black);
+            text-decoration: none;
+            width:100%;
+            button {
+                border: none;
+                font-family: var(--font-family);
+                font-size: 16px;
+                background: none;
+                cursor: pointer;
+            }
         }
 
         img {
@@ -1365,7 +1520,7 @@ program-wrapper {
 
     p {
         font-size: 10px;
-        color:var(--grey);
+        color: var(--grey);
         display: flex;
         margin: auto;
     }
@@ -1373,14 +1528,22 @@ program-wrapper {
     section {
         display: flex;
         margin: auto;
-        input{
-            border:none;
-            background-color:none;
-            color:red;
-            font-size:15px;
+
+        input {
+            border: none;
+            background: none;
+            color: red;
+            font-size: 15px;
+            cursor: pointer;
         }
     }
+
+    input:hover {
+        text-decoration:underline;
+        
+    }
 }
+
 
 
 .Customer-Form-Wrapper {
